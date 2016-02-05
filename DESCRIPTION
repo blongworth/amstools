@@ -3,8 +3,8 @@ Type: Package
 Title: Provides tools for AMS data extraction and analysis
 Version: 0.1
 Date: 2016-01-15
-Author: Brett Longworth
-Maintainer: blongworth@whoi.edu
+Authors@R: person("Brett", "Longworth", email = "blongworth@whoi.edu",
+                  role = c("aut", "cre"))
 Description: A very domain-specific set of tools for reading,
   and analysing AMS data. Functions are provided for reading from files
   or the NOSAMS database, reducing data in various ways, and producing
@@ -15,4 +15,5 @@ Imports:
   dplyr,
   ggplot2,
   RODBC,
-  knitr
+  knitr,
+  shiny
