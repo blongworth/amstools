@@ -1,5 +1,10 @@
 # General data reduction functions
 
+#relative sd
+rsd <- function(x) {
+  sd(x)/mean(x)
+}
+
 se <- function(x) {
   #Calculate standard error
   sqrt(var(x)/length(x))
