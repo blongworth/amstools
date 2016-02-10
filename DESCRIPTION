@@ -6,14 +6,16 @@ Date: 2016-01-15
 Authors@R: person("Brett", "Longworth", email = "blongworth@whoi.edu",
                   role = c("aut", "cre"))
 Description: A very domain-specific set of tools for reading,
-  and analysing AMS data. Functions are provided for reading from files
-  or the NOSAMS database, reducing data in various ways, and producing
-  useful reports.
+    and analysing AMS data. Functions are provided for reading from files
+    or the NOSAMS database, reducing data in various ways, and producing
+    useful reports.
 License: GPL
 LazyData: TRUE
 Imports:
-  dplyr,
-  ggplot2,
-  RODBC,
-  knitr,
-  shiny
+    magrittr,
+    dplyr,
+    ggplot2,
+    RODBC,
+    knitr,
+    shiny
+RoxygenNote: 5.0.1

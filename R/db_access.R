@@ -1,11 +1,16 @@
 # Database functions
 
-#Read db connection info
-source("~/R/dbconfig.R") #DB connection info
 
 #Open DB connection
+#' Open NOSAMS DB connection
+#'
+#' @return A RODBC db connection object
+#' @export
+#'
+#' @examples
 conNOSAMS  <- function() {
-  RODBC::odbcConnect(database, uid = uid, pwd = pwd)
+  #RODBC::odbcConnect(database, uid = uid, pwd = pwd)
+  RODBC::odbcDriverConnect(Sys.getenv("CONSTRING"))
 }
 
 # get results for a rec_num
@@ -18,8 +23,18 @@ conNOSAMS  <- function() {
 
 # get results for a wheel
 
+
+#' Get secondary data from qc table
+#'
+#' @param from Character vector of date in form 'YYYY-MM-DD'.
+#' @param to Character vector of date in form 'YYYY-MM-DD'.
+#' @param sys Character vector of system name: 'cfams', 'usams', or 'both'.
+#'
+#' @return
+#' @export
+#'
+#' @examples
 getQCTable <- function(from, to = "present", sys = "both") {
-  #Get secondary data from qc table
 
   if (missing(from)) {
     stop('argument "from" is missing, with no default')
@@ -77,7 +92,7 @@ getQCTable <- function(from, to = "present", sys = "both") {
 
   #Do the queries
 
-  db <- RODBC::odbcConnect(database, uid = uid, pwd = pwd)
+  db <- conNOSAMS()
 
   data <- RODBC::sqlQuery(db, dquery)
   if (is.character(data)) {
@@ -90,6 +105,20 @@ getQCTable <- function(from, to = "present", sys = "both") {
 
 }
 
+#' Get Standards
+#'
+#' Get standards from database using standards table.
+#'
+#' @param from Character vector of date in form 'YYYY-MM-DD'.
+#' @param to Character vector of date in form 'YYYY-MM-DD'.
+#' @param sys Character vector of system name: 'cfams', 'usams', or 'both'.
+#' @param getcurrents logical. Get current and count data?
+#' @param rec numeric. If supplied, get all records matching this receipt number.
+#'
+#' @return
+#' @export
+#'
+#' @examples
 getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE, rec = NULL) {
   #Get data for all secondaries from database
   #Return query result as data table
@@ -173,7 +202,7 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
 
   #Do the queries
 
-  db <- RODBC::odbcConnect(database, uid = uid, pwd = pwd)
+  db <- conNOSAMS()
 
   data <- RODBC::sqlQuery(db, dquery)
   if (is.character(data)) {
@@ -200,10 +229,16 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
 }
 
 
+#' Get Intcal table
+#'
+#' @return
+#' @export
+#'
+#' @examples
 getIntcalTable <- function() {
 
   #Open DB connection
-  db <- RODBC::odbcConnect(database, uid = uid, pwd = pwd)
+  db <- conNOSAMS()
 
   #get intcal table
   intcal <- RODBC::sqlQuery(db, paste("select * from ", "intercal_samples"))
@@ -218,36 +253,36 @@ getIntcalTable <- function() {
   intcal$fm_consensus[intcal$rec_num == 1086] <- 1.5016
 
   #add in OX-I, OX-II
-  ox <- read.csv("intcalox.csv")
-  intcal <- rbind(intcal, ox)
+  intcal <- rbind(intcal, intox)
 
   #add process type
-  ps <- read.csv("intcal_process.csv")
-  ps <- ps %>% select(rec_num, process)
-  intcal <- inner_join(intcal, ps)
+  intps <- dplyr::select(intps, rec_num, process)
+  intcal <- dplyr::inner_join(intcal, intps)
   return(intcal)
 }
 
+#' Get Standards Table
+#'
+#' @return
+#' @export
+#'
+#' @examples
 getStdTable <- function() {
 
   #Open DB connection
-  db <- RODBC::odbcConnect(database, uid = uid, pwd = pwd)
-
+  db <- conNOSAMS()
   standards <- RODBC::sqlQuery(db, paste("select * from ", "standards"))
+  RODBC::odbcClose(db)
 
   #add process type
-  ps <- read.csv("std_process.csv")
-  standards <- inner_join(standards, ps, by = "rec_num")
+  standards <- dplyr::inner_join(standards, stdps, by = "rec_num")
 
-  standards <- standards %>%
-    mutate(fm_exp = ifelse(!is.na(Fm_cons), Fm_cons, Fm_NOSAM_avg)) %>%
-    select(rec_num, sample_id, process, fm_exp)
+  standards <- dplyr::mutate(standards, fm_exp = ifelse(!is.na(Fm_cons), Fm_cons, Fm_NOSAM_avg))
+  standards <- dplyr::select(standards, rec_num, sample_id, process, fm_exp)
 
   #create factor of tiri_id, order by Fm
   standards <- within(standards, name <- factor(sample_id, levels = unique(
                    sample_id[order(fm_exp, sample_id)]),ordered = TRUE))
-
-  RODBC::odbcClose(db)
 
   return(standards)
 }
