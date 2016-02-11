@@ -10,6 +10,6 @@ conNOSAMS()
 A RODBC db connection object
 }
 \description{
-Open NOSAMS DB connection
+Takes a connection string from the CONSTRING environment variable.
 }
 
