@@ -1,5 +1,11 @@
 # Functions for cleaning up and calculations on data pulled from the database
 
+joinStandards <- function(data, std) {
+
+  #join standard table
+   dplyr::inner_join(data, std, by = "rec_num")
+}
+
 
 #' Modify and calculate fields for raw standards data.
 #'
@@ -11,16 +17,13 @@
 #' @importFrom magrittr %>%
 mungeStandards <- function(data, std) {
 
-  #join standard table
-  data <- dplyr::inner_join(data, std, by = "rec_num")
-
-  out <- data %>%
-    dplyr::mutate(rep_err = pmax(f_int_error, f_ext_error),
-           normFm = normFm(f_modern, fm_exp),
-           sigma = sigma(f_modern, fm_exp, rep_err),
+   data %>%
+   	dplyr::mutate(rep_err = pmax(f_int_error, f_ext_error),
+           normFm = normFm(f_modern, fm_consensus),
+           sigma = sigma(f_modern, fm_consensus, rep_err),
            frep_err = rep_err/f_modern,
-           #system
-           system = substring(wheel, 1, 5),
+           system = substring(wheel, 1, 5) #system
+if data available...
            #fix CFAMS 12C
            le12c = ifelse(system == "USAMS", le12c * -1, le12c),
            #is ox-i primary?
