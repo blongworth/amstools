@@ -3,7 +3,7 @@
 
 #Open DB connection
 #' Open NOSAMS DB connection
-#' 
+#'
 #' Takes a connection string from the CONSTRING environment variable.
 #'
 #' @return A RODBC db connection object
@@ -161,14 +161,14 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
 
   dquery <- paste("SELECT
                     target.tp_num,
-                    target.tp_date_pressed, 
+                    target.tp_date_pressed,
                     target.rec_num,
                     target.target_name,
                     target.osg_num,
                     wheel_pos.wheel_id AS wheel,
 		    graphite_lab.lab_name AS lab,
-                    no_os.f_modern, 
-		    no_os.f_int_error, 
+                    no_os.f_modern,
+		    no_os.f_int_error,
 		    no_os.f_ext_error,
                     snics_results.int_err,
 		    snics_results.ext_err,
@@ -285,12 +285,12 @@ getStdTable <- function() {
   #add process type
   standards <- dplyr::inner_join(standards, stdps, by = "rec_num")
 
-  standards <- dplyr::mutate(standards, fm_exp = ifelse(!is.na(Fm_cons), Fm_cons, Fm_NOSAM_avg))
-  standards <- dplyr::select(standards, rec_num, sample_id, process, fm_exp)
+  standards <- dplyr::mutate(standards, fm_consensus = ifelse(!is.na(Fm_cons), Fm_cons, Fm_NOSAM_avg))
+  standards <- dplyr::select(standards, rec_num, sample_id, process, fm_consensus)
 
   #create factor of tiri_id, order by Fm
   standards <- within(standards, name <- factor(sample_id, levels = unique(
-                   sample_id[order(fm_exp, sample_id)]),ordered = TRUE))
+                   sample_id[order(fm_consensus, sample_id)]),ordered = TRUE))
 
   return(standards)
 }
