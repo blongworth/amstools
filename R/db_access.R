@@ -3,6 +3,8 @@
 
 #Open DB connection
 #' Open NOSAMS DB connection
+#' 
+#' Takes a connection string from the CONSTRING environment variable.
 #'
 #' @return A RODBC db connection object
 #' @export
@@ -13,13 +15,11 @@ conNOSAMS  <- function() {
   RODBC::odbcDriverConnect(Sys.getenv("CONSTRING"))
 }
 
-# get results for a rec_num
-
 # get results for a tp_num
 
 # get results for an osg_num
 
-# get secondaries table
+# get results using intcal table
 
 # get results for a wheel
 
@@ -59,14 +59,17 @@ getQCTable <- function(from, to = "present", sys = "both") {
   }
 
   dquery <- paste("
-   SELECT target.tp_num,
+   SELECT
+   	 target.tp_num,
+         qc.tp_num,
          target.tp_date_pressed,
          qc.target_time,
          qc.rec_num,
          qc.descr,
-         qc.tp_num,
          qc.process,
          qc.num,
+         qc.wheel,
+         qc.lab,
          qc.fm_consensus,
          qc.f_modern,
          qc.f_int_error,
@@ -78,9 +81,7 @@ getQCTable <- function(from, to = "present", sys = "both") {
          qc.dc13_measured,
          qc.q_flag,
          qc.dc13_con,
-         qc.ss,
-         qc.wheel,
-         qc.lab
+         qc.ss
     FROM qc
       INNER JOIN target ON qc.tp_num = target.tp_num
    WHERE
@@ -159,16 +160,23 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
   }
 
   dquery <- paste("SELECT
-                    target.rec_num,
                     target.tp_num,
-                    target.osg_num,
+                    target.tp_date_pressed, 
+                    target.rec_num,
                     target.target_name,
+                    target.osg_num,
                     wheel_pos.wheel_id AS wheel,
-                    target.tp_date_pressed, graphite_lab.lab_name,
-                    no_os.f_modern, no_os.f_int_error, no_os.f_ext_error,
-                    snics_results.int_err, snics_results.ext_err,
-                    no_os.dc13, graphite.gf_co2_qty, no_os.q_flag,
-                    snics_results.sample_type, snics_results.sample_type_1
+		    graphite_lab.lab_name AS lab,
+                    no_os.f_modern, 
+		    no_os.f_int_error, 
+		    no_os.f_ext_error,
+                    snics_results.int_err,
+		    snics_results.ext_err,
+                    no_os.dc13,
+		    graphite.gf_co2_qty,
+		    no_os.q_flag,
+                    snics_results.sample_type,
+		    snics_results.sample_type_1
                   FROM target
                     INNER JOIN no_os
                       ON target.tp_num = no_os.tp_num
