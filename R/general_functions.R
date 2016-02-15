@@ -72,11 +72,10 @@ normFm <- function (fmm, fmc) {
 #'
 #' @examples
 intrErr <- function(popErr, targErr) {
-  #calculate intrinsic error
-  if (targErr > totErr) {
-     sqrt(popErr^2 - targErr^2)
-  } else {
+  if (is.na(popErr + targErr) | (targErr > popErr)) {
     NA
+  } else {
+    sqrt(popErr^2 - targErr^2)
   }
 }
 
@@ -94,8 +93,15 @@ intrErr <- function(popErr, targErr) {
 #'
 #' @examples
 totErr <- function(targErr, intrErr) {
-#Calculate total error
-  sqrt(targErr^2 + intrErr^2)
+  if (is.na(targErr)) {
+    NA
+  } else {
+    if (is.na(intrErr)) {
+      return(targErr)
+    } else {
+      sqrt(targErr^2 + intrErr^2)
+    }
+  }
 }
 
 # Calculate confidence interval
