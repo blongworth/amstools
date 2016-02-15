@@ -66,12 +66,15 @@ mungeQCTable <- function(data) {
 #' @param to Character vector of date in form 'YYYY-MM-DD'.
 #' @param sys Character vector of system name: 'cfams', 'usams', or 'both'.
 #' @param useQC Use data from QC table if true.
+#' @param intcal Use standards data from intcal table if true.
+#' @param getcurrents get current and count data if true.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-getQCData <- function(from, to = "present", sys = "both", useQC = FALSE, intcal = TRUE) {
+getQCData <- function(from, to = "present", sys = "both",
+                      useQC = FALSE, intcal = TRUE, getcurrents = FALSE) {
   # Function to get standards from database and return munged table
 
   if (missing(from)) {
