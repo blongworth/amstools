@@ -5,7 +5,7 @@
 \title{Get and format standards data}
 \usage{
 getQCData(from, to = "present", sys = "both", useQC = FALSE,
-  intcal = TRUE)
+  intcal = TRUE, getcurrents = FALSE)
 }
 \arguments{
 \item{from}{Character vector of date in form 'YYYY-MM-DD'.}
@@ -15,6 +15,10 @@ getQCData(from, to = "present", sys = "both", useQC = FALSE,
 \item{sys}{Character vector of system name: 'cfams', 'usams', or 'both'.}
 
 \item{useQC}{Use data from QC table if true.}
+
+\item{intcal}{Use standards data from intcal table if true.}
+
+\item{getcurrents}{get current and count data if true.}
 }
 \description{
 Get and format standards data
