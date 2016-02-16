@@ -64,17 +64,19 @@ normFm <- function (fmm, fmc) {
 #'
 #' Calculate the "extra" (intrinsic, residual) error.
 #'
-#' @param popErr Standard deviation of the population.
-#' @param targErr Measurement error of a measurement.
+#' @param x A vector of measured values.
+#' @param err A vector of measurement errors.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-intrErr <- function(popErr, targErr) {
-	ifelse((is.na(popErr + targErr) | (targErr > popErr)),
-	       NA,
-	       sqrt((mean(popErr))^2 - targErr^2))
+intrErr <- function(x, err) {
+  xsd <- sd(x)
+  xsd2 <- xsd^2
+  ifelse((err > xsd),
+         NA,
+         sqrt(xsd2 - err^2))
 }
 
 
@@ -91,15 +93,11 @@ intrErr <- function(popErr, targErr) {
 #'
 #' @examples
 totErr <- function(targErr, intrErr) {
-  if (is.na(targErr)) {
-    NA
-  } else {
-    if (is.na(intrErr)) {
-      return(targErr)
-    } else {
-      sqrt(targErr^2 + intrErr^2)
-    }
-  }
+  ifelse(is.na(targErr),
+         NA,
+         ifelse(is.na(intrErr),
+                targErr,
+                sqrt(targErr^2 + intrErr^2)))
 }
 
 # Calculate confidence interval

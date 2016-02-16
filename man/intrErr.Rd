@@ -4,12 +4,12 @@
 \alias{intrErr}
 \title{Intrinsic Error}
 \usage{
-intrErr(popErr, targErr)
+intrErr(x, err)
 }
 \arguments{
-\item{popErr}{Standard deviation of the population.}
+\item{x}{A vector of measured values.}
 
-\item{targErr}{Measurement error of a measurement.}
+\item{err}{A vector of measurement errors.}
 }
 \description{
 Calculate the "extra" (intrinsic, residual) error.
