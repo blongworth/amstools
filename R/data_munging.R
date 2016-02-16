@@ -54,6 +54,7 @@ mungeQCTable <- function(data) {
            normFm = normFm(f_modern, fm_consensus),
            sigma = sigma(f_modern, fm_consensus, rep_err),
            frep_err = rep_err/f_modern,
+           name = descr,
            system = substring(wheel, 1, 5)) %>% #system
     dplyr::select(-f_int_error, -f_ext_error)
 
@@ -74,7 +75,7 @@ mungeQCTable <- function(data) {
 #'
 #' @examples
 getQCData <- function(from, to = "present", sys = "both",
-                      useQC = FALSE, intcal = TRUE, getcurrents = FALSE) {
+                      useQC = FALSE, intcal = TRUE, getcurrents) {
   # Function to get standards from database and return munged table
 
   if (missing(from)) {
