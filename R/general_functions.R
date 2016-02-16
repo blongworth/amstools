@@ -72,11 +72,9 @@ normFm <- function (fmm, fmc) {
 #'
 #' @examples
 intrErr <- function(popErr, targErr) {
-  if (is.na(popErr + targErr) | (targErr > popErr)) {
-    NA
-  } else {
-    sqrt(popErr^2 - targErr^2)
-  }
+	ifelse((is.na(popErr + targErr) | (targErr > popErr)),
+	       NA,
+	       sqrt((mean(popErr))^2 - targErr^2))
 }
 
 
