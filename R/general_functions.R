@@ -73,10 +73,9 @@ normFm <- function (fmm, fmc) {
 #' @examples
 intrErr <- function(x, err) {
   xsd <- sd(x)
-  xsd2 <- xsd^2
   ifelse((err > xsd),
          NA,
-         sqrt(xsd2 - err^2))
+         sqrt(xsd^2 - err^2))
 }
 
 
@@ -93,11 +92,9 @@ intrErr <- function(x, err) {
 #'
 #' @examples
 totErr <- function(targErr, intrErr) {
-  ifelse(is.na(targErr),
-         NA,
-         ifelse(is.na(intrErr),
-                targErr,
-                sqrt(targErr^2 + intrErr^2)))
+  ifelse(is.na(intrErr),
+         targErr,
+         sqrt(targErr^2 + intrErr^2))
 }
 
 # Calculate confidence interval
