@@ -11,17 +11,14 @@
 #'
 #' @examples
 conNOSAMS  <- function() {
-  #RODBC::odbcConnect(database, uid = uid, pwd = pwd)
   RODBC::odbcDriverConnect(Sys.getenv("CONSTRING"))
 }
 
+# TODO
 # get results for a tp_num
-
 # get results for an osg_num
-
-# get results using intcal table
-
 # get results for a wheel
+# make standards results the same for all queries
 
 
 #' Get secondary data from qc table
@@ -61,7 +58,6 @@ getQCTable <- function(from, to = "present", sys = "both") {
   dquery <- paste("
    SELECT
    	 target.tp_num,
-         qc.tp_num,
          target.tp_date_pressed,
          qc.target_time,
          qc.rec_num,
@@ -159,9 +155,12 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
     ts <- ""
   }
 
+  # need to include target_time, d13 irms, co2_yield, process
+
   dquery <- paste("SELECT
                     target.tp_num,
                     target.tp_date_pressed,
+		    snics_results.runtime,
                     target.rec_num,
                     target.target_name,
                     target.osg_num,
@@ -170,10 +169,10 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
                     no_os.f_modern,
 		    no_os.f_int_error,
 		    no_os.f_ext_error,
-                    snics_results.int_err,
-		    snics_results.ext_err,
-                    no_os.dc13,
+                    --snics_results.int_err,
+		    --snics_results.ext_err,
 		    graphite.gf_co2_qty,
+                    no_os.dc13,
 		    no_os.q_flag,
                     snics_results.sample_type,
 		    snics_results.sample_type_1
@@ -261,11 +260,14 @@ getIntcalTable <- function() {
   intcal$fm_consensus[intcal$rec_num == 1086] <- 1.5016
 
   #add in OX-I, OX-II
-  intcal <- rbind(intcal, intox)
+  #intcal <- rbind(intcal, intox)
 
-  #add process type
+  #add process type TODO: get this from db
   intps <- dplyr::select(intps, rec_num, process)
   intcal <- dplyr::inner_join(intcal, intps)
+
+  # trim table
+  intcal <- dplyr::select(intcal, rec_num, name, process, fm_consensus)
   return(intcal)
 }
 
@@ -288,6 +290,7 @@ getStdTable <- function() {
   standards <- dplyr::mutate(standards, fm_consensus = ifelse(!is.na(Fm_cons), Fm_cons, Fm_NOSAM_avg))
   standards <- dplyr::select(standards, rec_num, sample_id, process, fm_consensus)
 
+  # TODO: make names the same
   #create factor of tiri_id, order by Fm
   standards <- within(standards, name <- factor(sample_id, levels = unique(
                    sample_id[order(fm_consensus, sample_id)]),ordered = TRUE))
