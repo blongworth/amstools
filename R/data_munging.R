@@ -19,7 +19,7 @@ mungeStandards <- function(data, std) {
 
   data <- joinStandards(data, std)
   if (exists('le12c', where = data)) {
-    data <- mutate(data, le12c = ifelse(system == "USAMS", le12c * -1, le12c))
+    data <- dplyr::mutate(data, le12c = ifelse(system == "USAMS", le12c * -1, le12c))
   }
 
   data %>%
