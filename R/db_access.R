@@ -157,41 +157,44 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
 
   # need to include target_time, d13 irms, co2_yield, process
 
-  dquery <- paste("SELECT
-                    target.tp_num,
-                    target.tp_date_pressed,
-		    snics_results.runtime,
-                    target.rec_num,
-                    target.target_name,
-                    target.osg_num,
-                    wheel_pos.wheel_id AS wheel,
-		    graphite_lab.lab_name AS lab,
-                    no_os.f_modern,
-		    no_os.f_int_error,
-		    no_os.f_ext_error,
-                    --snics_results.int_err,
-		    --snics_results.ext_err,
-		    graphite.gf_co2_qty,
-                    no_os.dc13,
-		    no_os.q_flag,
-                    snics_results.sample_type,
-		    snics_results.sample_type_1
-                  FROM target
-                    INNER JOIN no_os
-                      ON target.tp_num = no_os.tp_num
-                    INNER JOIN wheel_pos
-                      ON target.tp_num = wheel_pos.tp_num
-                    INNER JOIN snics_results
-                      ON target.tp_num = snics_results.tp_num
-                    INNER JOIN graphite
-                      ON target.osg_num = graphite.osg_num
-                    INNER JOIN graphite_lab
-                      ON target.graphite_lab = graphite_lab.lab_id
-                    ", samples," target.tp_date_pressed > '",from,"'
-                    ", ts, "
-                    ", whid, "
-                    AND f_modern > -1
-                  ")
+  dquery <- paste(
+    "SELECT
+      target.tp_num,
+      gf_date,
+      target.tp_date_pressed,
+      snics_results.runtime,
+      target.rec_num,
+      target.target_name,
+      target.osg_num,
+      wheel_pos.wheel_id AS wheel,
+      graphite_lab.lab_name AS lab,
+      no_os.f_modern,
+      no_os.f_int_error,
+      no_os.f_ext_error,
+      --snics_results.int_err,
+      --snics_results.ext_err,
+      graphite.gf_co2_qty,
+      no_os.dc13,
+      no_os.q_flag,
+      snics_results.sample_type,
+      snics_results.sample_type_1
+    FROM target
+    INNER JOIN no_os
+      ON target.tp_num = no_os.tp_num
+    INNER JOIN wheel_pos
+      ON target.tp_num = wheel_pos.tp_num
+    INNER JOIN snics_results
+      ON target.tp_num = snics_results.tp_num
+    INNER JOIN graphite
+      ON target.osg_num = graphite.osg_num
+    INNER JOIN graphite_lab
+      ON target.graphite_lab = graphite_lab.lab_id
+    ", samples," target.tp_date_pressed > '",from,"'
+    ", ts, "
+    ", whid, "
+    AND f_modern > -1
+    "
+  )
 
   cquery <- paste("SELECT
                 snics_raw.tp_num,
