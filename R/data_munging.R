@@ -18,6 +18,9 @@ joinStandards <- function(data, std) {
 mungeStandards <- function(data, std) {
 
   data <- joinStandards(data, std)
+  if (exists('le12c', where = data)) {
+    data <- mutate(data, le12c = ifelse(system == "USAMS", le12c * -1, le12c))
+  }
 
   data %>%
     dplyr::mutate(
@@ -26,8 +29,6 @@ mungeStandards <- function(data, std) {
       sigma = sigma(f_modern, fm_consensus, rep_err),
       frep_err = rep_err / f_modern,
       system = substring(wheel, 1, 5), #system
-      #fix CFAMS 12C
-      le12c = ifelse(system == "USAMS", le12c * -1, le12c),
       #is ox-i primary?
       primary = (((sample_type == "S") |
                     (sample_type_1 == "S")) &
@@ -75,7 +76,7 @@ mungeQCTable <- function(data) {
 #'
 #' @examples
 getQCData <- function(from, to = "present", sys = "both",
-                      useQC = FALSE, intcal = TRUE, getcurrents) {
+                      useQC = FALSE, intcal = TRUE, getcurrents = FALSE) {
   # Function to get standards from database and return munged table
 
   if (missing(from)) {
@@ -91,7 +92,7 @@ getQCData <- function(from, to = "present", sys = "both",
     } else {
       std <- getStdTable()
     }
-    data <- getStandards(from, to, sys)
+    data <- getStandards(from, to, sys, getcurrents)
     out <- mungeStandards(data, std)
   }
 
