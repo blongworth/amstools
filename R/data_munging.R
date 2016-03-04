@@ -18,11 +18,8 @@ joinStandards <- function(data, std) {
 mungeStandards <- function(data, std) {
 
   data <- joinStandards(data, std)
-  if (exists('le12c', where = data)) {
-    data <- dplyr::mutate(data, le12c = ifelse(system == "USAMS", le12c * -1, le12c))
-  }
 
-  data %>%
+  data <- data %>%
     dplyr::mutate(
       rep_err = pmax(f_int_error, f_ext_error),
       normFm = normFm(f_modern, fm_consensus),
@@ -39,6 +36,11 @@ mungeStandards <- function(data, std) {
     dplyr::group_by(osg_num) %>% #For each osg_num
     dplyr::mutate(splits = n()) #Count occurrences to get number of splits
 
+  if (exists('le12c', where = data)) {
+    data <- dplyr::mutate(data, le12c = ifelse(system == "USAMS", le12c * -1, le12c))
+  }
+
+  return(data)
 }
 
 #' Modify and calculate fields for raw qc data.
