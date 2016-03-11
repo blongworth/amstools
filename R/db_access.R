@@ -154,9 +154,10 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
   } else {
     ts <- ""
   }
-
+  # include form to get old data (don't use snics tables)
   # need to include target_time, d13 irms, co2_yield, process
-
+  # process id comes from fn_get_process_code(tp_num) and
+  # process name comes from "SELECT key_short_desc FROM dbo.alxrefnd WHERE (key_name = 'PROCESS_TYPE') AND (key_cd = " & TargetProcNums(iTarg).ToString & ");
   dquery <- paste(
     "SELECT
       target.tp_num,
