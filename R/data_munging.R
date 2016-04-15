@@ -21,6 +21,8 @@ mungeStandards <- function(data, std) {
 
   data <- data %>%
     dplyr::mutate(
+      tp_date_pressed = as.Date(tp_date_pressed),
+      gf_date = as.Date(gf_date),
       rep_err = pmax(f_int_error, f_ext_error),
       normFm = normFm(f_modern, fm_consensus),
       sigma = sigma(f_modern, fm_consensus, rep_err),
@@ -51,15 +53,17 @@ mungeStandards <- function(data, std) {
 #' @export
 #' @importFrom magrittr %>%
 mungeQCTable <- function(data) {
-
-   data %>%
-   	dplyr::mutate(rep_err = pmax(f_int_error, f_ext_error),
-           normFm = normFm(f_modern, fm_consensus),
-           sigma = sigma(f_modern, fm_consensus, rep_err),
-           frep_err = rep_err/f_modern,
-           name = descr,
-           system = substring(wheel, 1, 5)) %>% #system
-    dplyr::select(-f_int_error, -f_ext_error)
+  data %>%
+    dplyr::mutate(
+      tp_date_pressed = as.Date(tp_date_pressed),
+      rep_err = pmax(f_int_error, f_ext_error),
+      normFm = normFm(f_modern, fm_consensus),
+      sigma = sigma(f_modern, fm_consensus, rep_err),
+      frep_err = rep_err / f_modern,
+      name = descr,
+      system = substring(wheel, 1, 5)
+    ) %>% #system
+    dplyr::select(-f_int_error,-f_ext_error)
 
 }
 
