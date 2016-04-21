@@ -71,11 +71,13 @@ normFm <- function (fmm, fmc) {
 #' @export
 #'
 #' @examples
-intrErr <- function(x, err) {
+intrErr <- function(x, err, ...) {
+  stopifnot(is.numeric(x))
+  stopifnot(is.numeric(err))
   xsd <- sd(x)
-  ifelse((err > xsd),
-         NA,
-         sqrt(xsd^2 - err^2))
+  ifelse((xsd >= err),
+         suppressWarnings(sqrt(xsd^2 - err^2)),
+         NA)
 }
 
 

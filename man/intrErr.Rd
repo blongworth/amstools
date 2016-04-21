@@ -4,7 +4,7 @@
 \alias{intrErr}
 \title{Intrinsic Error}
 \usage{
-intrErr(x, err)
+intrErr(x, err, ...)
 }
 \arguments{
 \item{x}{A vector of measured values.}
