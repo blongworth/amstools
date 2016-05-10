@@ -26,7 +26,7 @@ readResfile  <- function (file) {
 mungeResfile  <- function (data) {
   mutate(data,
          ts = as.POSIXct(strptime(
-           Run.Completion.Time, format = "%a %b %d %H:%M:%S %y")),
+           Run.Completion.Time, format = "%a %b %d %H:%M:%S %Y")),
          Pos = as.factor(Pos),
          ce = 1/sqrt(CntTotGT), #Add counting error
          cor1412he = X14.12he/X13.12he^2 * 1E9, #Add corrected 14/12
