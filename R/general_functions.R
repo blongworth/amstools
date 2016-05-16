@@ -99,6 +99,27 @@ totErr <- function(targErr, intrErr) {
          sqrt(targErr^2 + intrErr^2))
 }
 
+#' Calculate D14C.
+#'
+#' Calculate D14C given fraction modern and year of collection
+#'
+#'
+#' @param fm Fraction modern.
+#' @param yc Year of collection.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+d14c <- function(fm, yc) {
+  stopifnot(is.numeric(fm))
+  stopifnot(is.numeric(yc))
+
+  l <- 0.00012097 # 1/radiocarbon half life
+
+  (fm * exp(l * (1950 - yc)) - 1) * 1000
+
+}
 # Calculate confidence interval
 
 
