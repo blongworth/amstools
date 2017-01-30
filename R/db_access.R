@@ -1,7 +1,25 @@
 # Database functions
 
+# TODO
+# get results for a tp_num
+# get results for an osg_num
+# get results for a wheel
+# make standards results the same for all queries
 
-#Open DB connection
+
+#' Check RODBC call returns for errors
+#'
+#'
+#' @export
+#'
+#' @examples
+checkDB  <- function(data) {
+  if (is.character(data)) {
+    stop(paste(data, collapse = "\n"))
+  }
+}
+
+
 #' Open NOSAMS DB connection
 #'
 #' Takes a connection string from the CONSTRING environment variable.
@@ -13,12 +31,6 @@
 conNOSAMS  <- function() {
   RODBC::odbcDriverConnect(Sys.getenv("CONSTRING"))
 }
-
-# TODO
-# get results for a tp_num
-# get results for an osg_num
-# get results for a wheel
-# make standards results the same for all queries
 
 
 #' Get secondary data from qc table
@@ -88,16 +100,10 @@ getQCTable <- function(from, to = "present", sys = "both") {
  ")
 
   #Do the queries
-
   db <- conNOSAMS()
-
   data <- RODBC::sqlQuery(db, dquery)
-  if (is.character(data)) {
-    RODBC::odbcClose(db)
-    stop(paste(data, collapse = "\n"))
-  }
-
   RODBC::odbcClose(db)
+  checkDB(data)
   return(data)
 
 }
@@ -117,9 +123,8 @@ getQCTable <- function(from, to = "present", sys = "both") {
 #'
 #' @examples
 getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE, rec = NULL) {
-  #Get data for all secondaries from database
-  #Return query result as data table
 
+  # TODO: input validation
   if (missing(from)) {
     stop('argument "from" is missing, with no default')
   }
@@ -214,29 +219,19 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
   #Do the queries
 
   db <- conNOSAMS()
-
   data <- RODBC::sqlQuery(db, dquery)
-  if (is.character(data)) {
-    RODBC::odbcClose(db)
-    stop(paste(data, collapse = "\n"))
-  }
-
-  if (!getcurrents) {
-    RODBC::odbcClose(db)
-    return(data)
-  }
-
-  cur <- RODBC::sqlQuery(db, cquery)
-  if (is.character(cur)) {
-    RODBC::odbcClose(db)
-    stop(paste(cur, collapse = "\n"))
-  }
-
-  data  <- dplyr::left_join(data, cur, by = "tp_num")
-
   RODBC::odbcClose(db)
-  return(data)
+  checkDB(data)
 
+  if (getcurrents) {
+    db <- conNOSAMS()
+    cur <- RODBC::sqlQuery(db, cquery)
+    RODBC::odbcClose(db)
+    checkDB(cur)
+    data  <- dplyr::left_join(data, cur, by = "tp_num")
+  }
+
+  return(data)
 }
 
 
@@ -248,12 +243,9 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
 #' @examples
 getIntcalTable <- function() {
 
-  #Open DB connection
-  db <- conNOSAMS()
-
   #get intcal table
+  db <- conNOSAMS()
   intcal <- RODBC::sqlQuery(db, paste("select * from ", "intercal_samples"))
-
   RODBC::odbcClose(db)
 
   #create factor of tiri_id, order by Fm
@@ -262,9 +254,6 @@ getIntcalTable <- function() {
 
   #Replace C-6 with new consensus from Xiaomei 2010
   intcal$fm_consensus[intcal$rec_num == 1086] <- 1.5016
-
-  #add in OX-I, OX-II
-  #intcal <- rbind(intcal, intox)
 
   #add process type TODO: get this from db
   intps <- dplyr::select(intps, rec_num, process)
