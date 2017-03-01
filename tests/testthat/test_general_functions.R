@@ -1,4 +1,4 @@
-  context("intrErr")
+context("intrErr")
 
 test_that("invalid args detected", {
 	expect_error(intrErr(iris, iris))
@@ -7,6 +7,18 @@ test_that("invalid args detected", {
 
 test_that("correct values returned", {
   expect_equal(intrErr(c(0,1,2), c(0,1,2)), c(1,0,NA))
+})
+
+context("totErr")
+
+test_that("invalid args detected", {
+	expect_error(totErr(iris, iris, iris))
+  expect_error(totErr("red", "blue", "fee"))
+})
+
+test_that("correct values returned", {
+  expect_equal(totErr(c(0,1,1), c(0,0,1)), c(0,1,1.414214), tolerance = 0.002)
+  expect_equal(totErr(c(0,1,1), c(0,0,1), .5), c(0,1,1.118034), tolerance = 0.002)
 })
 
 context("d14c")

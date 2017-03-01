@@ -4,12 +4,14 @@
 \alias{totErr}
 \title{Total error.}
 \usage{
-totErr(targErr, intrErr)
+totErr(rep_err, res_err, fm)
 }
 \arguments{
-\item{targErr}{Measurement error.}
+\item{rep_err}{Measurement error.}
 
-\item{intrErr}{Intrinsic error.}
+\item{res_err}{Intrinsic error.}
+
+\item{fm}{Fraction modern (optional).}
 }
 \description{
 Calculate the predicted variability in a population given a measurement

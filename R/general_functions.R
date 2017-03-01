@@ -86,17 +86,26 @@ intrErr <- function(x, err, ...) {
 #' Calculate the predicted variability in a population given a measurement
 #' error and an intrisic error.
 #'
-#' @param targErr Measurement error.
-#' @param intrErr Intrinsic error.
+#' @param rep_err Measurement error.
+#' @param res_err Intrinsic error.
+#' @param fm Fraction modern (optional).
 #'
 #' @return
 #' @export
 #'
 #' @examples
-totErr <- function(targErr, intrErr) {
-  ifelse(is.na(intrErr),
-         targErr,
-         sqrt(targErr^2 + intrErr^2))
+totErr <- function(rep_err, res_err, fm) {
+  stopifnot(is.numeric(rep_err))
+  stopifnot(is.numeric(res_err))
+  if (missing(fm)) {
+    fm <- 1
+  }
+  stopifnot(is.numeric(fm))
+
+  ifelse(is.na(res_err),
+         rep_err,
+         sqrt(rep_err^2 + (res_err * fm)^2)
+  )
 }
 
 #' Calculate D14C.
@@ -120,8 +129,10 @@ d14c <- function(fm, yc) {
   (fm * exp(l * (1950 - yc)) - 1) * 1000
 
 }
-# Calculate confidence interval
 
 
-#better function for statistical normalization/standard (0 mean 1 var)
+# TODO: Calculate confidence interval
+
+
+# TODO: better function for statistical normalization/standard (0 mean 1 var)
 
