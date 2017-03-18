@@ -235,6 +235,31 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
 }
 
 
+#' Get info for a wheel
+#'
+#' @param wheel Character vector of wheel name in form '[CF|US]AMSMMDDYY'.
+#' @return
+#' @export
+#'
+#' @examples
+getWheelInfo <- function(wheel) {
+
+	# TODO: validate wheel
+	query <- paste0("SELECT wheel_position, 
+		       target_name, target.tp_num, 
+		       osg_num, rec_num 
+		       FROM wheel_pos
+		       INNER JOIN target 
+		       ON wheel_pos.tp_num = target.tp_num 
+		       WHERE wheel_id = '", wheel, "'")
+
+		       db <- conNOSAMS()
+		       d <- RODBC::sqlQuery(db, query)
+		       RODBC::odbcClose(db)
+		       d
+}
+
+
 #' Get Intcal table
 #'
 #' @return
