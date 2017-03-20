@@ -142,6 +142,7 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
                          target.rec_num =", rec, "
                        AND")
   }
+
   #What system do we want data for?
   if (sys == "cfams") {
     whid <- "AND wheel_id LIKE 'C%'"
@@ -170,7 +171,6 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
       target.tp_date_pressed,
       snics_results.runtime,
       target.rec_num,
-      target.target_name,
       target.osg_num,
       wheel_pos.wheel_id AS wheel,
       graphite_lab.lab_name AS lab,
@@ -184,13 +184,13 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
       no_os.q_flag,
       snics_results.sample_type,
       snics_results.sample_type_1
-    FROM target
-    INNER JOIN no_os
-      ON target.tp_num = no_os.tp_num
+    FROM no_os
+    INNER JOIN target
+      ON no_os.tp_num = target.tp_num
     INNER JOIN wheel_pos
-      ON target.tp_num = wheel_pos.tp_num
+      ON no_os.tp_num = wheel_pos.tp_num
     INNER JOIN snics_results
-      ON target.tp_num = snics_results.tp_num
+      ON no_os.tp_num = snics_results.tp_num
     INNER JOIN graphite
       ON target.osg_num = graphite.osg_num
     INNER JOIN graphite_lab
@@ -202,13 +202,13 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
     "
   )
 
-  cquery <- paste("SELECT
+  cquery <- paste0("SELECT
                 snics_raw.tp_num,
                 AVG(le12c) AS le12c,
                 SUM(cnt_14c) AS counts
-              FROM snics_raw
-                INNER JOIN target
-                  ON snics_raw.tp_num = target.tp_num
+              FROM target
+                INNER JOIN snics_raw
+                  ON target.tp_num = snics_raw.tp_num
                 ", samples," ok_calc = 1
                 ",whid, "
                 AND target.tp_date_pressed > '",from,"'
