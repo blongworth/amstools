@@ -244,19 +244,21 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
 #' @examples
 getWheelInfo <- function(wheel) {
 
-	# TODO: validate wheel
-	query <- paste0("SELECT wheel_position, 
-		       target_name, target.tp_num, 
-		       osg_num, rec_num 
-		       FROM wheel_pos
-		       INNER JOIN target 
-		       ON wheel_pos.tp_num = target.tp_num 
-		       WHERE wheel_id = '", wheel, "'")
+  # TODO: validate wheel
+  query <- paste0("SELECT wheel_position,
+                     cl_id, target.tp_num,
+                     osg_num, target.rec_num
+                   FROM wheel_pos
+                   JOIN target
+                   ON wheel_pos.tp_num = target.tp_num
+                   JOIN logged_sample
+                   ON target.rec_num = logged_sample.rec_num
+                   WHERE wheel_id = '", wheel, "'")
 
-		       db <- conNOSAMS()
-		       d <- RODBC::sqlQuery(db, query)
-		       RODBC::odbcClose(db)
-		       d
+  db <- conNOSAMS()
+  d <- RODBC::sqlQuery(db, query)
+  RODBC::odbcClose(db)
+  d
 }
 
 
