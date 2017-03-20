@@ -17,4 +17,3 @@ A data frame with calculated fields.
 \description{
 Modify and calculate fields for raw standards data.
 }
-

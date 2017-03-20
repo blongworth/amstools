@@ -14,4 +14,3 @@ d14c(fm, yc)
 \description{
 Calculate D14C given fraction modern and year of collection
 }
-

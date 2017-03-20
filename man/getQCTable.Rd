@@ -16,4 +16,3 @@ getQCTable(from, to = "present", sys = "both")
 \description{
 Get secondary data from qc table
 }
-

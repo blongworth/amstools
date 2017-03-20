@@ -18,4 +18,3 @@ sigma(fmm, fmc, em, ec = 0)
 \description{
 Also known as a z-score.
 }
-

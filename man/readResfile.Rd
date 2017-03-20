@@ -15,4 +15,3 @@ A data frame of the wheel results.
 \description{
 Read raw results data from file
 }
-

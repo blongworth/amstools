@@ -21,4 +21,3 @@ getStandards(from, to = "present", sys = "both", getcurrents = TRUE,
 \description{
 Get standards from database using standards table.
 }
-

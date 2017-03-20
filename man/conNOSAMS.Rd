@@ -12,4 +12,3 @@ A RODBC db connection object
 \description{
 Takes a connection string from the CONSTRING environment variable.
 }
-

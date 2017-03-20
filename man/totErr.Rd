@@ -17,4 +17,3 @@ totErr(rep_err, res_err, fm)
 Calculate the predicted variability in a population given a measurement
 error and an intrisic error.
 }
-

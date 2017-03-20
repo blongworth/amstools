@@ -12,4 +12,3 @@ rsd(x)
 \description{
 Relative SD
 }
-

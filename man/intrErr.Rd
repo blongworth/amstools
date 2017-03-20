@@ -14,4 +14,3 @@ intrErr(x, err, ...)
 \description{
 Calculate the "extra" (intrinsic, residual) error.
 }
-

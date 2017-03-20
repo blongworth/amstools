@@ -14,4 +14,3 @@ normFm(fmm, fmc)
 \description{
 Normalize a value using the expected value or population mean.
 }
-

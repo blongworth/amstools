@@ -15,4 +15,3 @@ A results data table with fixed and calculated fields.
 \description{
 Process wheel results data frame.
 }
-

@@ -9,4 +9,3 @@ checkDB(data)
 \description{
 Check RODBC call returns for errors
 }
-

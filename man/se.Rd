@@ -12,4 +12,3 @@ se(x)
 \description{
 Standard Error
 }
-

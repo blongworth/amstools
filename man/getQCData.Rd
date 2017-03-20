@@ -23,4 +23,3 @@ getQCData(from, to = "present", sys = "both", useQC = FALSE,
 \description{
 Get and format standards data
 }
-

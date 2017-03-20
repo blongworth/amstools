@@ -9,4 +9,3 @@ getIntcalTable()
 \description{
 Get Intcal table
 }
-
