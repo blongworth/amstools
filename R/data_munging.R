@@ -33,7 +33,7 @@ mungeStandards <- function(data, std) {
                     (sample_type_1 == "S")) &
                     (grepl("OX-I", name)))
     ) %>%
-    dplyr::select(-target_name,-f_int_error,-f_ext_error,-sample_type,-sample_type_1) %>%
+    dplyr::select(-f_int_error,-f_ext_error,-sample_type,-sample_type_1) %>%
     #number of splits?
     dplyr::group_by(osg_num) %>% #For each osg_num
     dplyr::mutate(splits = n()) #Count occurrences to get number of splits

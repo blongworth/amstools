@@ -131,10 +131,9 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
 
   #get any rec_num if requested
   if (is.null(rec)) {
-    samples  <- paste("INNER JOIN standards
-                         ON target.rec_num = standards.rec_num
-                       WHERE
-                       ")
+    samples  <- "INNER JOIN standards
+                   ON target.rec_num = standards.rec_num
+                 WHERE "
   } else {
     samples  <- paste("LEFT JOIN standards
                          ON target.rec_num = standards.rec_num
@@ -156,7 +155,7 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
 
   #Data to present or provided end date
   if (to != "present") {
-    ts <- paste("AND target.tp_date_pressed < '", to,"' ")
+    ts <- paste0("AND target.tp_date_pressed < '", to,"' ")
   } else {
     ts <- ""
   }
@@ -164,7 +163,7 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
   # need to include target_time, d13 irms, co2_yield, process
   # process id comes from fn_get_process_code(tp_num) and
   # process name comes from "SELECT key_short_desc FROM dbo.alxrefnd WHERE (key_name = 'PROCESS_TYPE') AND (key_cd = " & TargetProcNums(iTarg).ToString & ");
-  dquery <- paste(
+  dquery <- paste0(
     "SELECT
       target.tp_num,
       gf_date,
@@ -206,9 +205,11 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
                 snics_raw.tp_num,
                 AVG(le12c) AS le12c,
                 SUM(cnt_14c) AS counts
-              FROM target
-                INNER JOIN snics_raw
-                  ON target.tp_num = snics_raw.tp_num
+              FROM snics_raw
+                INNER JOIN snics_results
+                  ON snics_results.tp_num = snics_raw.tp_num
+                INNER JOIN target
+                  ON snics_raw.tp_num = target.tp_num
                 ", samples," ok_calc = 1
                 ",whid, "
                 AND target.tp_date_pressed > '",from,"'
