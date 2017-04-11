@@ -54,9 +54,35 @@ readWheelfile <- function(wheel) {
 
 # read raw results from database
 
-# read analysed wheel from file
+# TODO: this needs work!
+
+#' Read SNICSer Output
+#'
+#' Reads normalized and blank corrected data from SNICSer blank correction
+#' "print" output. Files should be in tsv format with standard SNICS
+#' headers.
+#'
+#' @param file character. A SNICSer format file with path.
+#'
+#' @return A list of data tables for each chunk in file.
+#' @export
+#'
+#' @examples
 readSnicsfile <- function(wheel) {
-  print("Hello, world!")
+
+  # read the file by lines
+  con <- file(wheel, open = "r")
+  lines <- readLines(con)
+  for (line in 15:length(lines)) {
+    if (!('\t' %in% lines[line])) {
+      name <- lines[line]
+      namei <- 1
+      line <- line + 1
+      while (!(lines[line] == "")) {
+        unlist(strsplit(lines[line], split = "\t"))
+      }
+    }
+  }
 }
 
 # read analysed wheel from database
