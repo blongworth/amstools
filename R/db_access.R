@@ -118,6 +118,7 @@ getQCTable <- function(from, to = "present", sys = "both") {
 #' @param getcurrents logical. Get current and count data?
 #' @param rec Numeric vector of NOSAMS reciept numbers. If supplied, get
 #'            all records matching these receipt numbers.
+#' @param osg Numeric vector of NOSAMS osg numbers. Supersedes 'rec' parameter.
 #'
 #' @return
 #' @export
@@ -127,7 +128,8 @@ getStandards <- function (from,
                           to = "present",
                           sys = "both",
                           getcurrents = TRUE,
-                          rec = NULL) {
+                          rec = NULL,
+                          osg = NULL) {
 
   # TODO: input validation
   if (missing(from)) {
@@ -144,6 +146,15 @@ getStandards <- function (from,
                          ON target.rec_num = standards.rec_num
                        WHERE
                          target.rec_num IN (", paste(rec, collapse = ","),")
+                       AND")
+  }
+
+  # or get a list of OSG nums
+  if (!is.null(osg)) {
+    samples  <- paste0("LEFT JOIN standards
+                         ON target.rec_num = standards.rec_num
+                       WHERE
+                         target.osg_num IN (", paste(osg, collapse = ","),")
                        AND")
   }
 

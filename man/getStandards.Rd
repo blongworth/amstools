@@ -5,7 +5,7 @@
 \title{Get Standards}
 \usage{
 getStandards(from, to = "present", sys = "both", getcurrents = TRUE,
-  rec = NULL)
+  rec = NULL, osg = NULL)
 }
 \arguments{
 \item{from}{Character vector of date in form 'YYYY-MM-DD'.}
@@ -18,6 +18,8 @@ getStandards(from, to = "present", sys = "both", getcurrents = TRUE,
 
 \item{rec}{Numeric vector of NOSAMS reciept numbers. If supplied, get
 all records matching these receipt numbers.}
+
+\item{osg}{Numeric vector of NOSAMS osg numbers. Supersedes 'rec' parameter.}
 }
 \description{
 Get standards from database using standards table.

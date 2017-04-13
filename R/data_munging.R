@@ -12,7 +12,7 @@ joinStandards <- function(data, std) {
 #' @param data A data frame as returned by getStandards
 #' @param std The standards table as returned by getStdTable
 #'
-#' @return A data frame with calculated fields.
+#' @return A data frame of standards with calculated fields.
 #' @export
 #' @importFrom magrittr %>%
 mungeStandards <- function(data, std) {
@@ -82,7 +82,7 @@ mungeQCTable <- function(data) {
 #'
 #' @examples
 getQCData <- function(from, to = "present", sys = "both",
-                      useQC = FALSE, intcal = TRUE, getcurrents = FALSE) {
+                      useQC = FALSE, intcal = FALSE, getcurrents = FALSE, ...) {
   # Function to get standards from database and return munged table
 
   if (missing(from)) {
@@ -98,7 +98,7 @@ getQCData <- function(from, to = "present", sys = "both",
     } else {
       std <- getStdTable()
     }
-    data <- getStandards(from, to, sys, getcurrents)
+    data <- getStandards(from, to, sys, getcurrents, ...)
     out <- mungeStandards(data, std)
   }
 

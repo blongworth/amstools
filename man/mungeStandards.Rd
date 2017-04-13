@@ -12,7 +12,7 @@ mungeStandards(data, std)
 \item{std}{The standards table as returned by getStdTable}
 }
 \value{
-A data frame with calculated fields.
+A data frame of standards with calculated fields.
 }
 \description{
 Modify and calculate fields for raw standards data.
