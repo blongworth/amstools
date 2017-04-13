@@ -116,13 +116,18 @@ getQCTable <- function(from, to = "present", sys = "both") {
 #' @param to Character vector of date in form 'YYYY-MM-DD'.
 #' @param sys Character vector of system name: 'cfams', 'usams', or 'both'.
 #' @param getcurrents logical. Get current and count data?
-#' @param rec numeric. If supplied, get all records matching this receipt number.
+#' @param rec Numeric vector of NOSAMS reciept numbers. If supplied, get
+#'            all records matching these receipt numbers.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE, rec = NULL) {
+getStandards <- function (from,
+                          to = "present",
+                          sys = "both",
+                          getcurrents = TRUE,
+                          rec = NULL) {
 
   # TODO: input validation
   if (missing(from)) {
@@ -135,10 +140,10 @@ getStandards <- function (from, to = "present", sys = "both", getcurrents = TRUE
                    ON target.rec_num = standards.rec_num
                  WHERE "
   } else {
-    samples  <- paste("LEFT JOIN standards
+    samples  <- paste0("LEFT JOIN standards
                          ON target.rec_num = standards.rec_num
                        WHERE
-                         target.rec_num =", rec, "
+                         target.rec_num IN (", paste(rec, collapse = ","),")
                        AND")
   }
 

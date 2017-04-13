@@ -7,8 +7,19 @@ test_that("conNOSAMS returns db connection", {
 from <- '01-01-2016'
 to <- '01-06-2016'
 sys <- 'both'
+data <- getStandards(from, to, sys, getcurrents = TRUE)
 
-test_that("getStandards returns datatable", {
-	expect_true(is.data.frame(getStandards(from, to, sys, getcurrents = TRUE)))
+test_that("getStandards returns good data", {
+	expect_true(is.data.frame(data))
+  expect_length(data, 18)
 })
+
+test_that("getStandards works with rec argument", {
+  expect_equal(getStandards(from, to, sys,
+                            getcurrents = FALSE, rec = 34149)[,1], 198420)
+  expect_equal(getStandards(from, to, sys,
+                            getcurrents = FALSE,
+                            rec = c(34148, 34149))[,1], c(198420, 198441))
+})
+
 RODBC::odbcCloseAll()
