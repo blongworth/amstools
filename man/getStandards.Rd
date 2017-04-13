@@ -16,7 +16,8 @@ getStandards(from, to = "present", sys = "both", getcurrents = TRUE,
 
 \item{getcurrents}{logical. Get current and count data?}
 
-\item{rec}{numeric. If supplied, get all records matching this receipt number.}
+\item{rec}{Numeric vector of NOSAMS reciept numbers. If supplied, get
+all records matching these receipt numbers.}
 }
 \description{
 Get standards from database using standards table.
