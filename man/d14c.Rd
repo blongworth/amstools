@@ -2,15 +2,24 @@
 % Please edit documentation in R/general_functions.R
 \name{d14c}
 \alias{d14c}
+\alias{d14c}
 \title{Calculate D14C.}
 \usage{
+d14c(fm, yc)
+
 d14c(fm, yc)
 }
 \arguments{
 \item{fm}{Fraction modern.}
 
 \item{yc}{Year of collection.}
+
+\item{fm}{Fraction modern.}
+
+\item{yc}{Year of collection.}
 }
 \description{
+Calculate D14C given fraction modern and year of collection
+
 Calculate D14C given fraction modern and year of collection
 }
