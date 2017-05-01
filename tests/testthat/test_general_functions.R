@@ -36,3 +36,19 @@ test_that("Delta zero returned for modern", {
 test_that("Delta -1000 returned for dead", {
   expect_equal(d14c(0, 2015), -1000)
 })
+
+context("rcage")
+
+
+test_that("invalid args detected", {
+	expect_error(rcage(iris))
+  expect_error(rcage("red"))
+})
+
+test_that("Zero age returned for modern", {
+  expect_equal(rcage(1), 0)
+})
+
+test_that("Inf returned for dead", {
+  expect_equal(rcage(0), Inf)
+})

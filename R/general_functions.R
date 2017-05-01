@@ -133,28 +133,25 @@ d14c <- function(fm, yc) {
 
 }
 
-#' Calculate gas source efficiency
+#' Calculate radiocarbon years
 #'
-#' Calculate D14C given fraction modern and year of collection
+#' Calculate radiocarbon age from Fm
 #'
 #'
 #' @param fm Fraction modern.
-#' @param yc Year of collection.
 #'
-#' @return
+#' @return radiocarbon age in years.
 #' @export
 #'
 #' @examples
-d14c <- function(fm, yc) {
+rcage <- function(fm) {
   stopifnot(is.numeric(fm))
-  stopifnot(is.numeric(yc))
 
-  l <- 0.00012097 # 1/radiocarbon half life
-
-  (fm * exp(l * (1950 - yc)) - 1) * 1000
+  -8033 * log(fm)
 
 }
 
+# TODO: efficiency functions
 # TODO: Calculate confidence interval
 
 
