@@ -2,6 +2,8 @@
 
 #' Relative SD
 #'
+#' Provides the standard deviation of a vector normalized to the mean of the vector.
+#'
 #' @param x A numeric vector.
 #'
 #' @return
@@ -28,7 +30,8 @@ se <- function(x) {
 
 #' Sigma
 #'
-#' Also known as a z-score.
+#' Also known as a z-score. Provides an estimate of the quality of
+#' a measurement relative to it's expected value.
 #'
 #' @param fmm Measured value.
 #' @param fmc Expected value.

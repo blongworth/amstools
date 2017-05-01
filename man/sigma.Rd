@@ -16,5 +16,6 @@ sigma(fmm, fmc, em, ec = 0)
 \item{ec}{Error of expected value.}
 }
 \description{
-Also known as a z-score.
+Also known as a z-score. Provides an estimate of the quality of
+a measurement relative to it's expected value.
 }

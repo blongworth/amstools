@@ -10,5 +10,5 @@ rsd(x)
 \item{x}{A numeric vector.}
 }
 \description{
-Relative SD
+Provides the standard deviation of a vector normalized to the mean of the vector.
 }
