@@ -76,11 +76,11 @@ mungeQCTable <- function(data) {
 #' @param useQC Use data from QC table if true.
 #' @param intcal Use standards data from intcal table if true.
 #' @param getcurrents get current and count data if true.
+#' @param ... Additional options passed to getStandards
 #'
-#' @return
+#' @return A data frame of munged standards data
 #' @export
 #'
-#' @examples
 getQCData <- function(from, to = "present", sys = "both",
                       useQC = FALSE, intcal = FALSE, getcurrents = FALSE, ...) {
   # Function to get standards from database and return munged table

@@ -42,10 +42,9 @@ mungeResfile  <- function (data) {
 #'
 #' @param wheel character. A USAMS format wheelfile/runlist.
 #'
-#' @return
+#' @return A data frame containing the wheelfile
 #' @export
 #'
-#' @examples
 readWheelfile <- function(wheel) {
   # won't work for CFAMS wheels
   read.delim(file)
@@ -56,34 +55,33 @@ readWheelfile <- function(wheel) {
 
 # TODO: this needs work!
 
-#' Read SNICSer Output
-#'
-#' Reads normalized and blank corrected data from SNICSer blank correction
-#' "print" output. Files should be in tsv format with standard SNICS
-#' headers.
-#'
-#' @param file character. A SNICSer format file with path.
-#'
-#' @return A list of data tables for each chunk in file.
-#' @export
-#'
-#' @examples
-readSnicsfile <- function(wheel) {
-
-  # read the file by lines
-  con <- file(wheel, open = "r")
-  lines <- readLines(con)
-  for (line in 15:length(lines)) {
-    if (!('\t' %in% lines[line])) {
-      name <- lines[line]
-      namei <- 1
-      line <- line + 1
-      while (!(lines[line] == "")) {
-        unlist(strsplit(lines[line], split = "\t"))
-      }
-    }
-  }
-}
+# #' Read SNICSer Output
+# #'
+# #' Reads normalized and blank corrected data from SNICSer blank correction
+# #' "print" output. Files should be in tsv format with standard SNICS
+# #' headers.
+# #'
+# #' @param file character. A SNICSer format file with path.
+# #'
+# #' @return A list of data tables for each chunk in file.
+# #' @export
+# #'
+# readSnicsfile <- function(wheel) {
+#
+#   # read the file by lines
+#   con <- file(wheel, open = "r")
+#   lines <- readLines(con)
+#   for (line in 15:length(lines)) {
+#     if (!('\t' %in% lines[line])) {
+#       name <- lines[line]
+#       namei <- 1
+#       line <- line + 1
+#       while (!(lines[line] == "")) {
+#         unlist(strsplit(lines[line], split = "\t"))
+#       }
+#     }
+#   }
+# }
 
 # read analysed wheel from database
 

@@ -9,10 +9,10 @@
 
 #' Check RODBC call returns for errors
 #'
+#' @param data The return from a call to sqlQuery
 #'
 #' @export
 #'
-#' @examples
 checkDB  <- function(data) {
   if (is.character(data)) {
     stop(paste(data, collapse = "\n"))
@@ -27,7 +27,6 @@ checkDB  <- function(data) {
 #' @return A RODBC db connection object
 #' @export
 #'
-#' @examples
 conNOSAMS  <- function() {
   RODBC::odbcDriverConnect(Sys.getenv("CONSTRING"))
 }
@@ -39,10 +38,9 @@ conNOSAMS  <- function() {
 #' @param to Character vector of date in form 'YYYY-MM-DD'.
 #' @param sys Character vector of system name: 'cfams', 'usams', or 'both'.
 #'
-#' @return
+#' @return A data frame of qc table data
 #' @export
 #'
-#' @examples
 getQCTable <- function(from, to = "present", sys = "both") {
 
   if (missing(from)) {
@@ -120,10 +118,9 @@ getQCTable <- function(from, to = "present", sys = "both") {
 #'            all records matching these receipt numbers.
 #' @param osg Numeric vector of NOSAMS osg numbers. Supersedes 'rec' parameter.
 #'
-#' @return
+#' @return A data frame of standards data
 #' @export
 #'
-#' @examples
 getStandards <- function (from,
                           to = "present",
                           sys = "both",
@@ -255,10 +252,9 @@ getStandards <- function (from,
 #' Get info for a wheel
 #'
 #' @param wheel Character vector of wheel name in form '[CF|US]AMSMMDDYY'.
-#' @return
+#' @return A data frame of wheel information
 #' @export
 #'
-#' @examples
 getWheelInfo <- function(wheel) {
 
   # TODO: validate wheel
@@ -281,10 +277,9 @@ getWheelInfo <- function(wheel) {
 
 #' Get Intcal table
 #'
-#' @return
+#' @return A data frame of the Intcal table
 #' @export
 #'
-#' @examples
 getIntcalTable <- function() {
 
   #get intcal table
@@ -310,10 +305,9 @@ getIntcalTable <- function() {
 
 #' Get Standards Table
 #'
-#' @return
+#' @return A data frame of secondary standards data
 #' @export
 #'
-#' @examples
 getStdTable <- function() {
 
   #Open DB connection
