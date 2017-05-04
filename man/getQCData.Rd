@@ -19,6 +19,11 @@ getQCData(from, to = "present", sys = "both", useQC = FALSE,
 \item{intcal}{Use standards data from intcal table if true.}
 
 \item{getcurrents}{get current and count data if true.}
+
+\item{...}{Additional options passed to getStandards}
+}
+\value{
+A data frame of munged standards data
 }
 \description{
 Get and format standards data

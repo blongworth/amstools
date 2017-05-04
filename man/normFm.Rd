@@ -11,6 +11,9 @@ normFm(fmm, fmc)
 
 \item{fmc}{Expected value.}
 }
+\value{
+A vector of normalized fm
+}
 \description{
 Normalize a value using the expected value or population mean.
 }

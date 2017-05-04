@@ -13,6 +13,9 @@ totErr(rep_err, res_err, fm)
 
 \item{fm}{Fraction modern (optional).}
 }
+\value{
+A vector of total errors.
+}
 \description{
 Calculate the predicted variability in a population given a measurement
 error and an intrisic error.

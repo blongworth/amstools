@@ -11,6 +11,9 @@ d14c(fm, yc)
 
 \item{yc}{Year of collection.}
 }
+\value{
+A vector of D14C values
+}
 \description{
 Calculate D14C given fraction modern and year of collection
 }

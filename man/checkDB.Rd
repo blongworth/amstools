@@ -6,6 +6,9 @@
 \usage{
 checkDB(data)
 }
+\arguments{
+\item{data}{The return from a call to sqlQuery}
+}
 \description{
 Check RODBC call returns for errors
 }

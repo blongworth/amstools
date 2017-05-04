@@ -6,6 +6,9 @@
 \usage{
 getStdTable()
 }
+\value{
+A data frame of secondary standards data
+}
 \description{
 Get Standards Table
 }

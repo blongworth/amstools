@@ -9,6 +9,9 @@ rsd(x)
 \arguments{
 \item{x}{A numeric vector.}
 }
+\value{
+The relative SD of x
+}
 \description{
 Provides the standard deviation of a vector normalized to the mean of the vector.
 }

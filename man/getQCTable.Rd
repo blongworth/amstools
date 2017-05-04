@@ -13,6 +13,9 @@ getQCTable(from, to = "present", sys = "both")
 
 \item{sys}{Character vector of system name: 'cfams', 'usams', or 'both'.}
 }
+\value{
+A data frame of qc table data
+}
 \description{
 Get secondary data from qc table
 }

@@ -9,6 +9,9 @@ se(x)
 \arguments{
 \item{x}{A numeric vector.}
 }
+\value{
+The SE of x
+}
 \description{
 Standard Error
 }

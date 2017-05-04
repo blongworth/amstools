@@ -9,6 +9,9 @@ readWheelfile(wheel)
 \arguments{
 \item{wheel}{character. A USAMS format wheelfile/runlist.}
 }
+\value{
+A data frame containing the wheelfile
+}
 \description{
 Won't work for CFAMS wheels
 }

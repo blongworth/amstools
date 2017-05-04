@@ -6,6 +6,9 @@
 \usage{
 getIntcalTable()
 }
+\value{
+A data frame of the Intcal table
+}
 \description{
 Get Intcal table
 }

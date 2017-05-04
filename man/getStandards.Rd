@@ -21,6 +21,9 @@ all records matching these receipt numbers.}
 
 \item{osg}{Numeric vector of NOSAMS osg numbers. Supersedes 'rec' parameter.}
 }
+\value{
+A data frame of standards data
+}
 \description{
 Get standards from database using standards table.
 }

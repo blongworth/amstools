@@ -10,6 +10,11 @@ intrErr(x, err, ...)
 \item{x}{A vector of measured values.}
 
 \item{err}{A vector of measurement errors.}
+
+\item{...}{Additional parameters passed to sd.}
+}
+\value{
+A vector of residual errors
 }
 \description{
 Calculate the "extra" (intrinsic, residual) error.

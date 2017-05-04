@@ -9,6 +9,7 @@ Description: A very domain-specific set of tools for reading,
     and analysing AMS data. Functions are provided for reading from files
     or the NOSAMS database, reducing data in various ways, and producing
     useful reports.
+Depends: R(>= 2.10)
 License: GPL
 LazyData: TRUE
 Imports:

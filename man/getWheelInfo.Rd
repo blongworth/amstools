@@ -9,6 +9,9 @@ getWheelInfo(wheel)
 \arguments{
 \item{wheel}{Character vector of wheel name in form '[CF|US]AMSMMDDYY'.}
 }
+\value{
+A data frame of wheel information
+}
 \description{
 Get info for a wheel
 }

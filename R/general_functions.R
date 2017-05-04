@@ -6,10 +6,9 @@
 #'
 #' @param x A numeric vector.
 #'
-#' @return
+#' @return The relative SD of x
 #' @export
 #'
-#' @examples
 rsd <- function(x) {
   sd(x)/mean(x)
 }
@@ -19,10 +18,9 @@ rsd <- function(x) {
 #'
 #' @param x A numeric vector.
 #'
-#' @return
+#' @return The SE of x
 #' @export
 #'
-#' @examples
 se <- function(x) {
   sqrt(var(x)/length(x))
 }
@@ -38,10 +36,9 @@ se <- function(x) {
 #' @param em Measurement error.
 #' @param ec Error of expected value.
 #'
-#' @return
+#' @return A vector of sigma values
 #' @export
 #'
-#' @examples
 sigma <- function(fmm, fmc, em, ec = 0) {
   (fmm - fmc) / sqrt(em^2 + ec^2)
 }
@@ -53,10 +50,9 @@ sigma <- function(fmm, fmc, em, ec = 0) {
 #' @param fmm Measured value.
 #' @param fmc Expected value.
 #'
-#' @return
+#' @return A vector of normalized fm
 #' @export
 #'
-#' @examples
 normFm <- function (fmm, fmc) {
   #Calculate normalized fm
   (fmm - fmc) / fmc
@@ -69,15 +65,15 @@ normFm <- function (fmm, fmc) {
 #'
 #' @param x A vector of measured values.
 #' @param err A vector of measurement errors.
+#' @param ... Additional parameters passed to sd.
 #'
-#' @return
+#' @return A vector of residual errors
 #' @export
 #'
-#' @examples
 intrErr <- function(x, err, ...) {
   stopifnot(is.numeric(x))
   stopifnot(is.numeric(err))
-  xsd <- sd(x)
+  xsd <- sd(x, ...)
   ifelse((xsd >= err),
          suppressWarnings(sqrt(xsd^2 - err^2)),
          NA)
@@ -93,10 +89,9 @@ intrErr <- function(x, err, ...) {
 #' @param res_err Intrinsic error.
 #' @param fm Fraction modern (optional).
 #'
-#' @return
+#' @return A vector of total errors.
 #' @export
 #'
-#' @examples
 totErr <- function(rep_err, res_err, fm) {
   stopifnot(is.numeric(rep_err))
   stopifnot(is.numeric(res_err))
@@ -119,10 +114,9 @@ totErr <- function(rep_err, res_err, fm) {
 #' @param fm Fraction modern.
 #' @param yc Year of collection.
 #'
-#' @return
+#' @return A vector of D14C values
 #' @export
 #'
-#' @examples
 d14c <- function(fm, yc) {
   stopifnot(is.numeric(fm))
   stopifnot(is.numeric(yc))
@@ -143,7 +137,6 @@ d14c <- function(fm, yc) {
 #' @return radiocarbon age in years.
 #' @export
 #'
-#' @examples
 rcage <- function(fm) {
   stopifnot(is.numeric(fm))
 
