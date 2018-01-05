@@ -144,6 +144,26 @@ rcage <- function(fm) {
 
 }
 
+#' Calculate Fm
+#'
+#' Calculate Fm from D14C
+#'
+#'
+#' @param dc D14C of sample.
+#' @param yc Year of collection.
+#'
+#' @return Fraction modern of sample.
+#' @export
+#'
+dctofm <- function(dc, yc) {
+  stopifnot(is.numeric(dc))
+  stopifnot(is.numeric(yc))
+
+
+  l <- 0.00012097 # 1/radiocarbon half life
+  ((dc / 1000) + 1) / exp(l * (1950 - yc))
+
+}
 # TODO: efficiency functions
 # TODO: Calculate confidence interval
 

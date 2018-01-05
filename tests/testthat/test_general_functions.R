@@ -21,8 +21,8 @@ test_that("correct values returned", {
   expect_equal(totErr(c(0,1,1), c(0,0,1), .5), c(0,1,1.118034), tolerance = 0.002)
 })
 
-context("d14c")
 
+context("d14c")
 
 test_that("invalid args detected", {
 	expect_error(d14c(iris, iris))
@@ -37,8 +37,24 @@ test_that("Delta -1000 returned for dead", {
   expect_equal(d14c(0, 2015), -1000)
 })
 
-context("rcage")
 
+context("dctofm")
+
+test_that("invalid args detected", {
+	expect_error(dctofm(iris, iris))
+  expect_error(dctofm("red", "blue"))
+})
+
+test_that("Modern returned for delta 0", {
+  expect_equal(dctofm(0, 1950), 1)
+})
+
+test_that("Delta -1000 returns dead", {
+  expect_equal(dctofm(-1000, 2015), 0)
+})
+
+
+context("rcage")
 
 test_that("invalid args detected", {
 	expect_error(rcage(iris))
