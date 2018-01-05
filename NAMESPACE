@@ -3,6 +3,7 @@
 export(checkDB)
 export(conNOSAMS)
 export(d14c)
+export(dctofm)
 export(getIntcalTable)
 export(getOStandards)
 export(getQCData)
