@@ -438,3 +438,42 @@ getStdTable <- function() {
 
   return(standards)
 }
+
+#' Count runs
+#'
+#' @param from A date in character form
+#' @param to A date in character. Defaults to present.
+#' @param sys System- "USAMS", "CFAMS", defaults to both.
+#' @return A list: number of runs, number of wheels
+#' @export
+#'
+numRun <- function(from, to = "present", sys = "both") {
+
+  if (to != "present") {
+    todate <- paste0("AND tp_date_pressed <= '", to, "' ")
+  } else {
+    todate <- ""
+  }
+
+  query <- paste0("select target.tp_num, wheel_id
+          from target
+          join wheel_pos on target.tp_num = wheel_pos.tp_num
+          where tp_date_pressed > '", from, "' ", todate)
+
+  db <- conNOSAMS()
+  data <- RODBC::sqlQuery(db, query)
+  RODBC::odbcClose(db)
+
+  if (sys == "USAMS") {
+    data <- dplyr::filter(data, grepl("USAMS", wheel_id))
+  } else if (sys == "CFAMS") {
+    data <- dplyr::filter(data, grepl("CFAMS", wheel_id))
+  } else if (sys == "both") {
+  } else {
+    stop("Invalid sys. Use 'USAMS', 'CFAMS', or 'both'")
+  }
+
+  targets <- length(data$tp_num)
+  wheels <- length(unique(data$wheel_id))
+  c(targets,wheels)
+}

@@ -34,4 +34,12 @@ test_that("getStandards works with osg argument", {
                c(198405, 198406))
 })
 
+context("numRun")
+test_that("numRun returns all runs in a date range", {
+  expect_equal(numRun(from, to, sys)[1],
+               121)
+  expect_equal(numRun(from, to, "USAMS")[1],
+               40)
+})
+
 RODBC::odbcCloseAll()
