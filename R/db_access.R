@@ -441,15 +441,23 @@ getStdTable <- function() {
 
 #' Count runs
 #'
-#' @param from A date in character form
-#' @param to A date in character. Defaults to present.
+#' @param from A date object or date in character form (m-d-Y)
+#' @param to A date object or date in character. Defaults to present.
 #' @param sys System- "USAMS", "CFAMS", defaults to both.
 #' @return A list: number of runs, number of wheels
 #' @export
 #'
 numRun <- function(from, to = "present", sys = "both") {
 
-  if (to != "present") {
+  if (class(to) == "Date") {
+    as.character.Date(to, "%m-%d-%Y")
+  }
+
+  if (class(from) == "Date") {
+    as.character.Date(from, "%m-%d-%Y")
+  }
+
+  if (as.character(to) != "present") {
     todate <- paste0("AND tp_date_pressed <= '", to, "' ")
   } else {
     todate <- ""
@@ -463,6 +471,7 @@ numRun <- function(from, to = "present", sys = "both") {
   db <- conNOSAMS()
   data <- RODBC::sqlQuery(db, query)
   RODBC::odbcClose(db)
+  checkDB(data)
 
   if (sys == "USAMS") {
     data <- dplyr::filter(data, grepl("USAMS", wheel_id))
