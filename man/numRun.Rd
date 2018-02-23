@@ -7,9 +7,9 @@
 numRun(from, to = "present", sys = "both")
 }
 \arguments{
-\item{from}{A date in character form}
+\item{from}{A date object or date in character form (m-d-Y)}
 
-\item{to}{A date in character. Defaults to present.}
+\item{to}{A date object or date in character. Defaults to present.}
 
 \item{sys}{System- "USAMS", "CFAMS", defaults to both.}
 }
