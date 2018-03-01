@@ -1,0 +1,41 @@
+---
+title: "Using amstools"
+author: "Brett Longworth"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using amstools}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The amstools is a (mostly) NOSAMS specific package for working with AMS data and the NOSAMS database.
+
+## Installing
+
+The package should be installed from github. You'll need the `devtools` package installed.
+
+```{r, eval=FALSE}
+devtools::install_github("blongworth/amstools")
+```
+
+To interact with the NOSAMS DB, you'll need your credentials in an environment variable called CONSTRING, which should be in the following format:
+
+```
+"DSN=database;UID=username;PWD=password"
+```
+
+The database also has to be set up as an ODBC connection.
+
+## Getting started
+
+First, load the library.
+
+```{r}
+library(clivartools)
+```
+
+A list of functions in the package should help you get started. Most functions are tersely documented, but the functions are commented.
+
+## Some useful functions
+
