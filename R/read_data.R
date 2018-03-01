@@ -9,7 +9,6 @@
 #'
 #' @return A data frame of the wheel results.
 #' @export
-
 readResfile  <- function (file) {
   read.delim(file, skip = 4, comment.char = "=")
 }
@@ -20,9 +19,7 @@ readResfile  <- function (file) {
 #' @param data A data table as returned by readResfile.
 #' @return A results data table with fixed and calculated fields.
 #' @export
-#' @importFrom magrittr "%>%"
-#' @importFrom dplyr mutate
-
+#' @importFrom dplyr mutate %>%
 mungeResfile  <- function (data) {
   mutate(data,
          ts = as.POSIXct(strptime(
@@ -44,7 +41,6 @@ mungeResfile  <- function (data) {
 #'
 #' @return A data frame containing the wheelfile
 #' @export
-#'
 readWheelfile <- function(wheel) {
   # won't work for CFAMS wheels
   read.delim(file)

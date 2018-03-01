@@ -13,11 +13,11 @@ Depends: R(>= 2.10)
 License: GPL
 LazyData: TRUE
 Imports:
-    magrittr,
     dplyr,
     ggplot2,
     RODBC,
     knitr,
-    shiny
+    shiny,
+    rmarkdown
 RoxygenNote: 6.0.1
 Suggests: testthat
