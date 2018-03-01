@@ -14,13 +14,13 @@ joinStandards <- function(data, std) {
 #'
 #' @return A data frame of standards with calculated fields.
 #' @export
-#' @importFrom magrittr %>%
+#' @importFrom dplyr select mutate group_by %>%
 mungeStandards <- function(data, std) {
 
   data <- joinStandards(data, std)
 
   data <- data %>%
-    dplyr::mutate(
+    mutate(
       tp_date_pressed = as.Date(tp_date_pressed),
       gf_date = as.Date(gf_date),
       rep_err = pmax(f_int_error, f_ext_error),
@@ -33,13 +33,13 @@ mungeStandards <- function(data, std) {
                     (sample_type_1 == "S")) &
                     (grepl("OX-I", name)))
     ) %>%
-    dplyr::select(-f_int_error,-f_ext_error,-sample_type,-sample_type_1) %>%
+    select(-f_int_error,-f_ext_error,-sample_type,-sample_type_1) %>%
     #number of splits?
-    dplyr::group_by(osg_num) %>% #For each osg_num
-    dplyr::mutate(splits = n()) #Count occurrences to get number of splits
+    group_by(osg_num) %>% #For each osg_num
+    mutate(splits = n()) #Count occurrences to get number of splits
 
   if (exists('le12c', where = data)) {
-    data <- dplyr::mutate(data, le12c = ifelse(system == "USAMS", le12c * -1, le12c))
+    data <- mutate(data, le12c = ifelse(system == "USAMS", le12c * -1, le12c))
   }
 
   return(data)
@@ -51,10 +51,10 @@ mungeStandards <- function(data, std) {
 #'
 #' @return A data frame with calculated fields.
 #' @export
-#' @importFrom magrittr %>%
+#' @importFrom dplyr select mutate group_by %>%
 mungeQCTable <- function(data) {
   data %>%
-    dplyr::mutate(
+    mutate(
       tp_date_pressed = as.Date(tp_date_pressed),
       rep_err = pmax(f_int_error, f_ext_error),
       normFm = normFm(f_modern, fm_consensus),
@@ -63,7 +63,7 @@ mungeQCTable <- function(data) {
       name = descr,
       system = substring(wheel, 1, 5)
     ) %>% #system
-    dplyr::select(-f_int_error,-f_ext_error)
+    select(-f_int_error,-f_ext_error)
 
 }
 
