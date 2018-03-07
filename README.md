@@ -11,7 +11,7 @@ Installation
 You can install amstools from github with:
 
 ``` r
-# install.packages("devtools")
+install.packages("devtools")
 devtools::install_github("blongworth/amstools")
 ```
 

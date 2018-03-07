@@ -21,7 +21,7 @@ Amstools is a (mostly) NOSAMS specific package for working with AMS data and the
 You can install amstools from github with:
 
 ```{r gh-installation, eval = FALSE}
-# install.packages("devtools")
+install.packages("devtools")
 devtools::install_github("blongworth/amstools")
 ```
 
