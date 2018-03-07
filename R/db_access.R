@@ -156,11 +156,11 @@ getStandards <- function (from,
   }
 
   #What system do we want data for?
-  if (sys == "cfams") {
+  if (sys == "cfams" | sys == "CFAMS") {
     whid <- "AND wheel_id LIKE 'C%'"
-  } else if (sys =="usams") {
+  } else if (sys == "usams" | sys == "USAMS") {
     whid <- "AND wheel_id LIKE 'U%'"
-  } else if (sys =="both") {
+  } else if (sys == "both") {
     whid <- ""
   } else {
     whid <- "AND wheel_id NOT LIKE 'C%'"
@@ -223,6 +223,8 @@ getStandards <- function (from,
                   ON snics_results.tp_num = snics_raw.tp_num
                 INNER JOIN target
                   ON snics_raw.tp_num = target.tp_num
+                INNER JOIN wheel_pos
+                  ON snics_results.tp_num = wheel_pos.tp_num
                 ", samples," ok_calc = 1
                 ",whid, "
                 AND target.tp_date_pressed > '",from,"'
@@ -323,11 +325,11 @@ getOStandards <- function (from,
   }
 
   #What system do we want data for?
-  if (sys == "cfams") {
+  if (sys == "cfams" | sys == "CFAMS") {
     whid <- "AND wheel_id LIKE 'C%'"
-  } else if (sys =="usams") {
+  } else if (sys == "usams" | sys == "USAMS") {
     whid <- "AND wheel_id LIKE 'U%'"
-  } else if (sys =="both") {
+  } else if (sys == "both") {
     whid <- ""
   } else {
     whid <- "AND wheel_id NOT LIKE 'C%'"
