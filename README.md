@@ -19,4 +19,4 @@ To interact with the NOSAMS DB, you'll need your credentials in an environment v
 
     "DSN=database;UID=username;PWD=password"
 
-The database also has to be set up as an ODBC connection.
+This can be done from R with the `Sys.setenv` command. The database also has to be set up as an ODBC connection.
