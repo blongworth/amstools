@@ -10,7 +10,7 @@ Description: A very domain-specific set of tools for reading,
     or the NOSAMS database, reducing data in various ways, and producing
     useful reports.
 Depends: R(>= 2.10)
-License: GPL
+License: GPL-3 + file LICENSE
 LazyData: TRUE
 Imports:
     dplyr,
