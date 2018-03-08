@@ -15,6 +15,13 @@ test_that("getStandards returns good data", {
   expect_equal(nrow(data), 13)
 })
 
+test_that("getStandards sys argument works", {
+  expect_equal(nrow(getStandards(from, to, sys = "USAMS",
+                            getcurrents = FALSE)), 13)
+  expect_equal(nrow(getStandards(from, to, sys = "CFAMS",
+                            getcurrents = FALSE)), 0)
+})
+
 test_that("getStandards works with rec argument", {
   expect_equal(getStandards(from, to, sys,
                             getcurrents = FALSE, rec = 34149)[,1], 198420)
