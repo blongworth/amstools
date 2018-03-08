@@ -12,6 +12,12 @@ test_that("getQCData returns good data", {
   expect_equal(nrow(data), 13)
 })
 
+test_that("getQCData sys argument works", {
+  expect_equal(nrow(getQCData(from, to, sys = "USAMS",
+                            getcurrents = FALSE)), 13)
+  expect_equal(nrow(getQCData(from, to, sys = "CFAMS",
+                            getcurrents = FALSE)), 0)
+})
 test_that("getQCData works with rec argument", {
   expect_equal(as.numeric(getQCData(from, to, sys,
                             getcurrents = FALSE, rec = 34149)[,1]), 198420)
