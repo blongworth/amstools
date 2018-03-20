@@ -27,7 +27,7 @@ mungeStandards <- function(data, std) {
       normFm = normFm(f_modern, fm_consensus),
       sigma = sigma(f_modern, fm_consensus, rep_err),
       frep_err = rep_err / f_modern,
-      system = substring(wheel, 1, 5), #system
+      system = ifelse(grepl("CFAMS", wheel), "CFAMS", "USAMS"),
       #is ox-i primary?
       primary = (((sample_type == "S") |
                     (sample_type_1 == "S")) &
