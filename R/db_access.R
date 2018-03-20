@@ -5,7 +5,7 @@
 # get results for an osg_num
 # get results for a wheel
 # make standards results the same for all queries
-
+# Combine pre- and post- snicser functions: get data from snics tables, but don't rely on it.
 
 #' Check RODBC call returns for errors
 #'
@@ -157,9 +157,9 @@ getStandards <- function (from,
 
   #What system do we want data for?
   if (sys == "cfams" | sys == "CFAMS") {
-    whid <- "AND wheel_id LIKE 'C%'"
+    whid <- "AND wheel_id LIKE 'CF%'"
   } else if (sys == "usams" | sys == "USAMS") {
-    whid <- "AND wheel_id LIKE 'U%'"
+    whid <- "AND wheel_id NOT LIKE 'CF%'"
   } else if (sys == "both") {
     whid <- ""
   } else {
@@ -201,7 +201,7 @@ getStandards <- function (from,
       ON no_os.tp_num = target.tp_num
     INNER JOIN wheel_pos
       ON no_os.tp_num = wheel_pos.tp_num
-    INNER JOIN snics_results
+    LEFT JOIN snics_results
       ON no_os.tp_num = snics_results.tp_num
     INNER JOIN graphite
       ON target.osg_num = graphite.osg_num
