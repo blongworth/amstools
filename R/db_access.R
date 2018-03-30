@@ -378,3 +378,21 @@ numRun <- function(from, to = "present", sys = "both") {
   wheels <- length(unique(data$wheel_id))
   c(targets,wheels)
 }
+
+
+#' Get Wheel
+#'
+#' @param wheel A wheel name in character format
+#' @return A data frame of analysed data
+#' @export
+getWheel <- function(wheel) {
+  query <- paste0("SELECT *
+                  FROM snics_results
+                  WHERE wheel = '", wheel, "'")
+
+  db <- conNOSAMS()
+  data <- RODBC::sqlQuery(db, query)
+  RODBC::odbcClose(db)
+  checkDB(data)
+  data
+}
