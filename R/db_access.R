@@ -396,3 +396,21 @@ getWheel <- function(wheel) {
   checkDB(data)
   data
 }
+
+
+#' Get Raw Wheel
+#'
+#' @param wheel A wheel name in character format
+#' @return A data frame of raw data
+#' @export
+getRawWheel <- function(wheel) {
+  query <- paste0("SELECT *
+                  FROM snics_raw
+                  WHERE wheel = '", wheel, "'")
+
+  db <- conNOSAMS()
+  data <- RODBC::sqlQuery(db, query)
+  RODBC::odbcClose(db)
+  checkDB(data)
+  data
+}
