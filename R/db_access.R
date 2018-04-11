@@ -1,11 +1,8 @@
 # Database functions
 
 # TODO:
-# get results for a tp_num
-# get results for an osg_num
-# get results for a wheel
-# make standards results the same for all queries
-# Combine pre- and post- snicser functions: get data from snics tables, but don't rely on it.
+# get results for any tp_num
+# get results for any osg_num
 
 #' Check RODBC call returns for errors
 #'
