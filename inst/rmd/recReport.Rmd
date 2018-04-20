@@ -1,7 +1,7 @@
 ---
 params:
   rec: 148043
-title: "Data for rec_num `r params$rec`"
+title: "Data for rec_num `r sprintf('%i', params$rec)`"
 author: "BEL"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: html_document
@@ -31,7 +31,7 @@ name <- sqlQuery(db, paste("select cl_id from logged_sample where rec_num =", pa
 odbcClose(db)
 ```
 
-Determination of mean fm and error for `r name`, rec num `r params$rec`.
+Determination of mean fm and error for `r name`, rec num `r sprintf('%i', params$rec)`.
 
 Data pulled from no_os by rec_num.
 Here's the data...
