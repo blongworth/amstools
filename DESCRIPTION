@@ -15,7 +15,7 @@ LazyData: TRUE
 Imports:
     dplyr,
     ggplot2,
-    RODBC,
+    odbc,
     knitr,
     rmarkdown
 RoxygenNote: 6.0.1
