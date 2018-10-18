@@ -39,9 +39,15 @@ Here's the data...
 ```{r, echo=FALSE, message=FALSE}
 ggplot(ss, aes(f_modern)) + geom_histogram()
 
+
 kable(select(ss, tp_num, tp_date_pressed, wheel, gf_co2_qty, f_modern, f_int_error, f_ext_error))
 ```
+
+Remove clear outliers. Discard points > 3 * interquartile range.
+
 ```{r}
+
+
 # weighted means
 wm <- weighted.mean(ss$f_modern, ss$f_ext_error)
 
