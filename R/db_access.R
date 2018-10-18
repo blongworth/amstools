@@ -4,7 +4,7 @@
 # get results for any tp_num
 # get results for any osg_num
 
-#' Check RODBC call returns for errors
+#' Check odbc call returns for errors
 #'
 #' @param data The return from a call to sqlQuery
 #'

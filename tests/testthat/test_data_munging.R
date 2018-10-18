@@ -37,4 +37,3 @@ test_that("getQCData works with osg argument", {
                c(198405, 198406))
 })
 
-RODBC::odbcCloseAll()
