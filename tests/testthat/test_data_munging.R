@@ -9,21 +9,21 @@ data <- getQCData(from, to, sys, getcurrents = TRUE)
 
 test_that("getQCData returns good data", {
 	expect_true(is.data.frame(data))
-  expect_equal(nrow(data), 13)
+  expect_equal(nrow(data), 16)
 })
 
 test_that("getQCData sys argument works", {
   expect_equal(nrow(getQCData(from, to, sys = "USAMS",
-                            getcurrents = FALSE)), 13)
+                            getcurrents = FALSE)), 16)
   expect_equal(nrow(getQCData(from, to, sys = "CFAMS",
                             getcurrents = FALSE)), 0)
 })
 test_that("getQCData works with rec argument", {
   expect_equal(as.numeric(getQCData(from, to, sys,
                             getcurrents = FALSE, rec = 34149)[,1]), 198420)
-  expect_equivalent(unlist(getQCData(from, to, sys,
+  expect_equivalent(sort(unlist(getQCData(from, to, sys,
                             getcurrents = FALSE,
-                            rec = c(34148, 34149))[,1]), c(198420, 198441))
+                            rec = c(34148, 34149))[,1])), c(198420, 198441))
 })
 
 test_that("getQCData works with osg argument", {
@@ -31,9 +31,9 @@ test_that("getQCData works with osg argument", {
                             getcurrents = FALSE,
                             osg = 146514)[,1]),
                198405)
-  expect_equivalent(unlist(getQCData(from, to, sys,
+  expect_equivalent(sort(unlist(getQCData(from, to, sys,
                             getcurrents = FALSE,
-                            osg = c(146514, 146202))[,1]),
+                            osg = c(146514, 146202))[,1])),
                c(198405, 198406))
 })
 
