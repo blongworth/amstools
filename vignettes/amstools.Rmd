@@ -19,7 +19,8 @@ The package should be installed from github. You'll need the `devtools` package 
 devtools::install_github("blongworth/amstools")
 ```
 
-To interact with the NOSAMS DB, you'll need your credentials in an environment variable called CONSTRING, which should be in the following format:
+To interact with the NOSAMS DB, you'll need a working ODBC driver and connection for the database. The easiest way to check this is with the Rstudio Connections tab. Amstools looks for your database credentials in an environment variable called CONSTRING, which should be in the following format:
+
 
 ```
 "DSN=database;UID=username;PWD=password"
