@@ -21,11 +21,11 @@ checkDB  <- function(data) {
 #'
 #' Takes a connection string from the CONSTRING environment variable.
 #'
-#' @return A RODBC db connection object
+#' @return An odbc db connection object
 #' @export
 #'
 conNOSAMS  <- function() {
-  RODBC::odbcDriverConnect(Sys.getenv("CONSTRING"))
+  odbc::dbConnect(odbc::odbc(), .connection_string = Sys.getenv("CONSTRING"))
 }
 
 
@@ -96,8 +96,7 @@ getQCTable <- function(from, to = "present", sys = "both") {
 
   #Do the queries
   db <- conNOSAMS()
-  data <- RODBC::sqlQuery(db, dquery)
-  RODBC::odbcClose(db)
+  data <-odbc::dbGetQuery(db, dquery)
   checkDB(data)
   return(data)
 
@@ -232,14 +231,12 @@ getStandards <- function (from,
   #Do the queries
 
   db <- conNOSAMS()
-  data <- RODBC::sqlQuery(db, dquery)
-  RODBC::odbcClose(db)
+  data <- odbc::dbGetQuery(db, dquery)
   checkDB(data)
 
   if (getcurrents) {
     db <- conNOSAMS()
-    cur <- RODBC::sqlQuery(db, cquery)
-    RODBC::odbcClose(db)
+    cur <- odbc::dbGetQuery(db, cquery)
     checkDB(cur)
     data  <- dplyr::left_join(data, cur, by = "tp_num")
   }
@@ -268,8 +265,7 @@ getWheelInfo <- function(wheel) {
                    WHERE wheel_id = '", wheel, "'")
 
   db <- conNOSAMS()
-  d <- RODBC::sqlQuery(db, query)
-  RODBC::odbcClose(db)
+  d <- odbc::dbGetQuery(db, query)
   d
 }
 
@@ -283,8 +279,7 @@ getIntcalTable <- function() {
 
   #get intcal table
   db <- conNOSAMS()
-  intcal <- RODBC::sqlQuery(db, paste("select * from ", "intercal_samples"))
-  RODBC::odbcClose(db)
+  intcal <- odbc::dbGetQuery(db, paste("select * from ", "intercal_samples"))
 
   #create factor of tiri_id, order by Fm
   intcal <- within(intcal, name <- factor(tiri_id, levels = unique(
@@ -311,8 +306,7 @@ getStdTable <- function() {
 
   #Open DB connection
   db <- conNOSAMS()
-  standards <- RODBC::sqlQuery(db, paste("select * from ", "standards"))
-  RODBC::odbcClose(db)
+  standards <- odbc::dbGetQuery(db, paste("select * from ", "standards"))
 
   #add process type
   standards <- dplyr::inner_join(standards, stdps, by = "rec_num")
@@ -358,8 +352,7 @@ numRun <- function(from, to = "present", sys = "both") {
           where tp_date_pressed > '", from, "' ", todate)
 
   db <- conNOSAMS()
-  data <- RODBC::sqlQuery(db, query)
-  RODBC::odbcClose(db)
+  data <- odbc::dbGetQuery(db, query)
   checkDB(data)
 
   if (sys == "USAMS") {
@@ -388,8 +381,7 @@ getWheel <- function(wheel) {
                   WHERE wheel = '", wheel, "'")
 
   db <- conNOSAMS()
-  data <- RODBC::sqlQuery(db, query)
-  RODBC::odbcClose(db)
+  data <- odbc::dbGetQuery(db, query)
   checkDB(data)
   data
 }
@@ -406,8 +398,7 @@ getRawWheel <- function(wheel) {
                   WHERE wheel = '", wheel, "'")
 
   db <- conNOSAMS()
-  data <- RODBC::sqlQuery(db, query)
-  RODBC::odbcClose(db)
+  data <- odbc::dbGetQuery(db, query)
   checkDB(data)
   data
 }
