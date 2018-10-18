@@ -2,7 +2,7 @@
 % Please edit documentation in R/db_access.R
 \name{checkDB}
 \alias{checkDB}
-\title{Check RODBC call returns for errors}
+\title{Check odbc call returns for errors}
 \usage{
 checkDB(data)
 }
@@ -10,5 +10,5 @@ checkDB(data)
 \item{data}{The return from a call to sqlQuery}
 }
 \description{
-Check RODBC call returns for errors
+Check odbc call returns for errors
 }
