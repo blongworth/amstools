@@ -7,7 +7,7 @@
 conNOSAMS()
 }
 \value{
-A RODBC db connection object
+An odbc db connection object
 }
 \description{
 Takes a connection string from the CONSTRING environment variable.

@@ -1,8 +1,8 @@
 context("Database connection")
 
-test_that("conNOSAMS returns db connection", {
-	expect_equal(class(conNOSAMS()), "RODBC")
-})
+#test_that("conNOSAMS returns db connection", {
+#	expect_true(conNOSAMS())
+#})
 
 from <- '01-01-2016'
 to <- '01-06-2016'
@@ -49,4 +49,3 @@ test_that("numRun returns all runs in a date range", {
                40)
 })
 
-RODBC::odbcCloseAll()
