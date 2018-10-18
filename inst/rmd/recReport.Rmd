@@ -13,7 +13,7 @@ library(amstools)
 library(ggplot2)
 library(dplyr)
 library(knitr)
-library(RODBC)
+library(odbc)
 
 options(digits = 4)
 
@@ -27,8 +27,7 @@ ss <- getStandards(from, to, sys, rec = params$rec)
 
 # get sample name
 db <- conNOSAMS()
-name <- sqlQuery(db, paste("select cl_id from logged_sample where rec_num =", params$rec))
-odbcClose(db)
+name <- dbGetQuery(db, paste("select cl_id from logged_sample where rec_num =", params$rec))
 ```
 
 Determination of mean fm and error for `r name`, rec num `r sprintf('%i', params$rec)`.
