@@ -416,7 +416,7 @@ getWheelStandards <- function(wheel) {
   # sd of sigma
   # mean NormFm
   db <- conNOSAMS()
-  query <- glue::glue_sql("SELECT wheel_id,
+  query <- "SELECT wheel_id,
                       sample_id, target.rec_num, target.osg_num,
                       f_modern, f_ext_error, dc13,
                       standards.fm_cons, standards.d13_cons
@@ -427,9 +427,11 @@ getWheelStandards <- function(wheel) {
                     ON no_os.tp_num = target.tp_num
                     LEFT JOIN standards
                     ON target.rec_num = standards.rec_num
-                    WHERE wheel_id = {wheel}",
-                    wheel = wheel,
-                    .con = db)
+                    WHERE wheel_id = ?"
 
-  odbc::dbGetQuery(db, query)
+  wheels <- odbc::dbSendQuery(db, query)
+  dbBind(wheels, list(wheel))
+  data <- dbFetch(wheels)
+  dbClearResult(wheels)
+  data
 }
