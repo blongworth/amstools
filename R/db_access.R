@@ -402,3 +402,34 @@ getRawWheel <- function(wheel) {
   checkDB(data)
   data
 }
+
+#' Get standards from a wheel
+#'
+#' @param wheel
+#'
+#' @return A dataframe of summary statistics
+#' @export
+#'
+#' @examples
+getWheelStandards <- function(wheel) {
+ # mean sigma
+  # sd of sigma
+  # mean NormFm
+  db <- conNOSAMS()
+  query <- glue::glue_sql("SELECT wheel_id,
+                      sample_id, target.rec_num, target.osg_num,
+                      f_modern, f_ext_error, dc13,
+                      standards.fm_cons, standards.d13_cons
+                    FROM no_os
+                    INNER JOIN wheel_pos
+                      ON no_os.tp_num = wheel_pos.tp_num
+                    JOIN target
+                    ON no_os.tp_num = target.tp_num
+                    LEFT JOIN standards
+                    ON target.rec_num = standards.rec_num
+                    WHERE wheel_id = {wheel}",
+                    wheel = wheel,
+                    .con = db)
+
+  odbc::dbGetQuery(db, query)
+}
