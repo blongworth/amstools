@@ -20,3 +20,28 @@ recReport <- function(rec) {
                     )
   )
 }
+
+#' Wheel standards summary
+#'
+#' Produces a report of all standards on a wheel
+#'
+#' @param wheel Wheel to summarize.
+#'
+#' @return A dataframe with summary information
+#' @export
+#'
+sumWheelStdsSR <- function(wheel, stds = TRUE, ss = TRUE) {
+
+  # get data
+  data <- getWheelStdsSR(wheel)
+
+  # group by wheel and generate summary
+  data %>%
+    filter(fm_corr > 0.1) %>%
+    mutate(normfm = normFm(fm_corr, fm_cons),
+           sigma = sigma(fm_corr, fm_cons, sig_fm_corr)) %>%
+    group_by(wheel) %>%
+    dplyr::summarize(sigma.m = mean(sigma, na.rm = TRUE),
+              sigma.sd = sd(sigma, na.rm = TRUE),
+              normFm.m = mean(normfm, na.rm = TRUE))
+}
