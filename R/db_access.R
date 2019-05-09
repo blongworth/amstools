@@ -411,7 +411,7 @@ getRawWheel <- function(wheel) {
 #' @export
 #'
 #' @examples
-getWheelStandards <- function(wheel) {
+getWheelStds <- function(wheel) {
  # mean sigma
   # sd of sigma
   # mean NormFm
@@ -428,6 +428,36 @@ getWheelStandards <- function(wheel) {
                     LEFT JOIN standards
                     ON target.rec_num = standards.rec_num
                     WHERE wheel_id = ?"
+
+  wheels <- odbc::dbSendQuery(db, query)
+  dbBind(wheels, list(wheel))
+  data <- dbFetch(wheels)
+  dbClearResult(wheels)
+  data
+}
+
+#' Get standards from a wheel from snics_results
+#'
+#' @param wheel
+#'
+#' @return A dataframe of summary statistics
+#' @export
+#'
+#' @examples
+getWheelStdsSR <- function(wheel) {
+ # mean sigma
+  # sd of sigma
+  # mean NormFm
+  db <- conNOSAMS()
+  query <- "SELECT wheel, wheel_pos, sample_name, target.rec_num, target.osg_num,
+                      fm_corr, sig_fm_corr, del_13c,
+                      standards.fm_cons, standards.d13_cons
+                    FROM snics_results
+                    JOIN target
+                      ON snics_results.tp_num = target.tp_num
+                    JOIN standards
+                      ON standards.rec_num = target.rec_num
+                    WHERE wheel = ?"
 
   wheels <- odbc::dbSendQuery(db, query)
   dbBind(wheels, list(wheel))
