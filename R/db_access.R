@@ -131,12 +131,16 @@ getStandards <- function (from,
 
   #get any rec_num if requested
   if (is.null(rec)) {
-    samples  <- "INNER JOIN standards
-                   ON target.rec_num = standards.rec_num
+    samples  <- "JOIN (SELECT rec_num, Fm_cons, d13_cons, sample_id
+                          FROM standards WHERE Fm_cons IS NOT NULL)
+                        AS standards
+                    ON target.rec_num = standards.rec_num
                  WHERE "
   } else {
-    samples  <- paste0("LEFT JOIN standards
-                         ON target.rec_num = standards.rec_num
+    samples  <- paste0("JOIN (SELECT rec_num, Fm_cons, d13_cons, sample_id
+                          FROM standards WHERE Fm_cons IS NOT NULL)
+                        AS standards
+                    ON target.rec_num = standards.rec_num
                        WHERE
                          target.rec_num IN (", paste(rec, collapse = ","),")
                        AND")
@@ -144,8 +148,10 @@ getStandards <- function (from,
 
   # or get a list of OSG nums
   if (!is.null(osg)) {
-    samples  <- paste0("LEFT JOIN standards
-                         ON target.rec_num = standards.rec_num
+    samples  <- paste0("JOIN (SELECT rec_num, Fm_cons, d13_cons, sample_id
+                          FROM standards WHERE Fm_cons IS NOT NULL)
+                        AS standards
+                    ON target.rec_num = standards.rec_num
                        WHERE
                          target.osg_num IN (", paste(osg, collapse = ","),")
                        AND")
@@ -419,14 +425,16 @@ getWheelStds <- function(wheel) {
   query <- "SELECT wheel_id,
                       sample_id, target.rec_num, target.osg_num,
                       f_modern, f_ext_error, dc13,
-                      standards.fm_cons, standards.d13_cons
+                      s.fm_cons, s.d13_cons
                     FROM no_os
                     INNER JOIN wheel_pos
                       ON no_os.tp_num = wheel_pos.tp_num
                     JOIN target
                     ON no_os.tp_num = target.tp_num
-                    LEFT JOIN standards
-                    ON target.rec_num = standards.rec_num
+                    JOIN (SELECT rec_num, Fm_cons, d13_cons, sample_id
+                          FROM standards WHERE Fm_cons IS NOT NULL)
+                        AS s
+                    ON target.rec_num = s.rec_num
                     WHERE wheel_id = ?"
 
   wheels <- odbc::dbSendQuery(db, query)
@@ -451,12 +459,14 @@ getWheelStdsSR <- function(wheel) {
   db <- conNOSAMS()
   query <- "SELECT wheel, wheel_pos, sample_name, target.rec_num, target.osg_num,
                       fm_corr, sig_fm_corr, del_13c,
-                      standards.fm_cons, standards.d13_cons
+                      s.fm_cons, s.d13_cons
                     FROM snics_results
                     JOIN target
                       ON snics_results.tp_num = target.tp_num
-                    JOIN standards
-                      ON standards.rec_num = target.rec_num
+                    JOIN (SELECT rec_num, Fm_cons, d13_cons
+                          FROM standards WHERE Fm_cons IS NOT NULL)
+                        AS s
+                      ON s.rec_num = target.rec_num
                     WHERE wheel = ?"
 
   wheels <- odbc::dbSendQuery(db, query)
