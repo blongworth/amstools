@@ -316,7 +316,7 @@ getStdTable <- function() {
   standards <- odbc::dbGetQuery(db, paste("select * from ", "standards"))
 
   #add process type
-  standards <- dplyr::inner_join(standards, stdps, by = "rec_num")
+  standards <- dplyr::left_join(standards, stdps, by = "rec_num")
 
   standards <- dplyr::mutate(standards, fm_consensus = ifelse(!is.na(Fm_cons), Fm_cons, Fm_NOSAM_avg))
   standards <- dplyr::select(standards, rec_num, sample_id, process, fm_consensus)
