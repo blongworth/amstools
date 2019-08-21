@@ -31,7 +31,8 @@ mungeStandards <- function(data, std) {
       #is ox-i primary?
       primary = (((sample_type == "S") |
                     (sample_type_1 == "S")) &
-                    (grepl("OX-I", name)))
+                  ((grepl("OX-I", name)) |
+                    (grepl("OX-1", name))))
     ) %>%
     select(-f_int_error,-f_ext_error,-sample_type,-sample_type_1) %>%
     #number of splits?
