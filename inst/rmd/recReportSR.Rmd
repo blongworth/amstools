@@ -1,0 +1,73 @@
+---
+params:
+  rec: 148044
+title: "Data for rec_num `r sprintf('%i', params$rec)`"
+author: "BEL"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: html_document
+---
+
+```{r echo=FALSE, message=FALSE}
+#Load Libraries
+library(amstools)
+library(ggplot2)
+library(dplyr)
+library(knitr)
+library(odbc)
+
+options(digits = 4)
+
+#set parameters- from, to, sys not used if loading from file
+from <- '2014-09-01'
+to <- 'present' #present or date
+sys <- 'both' #cfams, usams, ams1 or both
+
+#Pull the data
+ss <- getRecSR(recnum = params$rec)
+
+# get sample name
+db <- conNOSAMS()
+name <- dbGetQuery(db, paste("select cl_id from logged_sample where rec_num =", params$rec))
+```
+
+Determination of mean fm and error for `r name`, rec num `r sprintf('%i', params$rec)`.
+
+Data pulled from snics_results by rec_num.
+Here's the data...
+
+```{r, echo=FALSE, message=FALSE}
+ggplot(ss, aes(fm_corr)) + geom_histogram()
+ggplot(ss, aes(dc13)) + geom_histogram()
+
+kable(select(ss, tp_num, tp_date_pressed, wheel, fm_corr, sig_fm_corr, dc13))
+```
+
+And the weighted mean and SD.
+
+```{r}
+# means
+fmmean <- mean(ss$fm_corr)
+fmsd <- sd(ss$fm_corr)
+```
+
+That leaves us with N = `r nrow(ss)`, mean = `r mean(ss$fm_corr)`, weighted mean = `r weighted.mean(ss$fm_corr, ss$sig_fm_corr)`, sd = `r sd(ss$fm_corr)`. Mean d13C = `r mean(ss$dc13, na.rm=TRUE)`, sd = `r sd(ss$dc13, na.rm=TRUE)`.
+
+
+Remove clear outliers. Discard points > 3 * SD.
+
+```{r}
+ssnol <- ss %>% 
+  filter(fm_corr > fmmean - fmsd,
+         fm_corr < fmmean + fmsd)
+  
+```
+
+
+```{r, echo=FALSE, message=FALSE}
+ggplot(ssnol, aes(fm_corr)) + geom_histogram()
+ggplot(ssnol, aes(dc13)) + geom_histogram()
+```
+
+And the weighted mean and SD without outliers.
+
+That leaves us with N = `r nrow(ssnol)`, mean = `r mean(ssnol$fm_corr)`, weighted mean = `r weighted.mean(ssnol$fm_corr, ssnol$sig_fm_corr)`, sd = `r sd(ssnol$fm_corr)`. Mean d13C = `r mean(ssnol$dc13, na.rm=TRUE)`, sd = `r sd(ssnol$dc13, na.rm=TRUE)`.
