@@ -1,4 +1,7 @@
 # General data reduction functions
+# TODO: efficiency functions
+# TODO: Calculate confidence interval
+# TODO: better function for statistical normalization/standard (0 mean 1 var)
 
 #' Relative SD
 #'
@@ -164,9 +167,4 @@ dctofm <- function(dc, yc) {
   ((dc / 1000) + 1) / exp(l * (1950 - yc))
 
 }
-# TODO: efficiency functions
-# TODO: Calculate confidence interval
-
-
-# TODO: better function for statistical normalization/standard (0 mean 1 var)
 
