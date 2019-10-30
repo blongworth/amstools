@@ -7,7 +7,7 @@
 getRecSR(recnum)
 }
 \arguments{
-\item{recnum}{}
+\item{recnum}{A vector of recnums}
 }
 \value{
 A dataframe of summary statistics
