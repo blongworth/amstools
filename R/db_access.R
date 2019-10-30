@@ -417,7 +417,6 @@ getRawWheel <- function(wheel) {
 #' @return A dataframe of summary statistics
 #' @export
 #'
-#' @examples
 getWheelStds <- function(wheel) {
  # mean sigma
   # sd of sigma
@@ -452,7 +451,6 @@ getWheelStds <- function(wheel) {
 #' @return A dataframe of summary statistics
 #' @export
 #'
-#' @examples
 getWheelStdsSR <- function(wheel) {
  # mean sigma
   # sd of sigma
@@ -485,15 +483,16 @@ getWheelStdsSR <- function(wheel) {
 #' @return A dataframe of summary statistics
 #' @export
 #'
-#' @examples
 getRecSR <- function(recnum) {
   db <- conNOSAMS()
   query <- "SELECT wheel, wheel_pos, sample_name, tp_date_pressed, target.tp_num, target.rec_num,
-                      target.osg_num, fm_corr, sig_fm_corr, dc13
+                      target.osg_num, gf_devel, gf_test, ws_r_d, fm_corr, sig_fm_corr, dc13
                     FROM snics_results
                     JOIN target ON snics_results.tp_num = target.tp_num
+                    JOIN graphite ON target.osg_num = graphite.osg_num
                     JOIN dc13 ON snics_results.tp_num = dc13.tp_num
-                    WHERE rec_num = ?"
+                    LEFT JOIN water_strip ON graphite.ws_num = water_strip.ws_num
+                    WHERE target.rec_num = ?"
 
   recs <- odbc::dbSendQuery(db, query)
   dbBind(recs, list(recnum))
