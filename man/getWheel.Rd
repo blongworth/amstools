@@ -7,7 +7,7 @@
 getWheel(wheel)
 }
 \arguments{
-\item{wheel}{A wheel name in character format}
+\item{wheel}{A vector of wheel names in character format}
 }
 \value{
 A data frame of analysed data
