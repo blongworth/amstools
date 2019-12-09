@@ -379,16 +379,18 @@ numRun <- function(from, to = "present", sys = "both") {
 
 #' Get Wheel
 #'
-#' @param wheel A wheel name in character format
+#' @param wheel A vector of wheel names in character format
 #' @return A data frame of analysed data
 #' @export
 getWheel <- function(wheel) {
-  query <- paste0("SELECT *
-                  FROM snics_results
-                  WHERE wheel = '", wheel, "'")
-
   db <- conNOSAMS()
-  data <- odbc::dbGetQuery(db, query)
+  sql <- glue::glue_sql("SELECT *
+                  FROM snics_results
+                  WHERE wheel IN ({wheels*})",
+                          wheels = wheel,
+                          .con = db)
+  query <- DBI::dbSendQuery(db, sql)
+  data <- DBI::dbFetch(query)
   checkDB(data)
   data
 }
@@ -396,16 +398,18 @@ getWheel <- function(wheel) {
 
 #' Get Raw Wheel
 #'
-#' @param wheel A wheel name in character format
+#' @param wheel A vector of wheel names in character format
 #' @return A data frame of raw data
 #' @export
 getRawWheel <- function(wheel) {
-  query <- paste0("SELECT *
-                  FROM snics_raw
-                  WHERE wheel = '", wheel, "'")
-
   db <- conNOSAMS()
-  data <- odbc::dbGetQuery(db, query)
+  sql <- glue::glue_sql("SELECT *
+                  FROM snics_raw
+                  WHERE wheel IN ({wheels*})",
+                          wheels = wheel,
+                          .con = db)
+  query <- DBI::dbSendQuery(db, sql)
+  data <- DBI::dbFetch(query)
   checkDB(data)
   data
 }

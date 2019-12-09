@@ -49,3 +49,12 @@ test_that("numRun returns all runs in a date range", {
                40)
 })
 
+context("getWheel")
+test_that("getWheel returns all results for two wheels", {
+  expect_equal(nrow(getWheel(c("USAMS111819", "USAMS102619"))), 89)
+})
+
+context("getRawWheel")
+test_that("getRawWheel returns all results for two wheels", {
+  expect_equal(nrow(getRawWheel(c("USAMS111819", "USAMS102619"))), 890)
+})
