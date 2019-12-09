@@ -9,12 +9,12 @@ data <- getQCData(from, to, sys, getcurrents = TRUE)
 
 test_that("getQCData returns good data", {
 	expect_true(is.data.frame(data))
-  expect_equal(nrow(data), 16)
+  expect_equal(nrow(data), 12)
 })
 
 test_that("getQCData sys argument works", {
   expect_equal(nrow(getQCData(from, to, sys = "USAMS",
-                            getcurrents = FALSE)), 16)
+                            getcurrents = FALSE)), 12)
   expect_equal(nrow(getQCData(from, to, sys = "CFAMS",
                             getcurrents = FALSE)), 0)
 })

@@ -313,12 +313,12 @@ getStdTable <- function() {
 
   #Open DB connection
   db <- conNOSAMS()
-  standards <- odbc::dbGetQuery(db, paste("select * from ", "standards"))
+  standards <- odbc::dbGetQuery(db, "SELECT * FROM standards WHERE Fm_cons IS NOT NULL")
 
   #add process type
   standards <- dplyr::left_join(standards, stdps, by = "rec_num")
 
-  standards <- dplyr::mutate(standards, fm_consensus = ifelse(!is.na(Fm_cons), Fm_cons, Fm_NOSAM_avg))
+  standards <- dplyr::mutate(standards, fm_consensus = Fm_cons)
   standards <- dplyr::select(standards, rec_num, sample_id, process, fm_consensus)
 
   # TODO: make names the same
