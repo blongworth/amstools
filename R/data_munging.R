@@ -37,7 +37,7 @@ mungeStandards <- function(data, std) {
     select(-f_int_error,-f_ext_error,-sample_type,-sample_type_1) %>%
     #number of splits?
     group_by(osg_num) %>% #For each osg_num
-    mutate(splits = n()) #Count occurrences to get number of splits
+    mutate(splits = dplyr::n()) #Count occurrences to get number of splits
 
   if (exists('le12c', where = data)) {
     data <- mutate(data, le12c = ifelse(system == "USAMS", le12c * -1, le12c))

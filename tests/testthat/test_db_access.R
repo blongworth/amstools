@@ -12,12 +12,12 @@ data <- getStandards(from, to, sys, getcurrents = TRUE)
 context("getStandards")
 test_that("getStandards returns good data", {
 	expect_true(is.data.frame(data))
-  expect_equal(nrow(data), 14)
+  expect_equal(nrow(data), 12)
 })
 
 test_that("getStandards sys argument works", {
   expect_equal(nrow(getStandards(from, to, sys = "USAMS",
-                            getcurrents = FALSE)), 14)
+                            getcurrents = FALSE)), 12)
   expect_equal(nrow(getStandards(from, to, sys = "CFAMS",
                             getcurrents = FALSE)), 0)
 })
