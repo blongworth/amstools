@@ -273,8 +273,7 @@ getWheelInfo <- function(wheel) {
                    WHERE wheel_id = '", wheel, "'")
 
   db <- conNOSAMS()
-  d <- odbc::dbGetQuery(db, query)
-  d
+  odbc::dbGetQuery(db, query)
 }
 
 
@@ -296,14 +295,10 @@ getIntcalTable <- function() {
   #Replace C-6 with new consensus from Xiaomei 2010
   intcal$fm_consensus[intcal$rec_num == 1086] <- 1.5016
 
-  #add process type TODO: get this from db
-  intps <- dplyr::select(intps, rec_num, process)
-  intcal <- dplyr::inner_join(intcal, intps)
-
   # trim table
-  intcal <- dplyr::select(intcal, rec_num, name, process, fm_consensus)
-  return(intcal)
+  dplyr::select(intcal, rec_num, name, fm_consensus)
 }
+
 
 #' Get Standards Table
 #'
@@ -314,20 +309,19 @@ getStdTable <- function() {
 
   #Open DB connection
   db <- conNOSAMS()
+
+  # get standards. Should we get NOSAMS_cons?
   standards <- odbc::dbGetQuery(db, "SELECT * FROM standards WHERE Fm_cons IS NOT NULL")
 
-  #add process type
-  standards <- dplyr::left_join(standards, stdps, by = "rec_num")
-
   standards <- dplyr::mutate(standards, fm_consensus = Fm_cons)
-  standards <- dplyr::select(standards, rec_num, sample_id, process, fm_consensus)
+  standards <- dplyr::select(standards, rec_num, sample_id, fm_consensus)
 
   # TODO: make names the same
   #create factor of tiri_id, order by Fm
-  standards <- within(standards, name <- factor(sample_id, levels = unique(
-                   sample_id[order(fm_consensus, sample_id)]),ordered = TRUE))
-
-  return(standards)
+  within(standards,
+         name <- factor(sample_id,
+                        levels = unique(sample_id[order(fm_consensus, sample_id)]),
+                        ordered = TRUE))
 }
 
 #' Count runs
@@ -534,7 +528,7 @@ getProcess <- function(tp_num) {
   odbc::dbBind(query, list(procid[1,]))
   data <- odbc::dbFetch(query)
   odbc::dbClearResult(query)
-  data[1,]
+  data[1,1]
 }
   # process id comes from fn_get_process_code(tp_num) and
   # process name comes from "SELECT key_short_desc FROM dbo.alxrefnd
