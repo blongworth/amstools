@@ -30,7 +30,7 @@ recReport <- function(rec) {
 #' @return A dataframe with summary information
 #' @export
 #'
-sumWheelStdsSR <- function(wheel, stds = TRUE, ss = TRUE) {
+sumWheelStdsSR <- function(wheel) {
 
   # get data
   data <- getWheelStdsSR(wheel)

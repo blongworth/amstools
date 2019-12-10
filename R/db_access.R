@@ -417,7 +417,7 @@ getRawWheel <- function(wheel) {
 
 #' Get standards from a wheel
 #'
-#' @param wheel
+#' @param wheel A wheelname as a character vector
 #'
 #' @return A dataframe of summary statistics
 #' @export
@@ -451,7 +451,7 @@ getWheelStds <- function(wheel) {
 
 #' Get standards from a wheel from snics_results
 #'
-#' @param wheel
+#' @param wheel A wheelname as a character vector
 #'
 #' @return A dataframe of summary statistics
 #' @export
@@ -520,7 +520,10 @@ getRecSR <- function(recnum) {
 getProcess <- function(tp_num) {
   con <- conNOSAMS()
   # Get process id
-  procid <- odbc::dbGetQuery(con, glue::glue_sql("SELECT [amsprod].[dbo].[fn_get_process_code] ({tp_num}); ", tp_num = tp_num))
+  procid <- odbc::dbGetQuery(con,
+                glue::glue_sql("SELECT
+                               [amsprod].[dbo].[fn_get_process_code] ({tp_num}); "
+                               , tp_num = tp_num))
 
   # Get process name
   sql <- "SELECT key_short_desc

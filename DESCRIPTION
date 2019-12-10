@@ -16,10 +16,10 @@ Imports:
     dplyr,
     ggplot2,
     odbc,
+    DBI,
+    glue,
     knitr,
     rmarkdown
 RoxygenNote: 6.1.1
-Suggests: testthat,
-    knitr,
-    rmarkdown
+Suggests: testthat
 VignetteBuilder: knitr
