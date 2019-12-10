@@ -177,7 +177,8 @@ getStandards <- function (from,
   # include form to get old data (don't use snics tables)
   # need to include target_time, d13 irms, co2_yield, process
   # process id comes from fn_get_process_code(tp_num) and
-  # process name comes from "SELECT key_short_desc FROM dbo.alxrefnd WHERE (key_name = 'PROCESS_TYPE') AND (key_cd = " & TargetProcNums(iTarg).ToString & ");
+  # process name comes from "SELECT key_short_desc FROM dbo.alxrefnd
+  # WHERE (key_name = 'PROCESS_TYPE') AND (key_cd = " & TargetProcNums(iTarg).ToString & ");
   dquery <- paste0(
     "SELECT
       target.tp_num,
@@ -508,3 +509,30 @@ getRecSR <- function(recnum) {
   dbClearResult(recs)
   data
 }
+
+#' Get the process id for a target
+#'
+#' @param tp_num The numeric target identifier
+#'
+#' @return A short character code for the process
+#' @export
+#'
+getProcess <- function(tp_num) {
+  con <- conNOSAMS()
+  # Get process id
+  procid <- odbc::dbGetQuery(con, glue::glue_sql("SELECT [amsprod].[dbo].[fn_get_process_code] ({tp_num}); ", tp_num = tp_num))
+
+  # Get process name
+  sql <- "SELECT key_short_desc
+          FROM dbo.alxrefnd
+          WHERE key_name = 'PROCESS_TYPE'
+          AND key_cd = ?"
+  query <- odbc::dbSendQuery(con, sql)
+  odbc::dbBind(query, list(procid[1,]))
+  data <- odbc::dbFetch(query)
+  odbc::dbClearResult(query)
+  data[1,]
+}
+  # process id comes from fn_get_process_code(tp_num) and
+  # process name comes from "SELECT key_short_desc FROM dbo.alxrefnd
+  # WHERE (key_name = 'PROCESS_TYPE') AND (key_cd = " & TargetProcNums(iTarg).ToString & ");
