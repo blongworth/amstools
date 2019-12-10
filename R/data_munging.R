@@ -16,6 +16,7 @@ joinStandards <- function(data, std) {
 #' @export
 #' @importFrom dplyr select mutate group_by %>%
 mungeStandards <- function(data, std) {
+  con <- conNOSAMS()
 
   data <- joinStandards(data, std)
 
@@ -23,7 +24,7 @@ mungeStandards <- function(data, std) {
     mutate(
       tp_date_pressed = as.Date(tp_date_pressed),
       gf_date = as.Date(gf_date),
-      process = purrr::map_chr(tp_num, getProcess),
+      process = purrr::map_chr(tp_num, getProcess, con),
       rep_err = pmax(f_int_error, f_ext_error),
       normFm = normFm(f_modern, fm_consensus),
       sigma = sigma(f_modern, fm_consensus, rep_err),

@@ -4,10 +4,12 @@
 \alias{getProcess}
 \title{Get the process id for a target}
 \usage{
-getProcess(tp_num)
+getProcess(tp_num, .con = con)
 }
 \arguments{
 \item{tp_num}{The numeric target identifier}
+
+\item{.con}{A odbc database connection The numeric target identifier}
 }
 \value{
 A short character code for the process

@@ -507,24 +507,28 @@ getRecSR <- function(recnum) {
 #' Get the process id for a target
 #'
 #' @param tp_num The numeric target identifier
+#' @param .con A odbc database connection The numeric target identifier
 #'
 #' @return A short character code for the process
 #' @export
 #'
-getProcess <- function(tp_num) {
-  con <- conNOSAMS()
+getProcess <- function(tp_num, .con = con) {
+  #Check connection
+  if (missing(.con) || class(.con) != "Microsoft SQL Server") {
+    .con <- conNOSAMS()
+  }
   # Get process id
-  procid <- odbc::dbGetQuery(con,
+  procid <- odbc::dbGetQuery(.con,
                 glue::glue_sql("SELECT
-                               [amsprod].[dbo].[fn_get_process_code] ({tp_num}); "
-                               , tp_num = tp_num))
+                               [amsprod].[dbo].[fn_get_process_code] ({tp_num}); ",
+                               tp_num = tp_num))
 
   # Get process name
   sql <- "SELECT key_short_desc
           FROM dbo.alxrefnd
           WHERE key_name = 'PROCESS_TYPE'
           AND key_cd = ?"
-  query <- odbc::dbSendQuery(con, sql)
+  query <- odbc::dbSendQuery(.con, sql)
   odbc::dbBind(query, list(procid[1,]))
   data <- odbc::dbFetch(query)
   odbc::dbClearResult(query)
