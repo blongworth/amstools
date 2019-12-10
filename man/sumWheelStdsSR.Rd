@@ -4,7 +4,7 @@
 \alias{sumWheelStdsSR}
 \title{Wheel standards summary}
 \usage{
-sumWheelStdsSR(wheel, stds = TRUE, ss = TRUE)
+sumWheelStdsSR(wheel)
 }
 \arguments{
 \item{wheel}{Wheel to summarize.}

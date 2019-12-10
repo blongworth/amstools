@@ -7,7 +7,7 @@
 getWheelStds(wheel)
 }
 \arguments{
-\item{wheel}{}
+\item{wheel}{A wheelname as a character vector}
 }
 \value{
 A dataframe of summary statistics

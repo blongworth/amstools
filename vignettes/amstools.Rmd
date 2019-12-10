@@ -33,10 +33,19 @@ The database also has to be set up as an ODBC connection.
 First, load the library.
 
 ```{r}
-library(clivartools)
+library(amstools)
 ```
 
 A list of functions in the package should help you get started. Most functions are tersely documented, but the functions are commented.
 
 ## Some useful functions
 
+### Loading data
+
+getWheel() loads an analysed wheel from snics_results
+getRawWheel() loads raw data for a wheel from snics_raw
+
+
+### Reporting
+
+recReport() produces a markdown report for a rec_num
