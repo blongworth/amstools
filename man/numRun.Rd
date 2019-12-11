@@ -2,7 +2,7 @@
 % Please edit documentation in R/db_access.R
 \name{numRun}
 \alias{numRun}
-\title{Count runs}
+\title{Count wheels and runs in a time period.}
 \usage{
 numRun(from, to = "present", sys = "both")
 }
@@ -17,5 +17,5 @@ numRun(from, to = "present", sys = "both")
 A list: number of runs, number of wheels
 }
 \description{
-Count runs
+Count wheels and runs in a time period.
 }

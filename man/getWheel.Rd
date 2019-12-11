@@ -2,7 +2,7 @@
 % Please edit documentation in R/db_access.R
 \name{getWheel}
 \alias{getWheel}
-\title{Get Wheel}
+\title{Get results for a list of wheel names.}
 \usage{
 getWheel(wheel)
 }
@@ -13,5 +13,5 @@ getWheel(wheel)
 A data frame of analysed data
 }
 \description{
-Get Wheel
+Get results for a list of wheel names.
 }
