@@ -409,6 +409,32 @@ getRawWheel <- function(wheel) {
   data
 }
 
+#' Get raw ams data from database
+#'
+#' @param from A date in character form (m-d-Y)
+#' @param to A date in character. Defaults to present.
+#' @return A data frame of raw data
+#' @export
+getRawData <- function(from, to = NULL) {
+
+  if (is.null(to)) {
+    to <- Sys.Date()
+  }
+
+  con <- conNOSAMS()
+  sql <- "SELECT *
+             FROM snics_raw
+             WHERE runtime > ?
+             AND runtime < ?"
+  query <- odbc::dbSendQuery(con, sql)
+  odbc::dbBind(query, list(from, to))
+  data <- odbc::dbFetch(query)
+  odbc::dbClearResult(query)
+  checkDB(data)
+  data
+}
+
+
 #' Get standards from a wheel
 #'
 #' @param wheel A wheelname as a character vector
