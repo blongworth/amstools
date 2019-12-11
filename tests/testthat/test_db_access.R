@@ -61,3 +61,8 @@ context("getProcess")
 test_that("getProcess returns correct result", {
   expect_equal(getProcess(200000), "WS")
 })
+
+context("getRawData")
+test_that("getRawData returns correct result", {
+  expect_equal(nrow(getRawData(from, to)), 942)
+})
