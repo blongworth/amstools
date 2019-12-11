@@ -324,7 +324,7 @@ getStdTable <- function() {
                         ordered = TRUE))
 }
 
-#' Count runs
+#' Count wheels and runs in a time period.
 #'
 #' @param from A date object or date in character form (m-d-Y)
 #' @param to A date object or date in character. Defaults to present.
@@ -372,7 +372,7 @@ numRun <- function(from, to = "present", sys = "both") {
 }
 
 
-#' Get Wheel
+#' Get results for a list of wheel names.
 #'
 #' @param wheel A vector of wheel names in character format
 #' @return A data frame of analysed data
@@ -391,7 +391,7 @@ getWheel <- function(wheel) {
 }
 
 
-#' Get Raw Wheel
+#' Get raw data for a list of wheel names.
 #'
 #' @param wheel A vector of wheel names in character format
 #' @return A data frame of raw data
