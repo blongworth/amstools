@@ -262,18 +262,22 @@ getStandards <- function (from,
 getWheelInfo <- function(wheel) {
 
   # TODO: validate wheel
-  query <- paste0("SELECT wheel_position,
-                     cl_id, target.tp_num,
-                     osg_num, target.rec_num
-                   FROM wheel_pos
-                   JOIN target
-                   ON wheel_pos.tp_num = target.tp_num
-                   JOIN logged_sample
-                   ON target.rec_num = logged_sample.rec_num
-                   WHERE wheel_id = '", wheel, "'")
-
-  db <- conNOSAMS()
-  odbc::dbGetQuery(db, query)
+  con <- conNOSAMS()
+  sql <- "SELECT wheel_position,
+            cl_id, target.tp_num,
+            osg_num, target.rec_num
+          FROM wheel_pos
+          LEFT JOIN target
+          ON wheel_pos.tp_num = target.tp_num
+          LEFT JOIN logged_sample
+          ON target.rec_num = logged_sample.rec_num
+          WHERE wheel_id = ?"
+  query <- odbc::dbSendQuery(con, sql)
+  odbc::dbBind(query, list(wheel))
+  data <- odbc::dbFetch(query)
+  odbc::dbClearResult(query)
+  checkDB(data)
+  data
 }
 
 
