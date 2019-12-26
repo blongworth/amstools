@@ -41,6 +41,11 @@ test_that("getStandards works with osg argument", {
                c(198405, 198406))
 })
 
+context("getWheelInfo")
+test_that("getWheelInfo returns correct number of results", {
+  expect_equal(nrow(getWheelInfo("USAMS111819")), 32)
+})
+
 context("numRun")
 test_that("numRun returns all runs in a date range", {
   expect_equal(numRun(from, to, sys)[1], 125)
@@ -63,6 +68,6 @@ test_that("getProcess returns correct result", {
 })
 
 context("getRawData")
-test_that("getRawData returns correct result", {
+test_that("getRawData returns correct number of results", {
   expect_equal(nrow(getRawData(from, to)), 942)
 })
