@@ -290,7 +290,7 @@ getIntcalTable <- function() {
 
   #get intcal table
   db <- conNOSAMS()
-  intcal <- odbc::dbGetQuery(db, paste("select * from ", "intercal_samples"))
+  intcal <- odbc::dbGetQuery(db, "SELECT * FROM intercal_samples")
 
   #create factor of tiri_id, order by Fm
   intcal <- within(intcal, name <- factor(tiri_id, levels = unique(
