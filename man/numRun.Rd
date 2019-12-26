@@ -4,7 +4,7 @@
 \alias{numRun}
 \title{Count wheels and runs in a time period.}
 \usage{
-numRun(from, to = "present", sys = "both")
+numRun(from, to = NULL, sys = "both")
 }
 \arguments{
 \item{from}{A date object or date in character form (m-d-Y)}
@@ -17,5 +17,5 @@ numRun(from, to = "present", sys = "both")
 A list: number of runs, number of wheels
 }
 \description{
-Count wheels and runs in a time period.
+Uses target runtimes from snics_results for data source.
 }
