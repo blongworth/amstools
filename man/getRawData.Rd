@@ -4,7 +4,7 @@
 \alias{getRawData}
 \title{Get raw ams data from database}
 \usage{
-getRawData(from, to = NULL)
+getRawData(from, to)
 }
 \arguments{
 \item{from}{A date in character form (m-d-Y)}

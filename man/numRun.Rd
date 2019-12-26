@@ -4,7 +4,7 @@
 \alias{numRun}
 \title{Count wheels and runs in a time period.}
 \usage{
-numRun(from, to = NULL, sys = "both")
+numRun(from, to, sys = "both")
 }
 \arguments{
 \item{from}{A date object or date in character form (m-d-Y)}

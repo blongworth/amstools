@@ -102,6 +102,7 @@ getQCTable <- function(from, to = "present", sys = "both") {
 
 }
 
+
 #' Get Standards
 #'
 #' Get standards from database using standards table.
@@ -174,11 +175,9 @@ getStandards <- function (from,
   } else {
     ts <- ""
   }
+
   # include form to get old data (don't use snics tables)
   # need to include target_time, d13 irms, co2_yield, process
-  # process id comes from fn_get_process_code(tp_num) and
-  # process name comes from "SELECT key_short_desc FROM dbo.alxrefnd
-  # WHERE (key_name = 'PROCESS_TYPE') AND (key_cd = " & TargetProcNums(iTarg).ToString & ");
   dquery <- paste0(
     "SELECT
       target.tp_num,
@@ -338,10 +337,10 @@ getStdTable <- function() {
 #' @return A list: number of runs, number of wheels
 #' @export
 #'
-numRun <- function(from, to = NULL, sys = "both") {
+numRun <- function(from, to, sys = "both") {
 
   # If no to, get to today.
-  if (is.null(to)) {
+  if (missing(to)) {
     to <- Sys.Date()
   }
 
@@ -409,10 +408,10 @@ getRawWheel <- function(wheel) {
 #' @param to A date in character. Defaults to present.
 #' @return A data frame of raw data
 #' @export
-getRawData <- function(from, to = NULL) {
+getRawData <- function(from, to) {
 
   # If no to, get to today.
-  if (is.null(to)) {
+  if (missing(to)) {
     to <- Sys.Date()
   }
 
