@@ -326,48 +326,38 @@ getStdTable <- function() {
 
 #' Count wheels and runs in a time period.
 #'
+#' Uses target runtimes from snics_results for data source.
+#'
 #' @param from A date object or date in character form (m-d-Y)
 #' @param to A date object or date in character. Defaults to present.
 #' @param sys System- "USAMS", "CFAMS", defaults to both.
 #' @return A list: number of runs, number of wheels
 #' @export
 #'
-numRun <- function(from, to = "present", sys = "both") {
+numRun <- function(from, to = NULL, sys = "both") {
 
-  if (class(to) == "Date") {
-    as.character.Date(to, "%m-%d-%Y")
+  # If no to, get to today.
+  if (is.null(to)) {
+    to <- Sys.Date()
   }
 
-  if (class(from) == "Date") {
-    as.character.Date(from, "%m-%d-%Y")
-  }
-
-  if (as.character(to) != "present") {
-    todate <- paste0("AND tp_date_pressed <= '", to, "' ")
-  } else {
-    todate <- ""
-  }
-
-  query <- paste0("select target.tp_num, wheel_id
-          from target
-          join wheel_pos on target.tp_num = wheel_pos.tp_num
-          where tp_date_pressed > '", from, "' ", todate)
-
-  db <- conNOSAMS()
-  data <- odbc::dbGetQuery(db, query)
+  con <- conNOSAMS()
+  sql <- "SELECT wheel
+            FROM snics_results
+            WHERE runtime > ?
+            AND runtime < ?"
+  query <- odbc::dbSendQuery(con, sql)
+  odbc::dbBind(query, list(from, to))
+  data <- odbc::dbFetch(query)
+  odbc::dbClearResult(query)
   checkDB(data)
 
-  if (sys == "USAMS") {
-    data <- dplyr::filter(data, grepl("USAMS", wheel_id))
-  } else if (sys == "CFAMS") {
-    data <- dplyr::filter(data, grepl("CFAMS", wheel_id))
-  } else if (sys == "both") {
-  } else {
-    stop("Invalid sys. Use 'USAMS', 'CFAMS', or 'both'")
+  if (sys != "both") {
+    data <- dplyr::filter(data, substr(wheel, 1, 5) == sys)
   }
 
-  targets <- length(data$tp_num)
-  wheels <- length(unique(data$wheel_id))
+  targets <- length(data$wheel)
+  wheels <- length(unique(data$wheel))
   c(targets,wheels)
 }
 
@@ -417,6 +407,7 @@ getRawWheel <- function(wheel) {
 #' @export
 getRawData <- function(from, to = NULL) {
 
+  # If no to, get to today.
   if (is.null(to)) {
     to <- Sys.Date()
   }
@@ -560,6 +551,3 @@ getProcess <- function(tp_num, .con = con) {
   odbc::dbClearResult(query)
   data[1,1]
 }
-  # process id comes from fn_get_process_code(tp_num) and
-  # process name comes from "SELECT key_short_desc FROM dbo.alxrefnd
-  # WHERE (key_name = 'PROCESS_TYPE') AND (key_cd = " & TargetProcNums(iTarg).ToString & ");
