@@ -38,10 +38,15 @@ conNOSAMS  <- function() {
 #' @return A data frame of qc table data
 #' @export
 #'
-getQCTable <- function(from, to = "present", sys = "both") {
+getQCTable <- function(from, to, sys = "both") {
 
   if (missing(from)) {
     stop('argument "from" is missing, with no default')
+  }
+
+  # If no to, get to today.
+  if (missing(to)) {
+    to <- Sys.Date()
   }
 
   #What system do we want data for?
@@ -55,15 +60,8 @@ getQCTable <- function(from, to = "present", sys = "both") {
     whid <- "AND wheel NOT LIKE 'C%'"
   }
 
-  #Data to present or provided end date
-  if (to != "present") {
-    ts <- paste("AND target.tp_date_pressed < '", to,"' ")
-  } else {
-    ts <- ""
-  }
-
-  dquery <- paste("
-   SELECT
+  dquery <- paste(
+    "SELECT
    	 target.tp_num,
          target.tp_date_pressed,
          qc.target_time,
@@ -87,19 +85,18 @@ getQCTable <- function(from, to = "present", sys = "both") {
          qc.ss
     FROM qc
       INNER JOIN target ON qc.tp_num = target.tp_num
-   WHERE
-      target.tp_date_pressed > '",from,"'
-      ", ts, "
-      ", whid, "
-      --AND f_modern > -1
- ")
+    WHERE target.tp_date_pressed > ?
+    AND target.tp_date_pressed < ?",
+    whid)
 
   #Do the queries
   db <- conNOSAMS()
-  data <-odbc::dbGetQuery(db, dquery)
+  query <- odbc::dbSendQuery(db, dquery)
+  odbc::dbBind(query, list(from, to))
+  data <- odbc::dbFetch(query)
+  odbc::dbClearResult(query)
   checkDB(data)
   return(data)
-
 }
 
 
@@ -119,7 +116,7 @@ getQCTable <- function(from, to = "present", sys = "both") {
 #' @export
 #'
 getStandards <- function (from,
-                          to = "present",
+                          to,
                           sys = "both",
                           getcurrents = TRUE,
                           rec = NULL,

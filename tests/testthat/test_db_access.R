@@ -9,6 +9,13 @@ to <- '01-06-2016'
 sys <- 'both'
 data <- getStandards(from, to, sys, getcurrents = TRUE)
 
+context("getQCTable")
+test_that("getQCTable returns good data", {
+  data <- getQCTable(from, to, sys)
+	expect_true(is.data.frame(data))
+  expect_equal(nrow(data), 5)
+})
+
 context("getStandards")
 test_that("getStandards returns good data", {
 	expect_true(is.data.frame(data))

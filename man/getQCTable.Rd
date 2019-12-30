@@ -4,7 +4,7 @@
 \alias{getQCTable}
 \title{Get secondary data from qc table}
 \usage{
-getQCTable(from, to = "present", sys = "both")
+getQCTable(from, to, sys = "both")
 }
 \arguments{
 \item{from}{Character vector of date in form 'YYYY-MM-DD'.}

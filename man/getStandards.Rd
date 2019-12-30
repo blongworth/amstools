@@ -4,8 +4,8 @@
 \alias{getStandards}
 \title{Get Standards}
 \usage{
-getStandards(from, to = "present", sys = "both", getcurrents = TRUE,
-  rec = NULL, osg = NULL)
+getStandards(from, to, sys = "both", getcurrents = TRUE, rec = NULL,
+  osg = NULL)
 }
 \arguments{
 \item{from}{Character vector of date in form 'YYYY-MM-DD'.}
