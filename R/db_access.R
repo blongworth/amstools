@@ -130,32 +130,21 @@ getStandards <- function (from,
     stop('argument "from" is missing, with no default')
   }
 
+  # If no to, get to today.
+  if (missing(to)) {
+    to <- Sys.Date()
+  }
+
   #get any rec_num if requested
   if (is.null(rec)) {
-    samples  <- "JOIN (SELECT rec_num, Fm_cons, d13_cons, sample_id
-                          FROM standards WHERE Fm_cons IS NOT NULL)
-                        AS standards
-                    ON target.rec_num = standards.rec_num
-                 WHERE "
+    samples  <- ""
   } else {
-    samples  <- paste0("JOIN (SELECT rec_num, Fm_cons, d13_cons, sample_id
-                          FROM standards WHERE Fm_cons IS NOT NULL)
-                        AS standards
-                    ON target.rec_num = standards.rec_num
-                       WHERE
-                         target.rec_num IN (", paste(rec, collapse = ","),")
-                       AND")
+    samples  <- paste0("AND target.rec_num IN (", paste(rec, collapse = ","),")")
   }
 
   # or get a list of OSG nums
   if (!is.null(osg)) {
-    samples  <- paste0("JOIN (SELECT rec_num, Fm_cons, d13_cons, sample_id
-                          FROM standards WHERE Fm_cons IS NOT NULL)
-                        AS standards
-                    ON target.rec_num = standards.rec_num
-                       WHERE
-                         target.osg_num IN (", paste(osg, collapse = ","),")
-                       AND")
+    samples  <- paste0("AND target.osg_num IN (", paste(osg, collapse = ","),")")
   }
 
   #What system do we want data for?
@@ -169,16 +158,9 @@ getStandards <- function (from,
     whid <- "AND wheel_id NOT LIKE 'C%'"
   }
 
-  #Data to present or provided end date
-  if (to != "present") {
-    ts <- paste0("AND target.tp_date_pressed < '", to,"' ")
-  } else {
-    ts <- ""
-  }
-
   # include form to get old data (don't use snics tables)
   # need to include target_time, d13 irms, co2_yield, process
-  dquery <- paste0(
+  dquery <- paste(
     "SELECT
       target.tp_num,
       gf_date,
@@ -210,41 +192,55 @@ getStandards <- function (from,
       ON target.osg_num = graphite.osg_num
     INNER JOIN graphite_lab
       ON target.graphite_lab = graphite_lab.lab_id
-    ", samples," target.tp_date_pressed > '",from,"'
-    ", ts, "
-    ", whid, "
+    JOIN (SELECT
+            rec_num, Fm_cons,
+            d13_cons, sample_id
+          FROM standards
+          WHERE Fm_cons IS NOT NULL)
+            AS standards
+      ON target.rec_num = standards.rec_num
+    WHERE target.tp_date_pressed > ?
+    AND target.tp_date_pressed < ?
     AND f_modern > -1
-    "
+    ", samples, whid
   )
 
-  cquery <- paste0("SELECT
-                snics_raw.tp_num,
-                AVG(le12c) AS le12c,
-                SUM(cnt_14c) AS counts
-              FROM snics_raw
-                INNER JOIN snics_results
-                  ON snics_results.tp_num = snics_raw.tp_num
-                INNER JOIN target
-                  ON snics_raw.tp_num = target.tp_num
-                INNER JOIN wheel_pos
-                  ON snics_results.tp_num = wheel_pos.tp_num
-                ", samples," ok_calc = 1
-                ",whid, "
-                AND target.tp_date_pressed > '",from,"'
-                ", ts, "
-              GROUP BY snics_raw.tp_num
-              ")
+  cquery <- paste(
+    "SELECT
+       snics_raw.tp_num,
+       AVG(le12c) AS le12c,
+       SUM(cnt_14c) AS counts
+     FROM snics_raw
+       INNER JOIN snics_results
+         ON snics_results.tp_num = snics_raw.tp_num
+       INNER JOIN target
+         ON snics_raw.tp_num = target.tp_num
+       INNER JOIN wheel_pos
+         ON snics_results.tp_num = wheel_pos.tp_num
+     WHERE target.tp_date_pressed > ?
+       AND target.tp_date_pressed < ?
+       AND ok_calc = 1
+       ", samples, whid,
+       "GROUP BY snics_raw.tp_num"
+    )
 
   #Do the queries
 
   db <- conNOSAMS()
-  data <- odbc::dbGetQuery(db, dquery)
+  query <- odbc::dbSendQuery(db, dquery)
+  odbc::dbBind(query, list(from, to))
+  data <- odbc::dbFetch(query)
+  odbc::dbClearResult(query)
   checkDB(data)
 
   if (getcurrents) {
     db <- conNOSAMS()
-    cur <- odbc::dbGetQuery(db, cquery)
+    query <- odbc::dbSendQuery(db, cquery)
+    odbc::dbBind(query, list(from, to))
+    cur <- odbc::dbFetch(query)
+    odbc::dbClearResult(query)
     checkDB(cur)
+
     data  <- dplyr::left_join(data, cur, by = "tp_num")
   }
 
