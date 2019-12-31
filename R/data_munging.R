@@ -84,7 +84,7 @@ mungeQCTable <- function(data) {
 #' @return A data frame of munged standards data
 #' @export
 #'
-getQCData <- function(from, to = "present", sys = "both",
+getQCData <- function(from, to, sys = "both",
                       useQC = FALSE, intcal = FALSE, getcurrents = FALSE, ...) {
   # Function to get standards from database and return munged table
 
