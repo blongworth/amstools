@@ -4,8 +4,8 @@ context("Database connection")
 #	expect_true(conNOSAMS())
 #})
 
-from <- '01-01-2016'
-to <- '01-06-2016'
+from <- as.Date('2016-01-01')
+to <- as.Date('2016-01-06')
 sys <- 'both'
 data <- getStandards(from, to, sys, getcurrents = TRUE)
 
