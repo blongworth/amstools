@@ -4,8 +4,15 @@
 \alias{getQCData}
 \title{Get and format standards data}
 \usage{
-getQCData(from, to, sys = "both", useQC = FALSE, intcal = FALSE,
-  getcurrents = FALSE, ...)
+getQCData(
+  from,
+  to,
+  sys = "both",
+  useQC = FALSE,
+  intcal = FALSE,
+  getcurrents = FALSE,
+  ...
+)
 }
 \arguments{
 \item{from}{Character vector of date in form 'YYYY-MM-DD'.}
