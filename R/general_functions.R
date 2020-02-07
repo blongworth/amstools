@@ -168,3 +168,26 @@ dctofm <- function(dc, yc) {
 
 }
 
+#' Remove outliers by interquartile range
+#'
+#' This will return a vector without points outside of 3 * IQR
+#'
+#' @param x A vector of numeric values
+#'
+#' @return The vector with outliers replaced by `NA`
+#' @export
+#'
+removeOutliers = function(x) {
+  # Get Q1 and Q3
+  qnt <-  quantile(x, probs=c(.25, .75))
+
+  iqt <- 1.5 * IQR(x)
+
+  # Apply on a copy of the original data
+  y = x
+  y[x < (qnt[1] - iqt)] = NA
+  y[x > (qnt[2] + iqt)] = NA
+  y
+  # Remove incomplete cases and return the resulted variable
+  #y[complete.cases(y)]
+}

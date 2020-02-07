@@ -68,3 +68,17 @@ test_that("Zero age returned for modern", {
 test_that("Inf returned for dead", {
   expect_equal(rcage(0), Inf)
 })
+
+context("Remove outliers")
+
+test_that("invalid args detected", {
+	expect_error(removeOutliers(iris))
+  expect_error(removeOutliers("red"))
+})
+
+test_that("Outliers removed", {
+	expect_equal(removeOutliers(c(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 68)),
+	             c(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, NA))
+	expect_equal(removeOutliers(c(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37)),
+	             c(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37))
+})

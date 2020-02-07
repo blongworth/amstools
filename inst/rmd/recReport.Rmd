@@ -1,8 +1,8 @@
 ---
 params:
-  rec: 148043
+  rec: 38809
 title: "Data for rec_num `r sprintf('%i', params$rec)`"
-author: "BEL"
+author: "Brett Longworth"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: html_document
 ---
@@ -18,39 +18,48 @@ library(odbc)
 options(digits = 4)
 
 #set parameters- from, to, sys not used if loading from file
-from <- '2014-09-01'
-to <- 'present' #present or date
+from <- as.Date('2014-09-01')
 sys <- 'both' #cfams, usams, ams1 or both
 
 #Pull the data
-ss <- getStandards(from, to, sys, rec = params$rec)
+ss <- getStandards(from, sys = sys, rec = params$rec) 
 
 # get sample name
 db <- conNOSAMS()
 name <- dbGetQuery(db, paste("select cl_id from logged_sample where rec_num =", params$rec))
 ```
 
-Determination of mean fm and error for `r name`, rec num `r sprintf('%i', params$rec)`.
+Determination of mean fm and error for `r name`, rec num `r sprintf('%i', params$rec)`, from `r from` to present.
 
 Data pulled from no_os by rec_num.
-Here's the data...
 
 ```{r, echo=FALSE, message=FALSE}
-ggplot(ss, aes(f_modern)) + geom_histogram()
-
-
-kable(select(ss, tp_num, tp_date_pressed, wheel, gf_co2_qty, f_modern, f_int_error, f_ext_error))
+ggplot(ss, aes(f_modern)) +
+  geom_histogram() +
+  ggtitle("Fm distribution")
 ```
 
-Remove clear outliers. Discard points > 3 * interquartile range.
+Remove clear outliers. Discard points > 1.5 * interquartile range.
 
-```{r}
-
+```{r, echo=FALSE}
+ss <- ss %>%
+  mutate(f_modern = removeOutliers(f_modern))
 
 # weighted means
-wm <- weighted.mean(ss$f_modern, ss$f_ext_error)
-
+wm <- weighted.mean(ss$f_modern, ss$f_ext_error, na.rm = TRUE)
 ```
 
-That leaves us with N = `r nrow(ss)`, mean = `r mean(ss$f_modern)`, weighted mean = `r wm`, sd = `r sd(ss$f_modern)`.
+That leaves us with N = `r length(ss$f_modern[!is.na(ss$f_modern)])`, mean = `r mean(ss$f_modern, na.rm = TRUE)`, weighted mean = `r wm`, sd = `r sd(ss$f_modern, na.rm = TRUE)`.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(ss, aes(f_modern)) + 
+  geom_histogram() + 
+  ggtitle("Fm distribution", subtitle = "Outliers removed")
+```
+
+
+```{r, echo=FALSE, warning=FALSE}
+kable(select(ss, tp_num, tp_date_pressed, wheel, gf_co2_qty, f_modern, f_ext_error),
+      caption = "Data without outliers")
+```
 
