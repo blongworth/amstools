@@ -132,6 +132,10 @@ getStandards <- function (from,
     to <- Sys.Date()
   }
 
+    # convert dates
+  from <- as.Date(from)
+  to <- as.Date(to)
+
   #get any rec_num if requested
   if (is.null(rec)) {
     samples  <- ""
