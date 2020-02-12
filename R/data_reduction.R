@@ -1,0 +1,145 @@
+# Functions to assist in AMS data reduction
+
+# TODO:
+# Propagate normalization error
+# Find standards
+# Produce normalized data for wheel per target
+
+
+#' Calculate per-block fields
+#'
+#' @param data A data table of raw AMS data
+#'
+#' @return The data table with fields for corrected 14/12,
+#' internal error, and d13C added
+#' @export
+#'
+#' @examples
+calcRaw <- function(data) {
+	data %>%
+	  mutate(
+	    cor1412 = doCor1412(he1412, he1312),
+	    sig1412 = calcSig1412(CntTotH, CntTotS, CntTotGT, cor1412),
+	    d13c = calcd13c(he1312)
+	  )
+}
+
+
+#' Correct raw 14/12 for fractionation using 13/12 ratio
+#'
+#' @param he1412 Raw measured 14/12
+#' @param he1312 Raw measured 13/12
+#'
+#' @return
+#' @export
+#'
+#' @examples
+doCor1412 <- function(he1412, he1312) {
+	he1412 / he1312 ^ 2
+}
+
+# Calc internal error for a measurement
+calcSig1412 <- function(CntTotH, CntTotS, CntTotGT, cor1412) {
+RelErrSq <- (CntTotH - CntTotS) * CntTotH ^ 2 / CntTotS ^ 4 +
+             CntTotH ^ 2 / CntTotGT / CntTotS ^ 2
+cor1412 * RelErrSq ^ 0.5
+}
+
+# Calculate d13C
+calcd13c <- function(he1312) {
+	1000 * (he1312 / 1.12372 -1)
+}
+
+## Normalize
+
+
+# Find mean of stds
+normStds <- function(cor1412std, defstd) {
+  # both vectors, same length or 1 element vector if all standards are same
+  mean(cor1412std/defstd)
+}
+
+# Normalize to mean of standards
+norm1412 <- function(cor1412, meanstd) {
+  cor1412/meanstd
+}
+
+
+## Blank correction
+
+#' Apply large blank
+#'
+#' @param fmmeas Normalized Fm of the sample
+#' @param fmblank Normalized Fm of the blank
+#' @param fmstd Accepted Fm of the standard used for normalization
+#'
+#' @return
+#' @export
+#'
+#' @examples
+doLBC <- function(fmmeas, fmblank, fmstd) {
+	fmmeas - fmblank * (fmstd - fmmeas) / fmstd
+}
+
+
+#' Propagate large blank error
+#'
+#' @param fmmeas Normalized Fm of the sample
+#' @param fmblank Normalized Fm of the blank
+#' @param fmstd Accepted Fm of the standard used for normalization
+#' @param fmmeaserr Measurement error of the sample
+#' @param fmblankerr Measurement error of the blank
+#'
+#' @return
+#' @export
+#'
+#' @examples
+doLBCerror <- function(fmmeas, fmblank, fmstd, fmmeaserr, fmblankerr) {
+	sqrt(fmmeaserr ^ 2 * (1 + fmblank / fmstd) ^ 2 +
+	     fmblankerr ^ 2 * ((fmmeas - fmstd) / fmstd) ^ 2)
+}
+
+
+#' Apply mass balance blank correction
+#'
+#' Note, use total mass - blank mass for mass of the sample
+#' if appropriate
+#'
+#' @param fmmeas Normalized Fm of the sample
+#' @param fmblank Normalized Fm of the blank
+#' @param massmeas Mass of the sample
+#' @param massblank Mass of the blank
+#'
+#' @return
+#' @export
+#'
+#' @examples
+doMBC <- function(fmmeas, fmblank, massmeas, massblank) {
+    fmmeas + (fmmeas - fmblank) * massblank / massmeas
+}
+
+#' Propagate mass balance blank correction error
+#'
+#' Note, use total mass - blank mass for mass of the sample
+#' if appropriate
+#'
+#' @param fmmeas Normalized Fm of the sample
+#' @param fmblank Normalized Fm of the blank
+#' @param massmeas Mass of the sample
+#' @param massblank Mass of the blank
+#' @param fmmeaserr Measurement error of the sample
+#' @param fmblankerr Measurement error of the blank
+#' @param massmeaserr Mass error of the sample
+#' @param massblankerr Mass error of the blank
+#'
+#' @return
+#' @export
+#'
+#' @examples
+doMBCerr <- function(fmmeas, fmblank, massmeas, massblank,
+                  fmmeaserr, fmblankerr, massmeaserr, massblankerr) {
+    sqrt(fmmeaserr ^ 2 * (1 + massblank / massmeas) ^ 2 +
+         massmeaserr ^ 2 * ((fmmeas - fmblank) * massblank / massmeas ^ 2) ^ 2 +
+         fmblankerr ^ 2 * (massblank / massmeas) ^ 2 +
+         massblankerr ^ 2 * ((fmmeas - fmblank) / massmeas) ^ 2)
+}
