@@ -94,7 +94,7 @@ doLBC <- function(fmmeas, fmblank, fmstd) {
 #' @export
 #'
 #' @examples
-doLBCerror <- function(fmmeas, fmblank, fmstd, fmmeaserr, fmblankerr) {
+doLBCerr <- function(fmmeas, fmblank, fmstd, fmmeaserr, fmblankerr) {
 	sqrt(fmmeaserr ^ 2 * (1 + fmblank / fmstd) ^ 2 +
 	     fmblankerr ^ 2 * ((fmmeas - fmstd) / fmstd) ^ 2)
 }
