@@ -47,7 +47,6 @@ readWheelfile <- function(wheel) {
 
 }
 
-# read raw results from database
 
 # TODO: this needs work!
 
@@ -79,9 +78,6 @@ readWheelfile <- function(wheel) {
 #   }
 # }
 
-# read analysed wheel from database
-
-# read analyses for a recnum from db
 
 # pull data on a target by tp_num
 
