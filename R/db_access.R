@@ -504,7 +504,8 @@ getRecSR <- function(recnum) {
   query <- glue::glue_sql("SELECT wheel, wheel_pos, sample_name,
                              tp_date_pressed, target.tp_num, target.rec_num,
                              target.osg_num, gf_devel, gf_test, ws_r_d,
-                             ws_method_num, ws_line_num, fm_corr, sig_fm_corr, dc13
+                             ws_method_num, ws_line_num, ws_comments, ws_comment_code,
+                             ws_r_d, fm_corr, sig_fm_corr, dc13
                           FROM snics_results
                           JOIN target ON snics_results.tp_num = target.tp_num
                           JOIN graphite ON target.osg_num = graphite.osg_num
@@ -516,8 +517,8 @@ getRecSR <- function(recnum) {
   )
 
   recs <- odbc::dbSendQuery(db, query)
-  data <- dbFetch(recs)
-  dbClearResult(recs)
+  data <- odbc::dbFetch(recs)
+  odbc::dbClearResult(recs)
   data
 }
 
