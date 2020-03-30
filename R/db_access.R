@@ -556,3 +556,22 @@ getProcess <- function(tp_num, .con = con) {
   odbc::dbClearResult(query)
   data[1,1]
 }
+
+#' get info from dc13 table
+#'
+#' @param tps A vector of tp_nums
+#'
+#' @return A data frame of matching rows from dc13
+#' @export
+#'
+#' @examples
+getdc13 <- function(tps) {
+con <- conNOSAMS()
+  sql <- glue_sql("SELECT * FROM dc13 WHERE tp_num IN ({tp*})",
+                  tp = tps,
+                  .con = con)
+  query <- dbSendQuery(con, sql)
+  data <- dbFetch(query)
+  dbClearResult(query)
+  data
+}
