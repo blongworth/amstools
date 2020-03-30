@@ -567,11 +567,11 @@ getProcess <- function(tp_num, .con = con) {
 #' @examples
 getdc13 <- function(tps) {
 con <- conNOSAMS()
-  sql <- glue_sql("SELECT * FROM dc13 WHERE tp_num IN ({tp*})",
+  sql <- glue::glue_sql("SELECT * FROM dc13 WHERE tp_num IN ({tp*})",
                   tp = tps,
                   .con = con)
-  query <- dbSendQuery(con, sql)
-  data <- dbFetch(query)
-  dbClearResult(query)
+  query <- odbc::dbSendQuery(con, sql)
+  data <- odbc::dbFetch(query)
+  odbc::dbClearResult(query)
   data
 }
