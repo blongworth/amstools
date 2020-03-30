@@ -365,13 +365,16 @@ numRun <- function(from, to, sys = "both") {
 #' Get results for a list of wheel names.
 #'
 #' @param wheel A vector of wheel names in character format
+#' @param test Get data from snics_results_test if true
 #' @return A data frame of analysed data
 #' @export
-getWheel <- function(wheel) {
+getWheel <- function(wheel, test = FALSE) {
   db <- conNOSAMS()
+  table <- ifelse(test == TRUE, "snics_results_test", "snics_results")
   sql <- glue::glue_sql("SELECT *
-                  FROM snics_results
+                  FROM {`table`}
                   WHERE wheel IN ({wheels*})",
+                          table = table,
                           wheels = wheel,
                           .con = db)
   query <- DBI::dbSendQuery(db, sql)
