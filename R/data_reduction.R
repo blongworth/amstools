@@ -81,6 +81,21 @@ doLBC <- function(fmmeas, fmblank, fmstd) {
 	fmmeas - fmblank * (fmstd - fmmeas) / fmstd
 }
 
+#' Determine error in blankfm
+#'
+#' Uses the "error floor" method from SNICSer
+#'
+#' @param blankfm
+#'
+#' @return
+#' @export
+#'
+#' @examples
+blankErr <- function(blankfm) {
+  mfm <- mean(blankfm)
+  sd <- sd(blankfm)
+  ifelse(sd > mfm / 2, sd, mfm / 2)
+}
 
 #' Propagate large blank error
 #'

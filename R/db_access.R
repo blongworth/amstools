@@ -509,7 +509,7 @@ getRecSR <- function(recnum) {
                              target.osg_num, gf_devel, gf_test, ws_r_d,
                              ws_method_num, ws_line_num, ws_strip_date,
                              ws_comments, ws_comment_code,
-                             ws_r_d, fm_corr, sig_fm_corr, dc13
+                             norm_ratio, fm_corr, sig_fm_corr, dc13
                           FROM snics_results
                           JOIN target ON snics_results.tp_num = target.tp_num
                           JOIN graphite ON target.osg_num = graphite.osg_num
@@ -517,6 +517,65 @@ getRecSR <- function(recnum) {
                           LEFT JOIN water_strip ON graphite.ws_num = water_strip.ws_num
                           WHERE target.rec_num IN ({recnums*})",
                           recnums = recnum,
+                          .con = db
+  )
+
+  recs <- odbc::dbSendQuery(db, query)
+  data <- odbc::dbFetch(recs)
+  odbc::dbClearResult(recs)
+  data
+}
+
+#' Get results by recnum from os
+#'
+#'
+#' @param recnum A vector of recnums
+#'
+#' @return A dataframe of summary statistics
+#' @export
+#'
+getRecOS <- function(recnum) {
+  db <- conNOSAMS()
+  query <- glue::glue_sql("SELECT target.tp_num, target.rec_num,
+                             target.osg_num, os_num, target_name,
+                             reported, dc13_analysis, f_modern,
+                             f_int_error, f_ext_error
+                          FROM os
+                          JOIN target ON os.tp_num = target.tp_num
+                          JOIN graphite ON target.osg_num = graphite.osg_num
+                          WHERE target.rec_num IN ({recnums*})",
+                          recnums = recnum,
+                          .con = db
+  )
+
+  recs <- odbc::dbSendQuery(db, query)
+  data <- odbc::dbFetch(recs)
+  odbc::dbClearResult(recs)
+  data
+}
+
+#' Get results by tpnum from snics_results
+#'
+#' @param tpnum A vector of tpnums
+#'
+#' @return A dataframe of summary statistics
+#' @export
+#'
+getTPnum <- function(tpnum) {
+  db <- conNOSAMS()
+  query <- glue::glue_sql("SELECT wheel, wheel_pos, sample_name,
+                             tp_date_pressed, target.tp_num, target.rec_num,
+                             target.osg_num, gf_devel, gf_test, ws_r_d,
+                             ws_method_num, ws_line_num, ws_strip_date,
+                             ws_comments, ws_comment_code,
+                             ws_r_d, fm_corr, sig_fm_corr, dc13
+                          FROM snics_results
+                          JOIN target ON snics_results.tp_num = target.tp_num
+                          JOIN graphite ON target.osg_num = graphite.osg_num
+                          JOIN dc13 ON snics_results.tp_num = dc13.tp_num
+                          LEFT JOIN water_strip ON graphite.ws_num = water_strip.ws_num
+                          WHERE target.rec_num IN ({tpnums*})",
+                          tpnums = tpnum,
                           .con = db
   )
 

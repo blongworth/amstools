@@ -49,6 +49,8 @@ readWheelfile <- function(wheel) {
 
 
 # TODO: this needs work!
+# check out https://nacnudus.github.io/spreadsheet-munging-strategies/
+# for hints on parsing odd shaped spreadsheet data programmatically.
 
 # #' Read SNICSer Output
 # #'
