@@ -130,7 +130,7 @@ doLBCerr <- function(fmmeas, fmblank, fmstd, fmmeaserr, fmblankerr) {
 #'
 #' @examples
 doMBC <- function(fmmeas, fmblank, massmeas, massblank) {
-    fmmeas + (fmmeas - fmblank) * massblank / massmeas
+    fmmeas + (fmmeas - fmblank) * massblank / (massmeas - massblank)
 }
 
 #' Propagate mass balance blank correction error
@@ -153,8 +153,8 @@ doMBC <- function(fmmeas, fmblank, massmeas, massblank) {
 #' @examples
 doMBCerr <- function(fmmeas, fmblank, massmeas, massblank,
                   fmmeaserr, fmblankerr, massmeaserr, massblankerr) {
-    sqrt(fmmeaserr ^ 2 * (1 + massblank / massmeas) ^ 2 +
-         massmeaserr ^ 2 * ((fmmeas - fmblank) * massblank / massmeas ^ 2) ^ 2 +
-         fmblankerr ^ 2 * (massblank / massmeas) ^ 2 +
-         massblankerr ^ 2 * ((fmmeas - fmblank) / massmeas) ^ 2)
+    sqrt(fmmeaserr ^ 2 * (1 + massblank / (massmeas - massblank)) ^ 2 +
+         (massmeaserr ^ 2 + massblankerr ^ 2) * ((fmmeas - fmblank) * massblank / (massmeas - massblank) ^ 2) ^ 2 +
+         fmblankerr ^ 2 * (massblank / (massmeas - massblank)) ^ 2 +
+         massblankerr ^ 2 * ((fmmeas - fmblank) / (massmeas - massblank)) ^ 2)
 }
