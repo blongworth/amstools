@@ -170,7 +170,8 @@ dctofm <- function(dc, yc) {
 
 #' Remove outliers by interquartile range
 #'
-#' This will return a vector without points outside of 3 * IQR
+#' Outliers are defined as points more than 1.5 * IQR above the
+#' third quartile or 1.5 * IQR below the first quartile.
 #'
 #' @param x A vector of numeric values
 #'
