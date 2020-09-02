@@ -4,14 +4,18 @@
 \alias{removeOutliers}
 \title{Remove outliers by interquartile range}
 \usage{
-removeOutliers(x)
+removeOutliers(x, multiplier = 1.5)
 }
 \arguments{
 \item{x}{A vector of numeric values}
+
+\item{multiplier}{A value to multiply by IQR}
 }
 \value{
 The vector with outliers replaced by `NA`
 }
 \description{
-This will return a vector without points outside of 3 * IQR
+Outliers are defined as points more than a multiplier * IQR above the
+third quartile or multiplier * IQR below the first quartile. The
+default multiplier is 1.5.
 }

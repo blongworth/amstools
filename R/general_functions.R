@@ -170,19 +170,21 @@ dctofm <- function(dc, yc) {
 
 #' Remove outliers by interquartile range
 #'
-#' Outliers are defined as points more than 1.5 * IQR above the
-#' third quartile or 1.5 * IQR below the first quartile.
+#' Outliers are defined as points more than a multiplier * IQR above the
+#' third quartile or multiplier * IQR below the first quartile. The
+#' default multiplier is 1.5.
 #'
 #' @param x A vector of numeric values
+#' @param multiplier A value to multiply by IQR
 #'
 #' @return The vector with outliers replaced by `NA`
 #' @export
 #'
-removeOutliers = function(x) {
+removeOutliers = function(x, multiplier = 1.5) {
   # Get Q1 and Q3
   qnt <-  quantile(x, probs=c(.25, .75))
 
-  iqt <- 1.5 * IQR(x)
+  iqt <- multiplier * IQR(x)
 
   # Apply on a copy of the original data
   y = x
