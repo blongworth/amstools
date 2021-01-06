@@ -506,7 +506,7 @@ getRecSR <- function(recnum) {
   db <- conNOSAMS()
   query <- glue::glue_sql("SELECT wheel, wheel_pos, sample_name,
                              tp_date_pressed, target.tp_num, target.rec_num,
-                             target.osg_num, gf_devel, gf_test, ws_r_d,
+                             target.osg_num, gf_devel, gf_test, water_strip.ws_num, ws_r_d,
                              ws_method_num, ws_line_num, ws_strip_date,
                              ws_comments, ws_comment_code,
                              norm_ratio, fm_corr, sig_fm_corr, dc13
@@ -632,4 +632,25 @@ con <- conNOSAMS()
   data <- odbc::dbFetch(query)
   odbc::dbClearResult(query)
   data
+}
+
+#' Get the process description for a target
+#'
+#' @param tp_num The numeric target identifier
+#' @param .con A odbc database connection The numeric target identifier
+#'
+#' @return A short character description for the process
+#' @export
+#'
+getProcessDesc <- function(tp_num, .con = con) {
+  #Check connection
+  if (missing(.con) || class(.con) != "Microsoft SQL Server") {
+    .con <- conNOSAMS()
+  }
+  # Get process id
+  df <- odbc::dbGetQuery(.con,
+                glue::glue_sql("SELECT
+                               [amsprod].[dbo].[fn_get_method_desc_tp] ({tp_num}); ",
+                               tp_num = tp_num))
+  df[1,1]
 }

@@ -4,10 +4,12 @@
 \alias{getWheel}
 \title{Get results for a list of wheel names.}
 \usage{
-getWheel(wheel)
+getWheel(wheel, test = FALSE)
 }
 \arguments{
 \item{wheel}{A vector of wheel names in character format}
+
+\item{test}{Get data from snics_results_test if true}
 }
 \value{
 A data frame of analysed data
