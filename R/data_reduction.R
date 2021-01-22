@@ -52,6 +52,18 @@ calcd13c <- function(he1312) {
 
 ## Normalize
 
+#' Normalize a run using the measured and consensus value of a standard
+#'
+#' @param sample Ratio to be normalized.
+#' @param standard Measured ratio of the standard.
+#' @param stdrat Consensus value of the standard.
+#'
+#' @return The normalized ratio of the sample.
+#' @export
+#'
+normRun <- function(sample, standard, stdrat = 1.0398) {
+  sample/standard * stdrat
+}
 
 # Find mean of stds
 normStds <- function(cor1412std, defstd) {
@@ -85,12 +97,11 @@ doLBC <- function(fmmeas, fmblank, fmstd) {
 #'
 #' Uses the "error floor" method from SNICSer
 #'
-#' @param blankfm
+#' @param blankfm A vector of normalized Fm's of blanks.
 #'
-#' @return
+#' @return An error for the given blanks.
 #' @export
 #'
-#' @examples
 blankErr <- function(blankfm) {
   mfm <- mean(blankfm)
   sd <- sd(blankfm)
@@ -99,17 +110,17 @@ blankErr <- function(blankfm) {
 
 #' Propagate large blank error
 #'
-#' @param fmmeas Normalized Fm of the sample
+#' @param fmmeas Normalized Fm of the sample(s)
 #' @param fmblank Normalized Fm of the blank
 #' @param fmstd Accepted Fm of the standard used for normalization
-#' @param fmmeaserr Measurement error of the sample
+#' @param fmmeaserr Measurement error of the sample(s)
 #' @param fmblankerr Measurement error of the blank
 #'
-#' @return
+#' @return A vector of propagated errors.
 #' @export
 #'
-#' @examples
 doLBCerr <- function(fmmeas, fmblank, fmstd, fmmeaserr, fmblankerr) {
+  # Check inputs: fmblank, fmstd, fmblankerr should be scalar, others dbl.
 	sqrt(fmmeaserr ^ 2 * (1 + fmblank / fmstd) ^ 2 +
 	     fmblankerr ^ 2 * ((fmmeas - fmstd) / fmstd) ^ 2)
 }
@@ -120,16 +131,16 @@ doLBCerr <- function(fmmeas, fmblank, fmstd, fmmeaserr, fmblankerr) {
 #' Note, use total mass - blank mass for mass of the sample
 #' if appropriate
 #'
-#' @param fmmeas Normalized Fm of the sample
+#' @param fmmeas Normalized Fm of the sample(s)
 #' @param fmblank Normalized Fm of the blank
-#' @param massmeas Mass of the sample
+#' @param massmeas Mass of the sample(s)
 #' @param massblank Mass of the blank
 #'
-#' @return
+#' @return A vector of mass balance corrected Fm.
 #' @export
 #'
-#' @examples
 doMBC <- function(fmmeas, fmblank, massmeas, massblank) {
+  # Check inputs: fmblank, massblank should be scalar, others dbl.
     fmmeas + (fmmeas - fmblank) * massblank / (massmeas - massblank)
 }
 
@@ -138,19 +149,18 @@ doMBC <- function(fmmeas, fmblank, massmeas, massblank) {
 #' Note, use total mass - blank mass for mass of the sample
 #' if appropriate
 #'
-#' @param fmmeas Normalized Fm of the sample
+#' @param fmmeas Normalized Fm of the sample(s)
 #' @param fmblank Normalized Fm of the blank
-#' @param massmeas Mass of the sample
+#' @param massmeas Mass of the sample(s)
 #' @param massblank Mass of the blank
-#' @param fmmeaserr Measurement error of the sample
+#' @param fmmeaserr Measurement error of the sample(s)
 #' @param fmblankerr Measurement error of the blank
-#' @param massmeaserr Mass error of the sample
+#' @param massmeaserr Mass error of the sample(s)
 #' @param massblankerr Mass error of the blank
 #'
-#' @return
+#' @return A vector of errors for blank corrected samples
 #' @export
 #'
-#' @examples
 doMBCerr <- function(fmmeas, fmblank, massmeas, massblank,
                   fmmeaserr, fmblankerr, massmeaserr, massblankerr) {
     sqrt(fmmeaserr ^ 2 * (1 + massblank / (massmeas - massblank)) ^ 2 +

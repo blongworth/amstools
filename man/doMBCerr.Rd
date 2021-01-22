@@ -16,24 +16,24 @@ doMBCerr(
 )
 }
 \arguments{
-\item{fmmeas}{Normalized Fm of the sample}
+\item{fmmeas}{Normalized Fm of the sample(s)}
 
 \item{fmblank}{Normalized Fm of the blank}
 
-\item{massmeas}{Mass of the sample}
+\item{massmeas}{Mass of the sample(s)}
 
 \item{massblank}{Mass of the blank}
 
-\item{fmmeaserr}{Measurement error of the sample}
+\item{fmmeaserr}{Measurement error of the sample(s)}
 
 \item{fmblankerr}{Measurement error of the blank}
 
-\item{massmeaserr}{Mass error of the sample}
+\item{massmeaserr}{Mass error of the sample(s)}
 
 \item{massblankerr}{Mass error of the blank}
 }
 \value{
-
+A vector of errors for blank corrected samples
 }
 \description{
 Note, use total mass - blank mass for mass of the sample

@@ -7,10 +7,10 @@
 blankErr(blankfm)
 }
 \arguments{
-\item{blankfm}{}
+\item{blankfm}{A vector of normalized Fm's of blanks.}
 }
 \value{
-
+An error for the given blanks.
 }
 \description{
 Uses the "error floor" method from SNICSer

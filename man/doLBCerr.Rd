@@ -7,18 +7,18 @@
 doLBCerr(fmmeas, fmblank, fmstd, fmmeaserr, fmblankerr)
 }
 \arguments{
-\item{fmmeas}{Normalized Fm of the sample}
+\item{fmmeas}{Normalized Fm of the sample(s)}
 
 \item{fmblank}{Normalized Fm of the blank}
 
 \item{fmstd}{Accepted Fm of the standard used for normalization}
 
-\item{fmmeaserr}{Measurement error of the sample}
+\item{fmmeaserr}{Measurement error of the sample(s)}
 
 \item{fmblankerr}{Measurement error of the blank}
 }
 \value{
-
+A vector of propagated errors.
 }
 \description{
 Propagate large blank error

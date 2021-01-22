@@ -7,16 +7,16 @@
 doMBC(fmmeas, fmblank, massmeas, massblank)
 }
 \arguments{
-\item{fmmeas}{Normalized Fm of the sample}
+\item{fmmeas}{Normalized Fm of the sample(s)}
 
 \item{fmblank}{Normalized Fm of the blank}
 
-\item{massmeas}{Mass of the sample}
+\item{massmeas}{Mass of the sample(s)}
 
 \item{massblank}{Mass of the blank}
 }
 \value{
-
+A vector of mass balance corrected Fm.
 }
 \description{
 Note, use total mass - blank mass for mass of the sample
