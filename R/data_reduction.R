@@ -39,7 +39,7 @@ doCor1412 <- function(he1412, he1312) {
 }
 
 # Calc internal error for a measurement
-calcSig1412 <- function(CntTotH, CntTotS, CntTotGT, cor1412) {
+calcSig1412 <- function(CntTotGT, cor1412, CntTotH = 1, CntTotS = 1) {
 RelErrSq <- (CntTotH - CntTotS) * CntTotH ^ 2 / CntTotS ^ 4 +
              CntTotH ^ 2 / CntTotGT / CntTotS ^ 2
 cor1412 * RelErrSq ^ 0.5
@@ -64,6 +64,43 @@ calcd13c <- function(he1312) {
 normRun <- function(sample, standard, stdrat = 1.0398) {
   sample/standard * stdrat
 }
+
+#' Calculate external (deviation of runs) error for a target
+#'
+#' @param normRat A vector of normalized ratios for a target
+#'
+#' @return The external error
+#' @export
+#'
+normRunExtErr <- function(normRat) {
+  n <- length(normRat)
+  meanRat <- mean(normRat)
+  sqrt((sum((normRat - meanRat)^2))/(n * (n - 1)))
+}
+
+#' Calculate internal (counting) error for a target.
+#'
+#' @param counts A vector of counts for each run of a target.
+#'
+#' @return The internal error
+#' @export
+#'
+normRunIntErr <- function(counts) {
+  1 / sqrt(sum(counts))
+}
+
+#' Mean ratio for a target, weighted by error
+#'
+#' @param normRat A vector of normalized ratios.
+#' @param normRatErr A vector of errors in measurements of the ratio.
+#'
+#' @return The weighted mean ratio for the target.
+#' @export
+#'
+meanRat <- function(normRat, normRatErr) {
+  (sum(normRat/normRatErr^2)/sum(1/normRatErr^2))
+}
+
 
 # Find mean of stds
 normStds <- function(cor1412std, defstd) {
