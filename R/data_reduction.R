@@ -42,7 +42,7 @@ doCor1412 <- function(he1412, he1312) {
 calcSig1412 <- function(CntTotGT, cor1412, CntTotH = 1, CntTotS = 1) {
 RelErrSq <- (CntTotH - CntTotS) * CntTotH ^ 2 / CntTotS ^ 4 +
              CntTotH ^ 2 / CntTotGT / CntTotS ^ 2
-cor1412 * RelErrSq ^ 0.5
+cor1412 * sqrt(RelErrSq)
 }
 
 # Calculate d13C
@@ -177,7 +177,15 @@ doLBCerr <- function(fmmeas, fmblank, fmstd, fmmeaserr, fmblankerr) {
 #' @export
 #'
 doMBC <- function(fmmeas, fmblank, massmeas, massblank) {
-  # Check inputs: fmblank, massblank should be scalar, others dbl.
+  # Check inputs
+  stopifnot(exprs = {
+    is.numeric(c(fmmeas, fmblank, massmeas, massblank))
+    fmmeas >= 0
+    fmblank >= 0
+    massblank >=0
+    massmeas > massblank
+  })
+
     fmmeas + (fmmeas - fmblank) * massblank / (massmeas - massblank)
 }
 
