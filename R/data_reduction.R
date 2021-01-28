@@ -178,12 +178,14 @@ doLBCerr <- function(fmmeas, fmblank, fmstd, fmmeaserr, fmblankerr) {
 #'
 doMBC <- function(fmmeas, fmblank, massmeas, massblank) {
   # Check inputs
+  # LBC leads to negative fm's, so testing inputs is tricky
+  # How should we handle these cases, data-wise?
   stopifnot(exprs = {
     is.numeric(c(fmmeas, fmblank, massmeas, massblank))
-    fmmeas >= 0
-    fmblank >= 0
-    massblank >=0
-    massmeas > massblank
+    #fmmeas >= 0
+    #fmblank >= 0
+    #massblank >=0
+    #massmeas > massblank
   })
 
     fmmeas + (fmmeas - fmblank) * massblank / (massmeas - massblank)
