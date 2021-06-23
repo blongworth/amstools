@@ -2,6 +2,7 @@
 # TODO: efficiency functions
 # TODO: Calculate confidence interval
 # TODO: better function for statistical normalization/standard (0 mean 1 var)
+# TODO: Error propagation for D14C and rcage
 
 #' Relative SD
 #'
@@ -147,6 +148,7 @@ rcage <- function(fm) {
 
 }
 
+
 #' Calculate Fm
 #'
 #' Calculate Fm from D14C
@@ -181,6 +183,9 @@ dctofm <- function(dc, yc) {
 #' @export
 #'
 removeOutliers = function(x, multiplier = 1.5) {
+  stopifnot(is.numeric(x),
+            is.numeric(multiplier),
+            length(multiplier) == 1)
   # Get Q1 and Q3
   qnt <-  quantile(x, probs=c(.25, .75))
 

@@ -14,28 +14,28 @@ test_that("LBC returns correct LBC Fm", {
         expect_equal(doLBC(1, 0, 1), 1)
         expect_equal(doLBC(0, 0, 1), 0)
         # ceylon should be no correction, but snics_results shows different cor val
-        expect_equal(doLBC(data[1,3], data[1,8], 1.0398), data[1,3])
-        # C-2 true value is different at 0.000001 level
-        expect_equal(doLBC(data[5,3], data[5,8], 1.0398), data[5,6])
-        # TIRI-I
-        expect_equal(doLBC(data[6,3], data[6,8], 1.0398), data[6,6])
+        expect_true(dplyr::near(doLBC(data[1,3], data[1,8], 1.0398), data[1,3]))
+        # C-8 OC true value is different at 0.000001 level
+        expect_true(dplyr::near(doLBC(data[5,3], data[5,8], 1.0398), data[5,6]))
+        # Small C-2 (lgblk from database)
+        expect_true(dplyr::near(doLBC(data[7,3], data[7,8], 1.0398), data[7,6]))
 
 })
 
 test_that("LBC works with vectors", {
         expect_equal(doLBC(c(1, 0), c(0, 0), c(1,1)), c(1, 0))
         expect_equal(doLBC(data[,3], data[,8], 1.0398), data[,6])
-
 })
+
 
 test_that("LBC returns correct LBC Fm error", {
   expect_equal(doLBCerr(fmmeas = 1, fmblank = 0, fmstd = 1, fmmeaserr = 0, fmblankerr = 0), 0) # sqrt 0
-  # ceylon should be no correction, but snics_results shows different cor val
-  expect_equal(doLBCerr(data[1,3], data[1,8], 1.0398, data[1,18], data[1,9]), data[1,7])
-  # C-2
-  expect_equal(doLBCerr(data[5,3], data[5,8], 1.0398, data[5,18], data[5,9]), data[5,7])
-  # TIRI-I
-  expect_equal(doLBCerr(data[6,3], data[6,8], 1.0398, data[6,18], data[6,9]), data[6,7])
+    # ceylon should be no correction, but snics_results shows different cor val
+    expect_true(dplyr::near(doLBCerr(data[1,3], data[1,8], 1.0398, data[1,18], data[1,9]), data[1,7]))
+    # C-8 OC true value is different at 0.000001 level
+    expect_true(dplyr::near(doLBCerr(data[5,3], data[5,8], 1.0398, data[5,18], data[5,9]), data[5,7]))
+    # Small C-2 (lgblk from database)
+    expect_true(dplyr::near(doLBCerr(data[7,3], data[7,8], 1.0398, data[7,18], data[7,9]), data[7,7]))
 })
 
 test_that("LBCerr works with vectors", {
@@ -61,14 +61,16 @@ test_that("doMBC returns NA when values are missing", {
 test_that("MBC returns correct MBC Fm", {
   expect_equal(doMBC(fmmeas = 1, fmblank = 1, massmeas = 1, massblank = 0), 1)
   expect_equal(doMBC(1, 0, 2, 1), 2)
-  expect_equal(doMBC(data[5,6], data[5,12], data[5,14], data[5,16]), data[5,10])
-  expect_equal(doMBC(data[6,6], data[6,12], data[6,14], data[6,16]), data[6,10])
+  #expect_equal(doMBC(1, 0, 1, 1), 2) # test for handling of massmeas = massblank
+  #expect_equal(doMBC(1, 0, 1, 2), 0) # test for massblank > massmeas
+  expect_true(dplyr::near(doMBC(data[5,6], data[5,12], data[5,14], data[5,16]), data[5,10]))
 })
 
 test_that("MBC works with vectors", {
   expect_equal(doMBC(c(1,1), c(1,0), c(1,2), c(0,1)), c(1,2))
   expect_equal(doMBC(data[,6], data[,12], data[,14], data[,16]), data[,10])
 })
+
 test_that("MBC returns correct MBC Fm Err", {
   expect_equal(doMBCerr(1, 0, 1, 0, 0, 0, 0, 0), 0) # sqrt 0
   expect_equal(doMBCerr(data[5,6], data[5,12], data[5,14], data[5,16],
@@ -84,4 +86,3 @@ test_that("MBCErr works with vectors", {
                      data[,7], data[,13], data[,15], data[,17]),
                data[,11])
 })
-

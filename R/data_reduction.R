@@ -50,6 +50,7 @@ calcd13c <- function(he1312) {
 	1000 * (he1312 / 1.12372 -1)
 }
 
+
 ## Normalize
 
 #' Normalize a run using the measured and consensus value of a standard
