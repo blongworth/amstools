@@ -92,4 +92,7 @@ test_that("blankErr returns correct blank", {
   expect_equal(blankErr(1,1), 1)
   expect_equal(blankErr(4, 1), 2)
   expect_equal(blankErr(c(2,2)), 1)
+  expect_equal(blankErr(data[c(4, 59), 3]), data[4, 9])
+  expect_equal(blankErr(data[c(4, 59), 3], data[c(4, 59), 18]), data[4, 9])
+
 })
