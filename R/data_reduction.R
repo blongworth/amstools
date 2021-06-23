@@ -136,13 +136,28 @@ doLBC <- function(fmmeas, fmblank, fmstd) {
 #' Uses the "error floor" method from SNICSer
 #'
 #' @param blankfm A vector of normalized Fm's of blanks.
+#' @param blankerr An optional vector of normalized Fm errors of blanks.
 #'
 #' @return An error for the given blanks.
 #' @export
 #'
-blankErr <- function(blankfm) {
+blankErr <- function(blankfm, blankerr = NULL) {
+  if (is.null(blankerr)) {
+    sd <- sd(blankfm)
+  } else {
+    if (length(blankfm) != length(blankerr)) {
+      stop("blankfm and blankerr must be of equal length")
+    }
+
+    if (length(blankfm) == 1) {
+      sd <- blankerr
+    } else {
+      merr <- mean(blankerr)
+      sd <- sd(blankfm)
+      sd <- ifelse(merr > sd, merr, sd)
+    }
+  }
   mfm <- mean(blankfm)
-  sd <- sd(blankfm)
   ifelse(sd > mfm / 2, sd, mfm / 2)
 }
 

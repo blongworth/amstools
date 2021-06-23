@@ -86,3 +86,10 @@ test_that("MBCErr works with vectors", {
                      data[,7], data[,13], data[,15], data[,17]),
                data[,11])
 })
+
+test_that("blankErr returns correct blank", {
+  expect_equal(blankErr(1), NA) # can't calc error on one meas without error
+  expect_equal(blankErr(1,1), 1)
+  expect_equal(blankErr(4, 1), 2)
+  expect_equal(blankErr(c(2,2)), 1)
+})
