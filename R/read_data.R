@@ -40,7 +40,6 @@ mungeResfile  <- function (data) {
 #' @param wheel character. A USAMS format wheelfile/runlist.
 #'
 #' @return A data frame containing the wheelfile
-#' @export
 readWheelfile <- function(wheel) {
   # won't work for CFAMS wheels
   read.delim(file)
