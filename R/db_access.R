@@ -16,16 +16,54 @@ checkDB  <- function(data) {
   }
 }
 
+#' Store DB credentials
+#'
+#' Stores database credentials in the secure system key store.
+#'
+#' @param username NOSAMS DB username
+#' @param database Database to connect to. Defaults to "nosams-prod".
+#'
+#' @return
+#' @export
+#'
+store_credentials <- function(username, database = "nosams-prod") {
+  keyring::key_set(service = database,
+                   username = username)
+}
 
 #' Open NOSAMS DB connection
 #'
-#' Takes a connection string from the CONSTRING environment variable.
+#' Uses credentials for database from system key store if found,
+#' takes a connection string from the CONSTRING environment variable
+#' if not found in key store.
+#'
+#' @param database Database to connect to. Defaults to "nosams-prod".
+#'
+#' @seealso \code{\link{store_credentials}} to store user credentials
+#' in the system key store.
 #'
 #' @return An odbc db connection object
 #' @export
 #'
-conNOSAMS  <- function() {
-  odbc::dbConnect(odbc::odbc(), .connection_string = Sys.getenv("CONSTRING"))
+conNOSAMS  <- function(database = "nosams-prod") {
+  credentials <- tryCatch(
+    error = function(cond) {
+      warning(paste(database, "not found in key store. Trying CONSTRING."))
+      constring <- Sys.getenv("CONSTRING")
+      ptrn <- "^.*UID=(\\w+);PWD=(.+)$"
+      list(username = gsub(ptrn, "\\1", constring),
+           password = gsub(ptrn, "\\2", constring))
+      },
+    {
+      username <- keyring::key_list(database)[1,2]
+      list(username = username,
+           password = keyring::key_get(database, username))
+    }
+  )
+  odbc::dbConnect(odbc::odbc(),
+                  DSN      = database,
+                  UID      = credentials$username,
+                  PWD      = credentials$password)
 }
 
 

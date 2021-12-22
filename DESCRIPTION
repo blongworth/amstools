@@ -20,7 +20,8 @@ Imports:
     DBI,
     glue,
     knitr,
-    rmarkdown
-RoxygenNote: 7.1.1
+    rmarkdown,
+    keyring
+RoxygenNote: 7.1.2
 Suggests: testthat
 VignetteBuilder: knitr
