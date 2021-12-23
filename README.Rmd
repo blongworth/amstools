@@ -23,25 +23,44 @@ a given period.
 
 ## Installation
 
-You can install amstools from github with:
+You can install `amstools` from github with:
 
 ```{r gh-installation, eval = FALSE}
 install.packages("devtools")
 devtools::install_github("blongworth/amstools")
 ```
 
-To interact with the NOSAMS DB, you'll need the odbc package installed and
-a working connection to the NOSAMS database via ODBC. An ODBC connection string
-should be stored in an environment variable called CONSTRING. The package has
-been tested with the Microsoft MSSQL driver on Windows and Mac OS X, and with
-the unixODBC and FreeTDS drivers on Linux.
+Load the package with:
 
-If a Data Source Name (DSN) is set up within your odbc system, a CONSTRING
-variable in the following format will work:
+```{r}
+library(amstools)
+```
+
+
+### Database connection
+
+To interact with the NOSAMS DB, you'll need
+a working connection to the NOSAMS database via ODBC. `amstools` can store and 
+retrieve credentials via the system key store. To store your credentials, run `store_credentials("username")` after installing and loading the package (`library(amstools)`). 
+
+If you can not use the system key store, an ODBC connection string
+stored in an environment variable called `CONSTRING` can be used as a less secure option. The connection string should reference a Data Source Name (DSN) set up within your odbc system. `CONSTRING` should have this format: 
 
 ```
 "DSN=database;UID=username;PWD=password"
 ```
 
-This can be done from R with the `Sys.setenv` command, but this may or may not
-be persistent depending on your environment.
+`amstools` has been tested with the Microsoft MSSQL driver on Windows and Mac OS X, and with
+the unixODBC and FreeTDS drivers on Linux.
+
+## Retrieving data
+
+Functions for retrieving data and information for samples by wheel and by receipt number are available. 
+
+To get data for a receipt number, run `getRecSR()`:
+
+```{r, eval = FALSE}
+getRecSR(recnum = 1082)
+```
+
+The result is returned as a dataframe.
