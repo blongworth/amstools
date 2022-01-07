@@ -38,8 +38,8 @@ sumWheelStdsSR <- function(wheel) {
   # group by wheel and generate summary
   data %>%
     filter(fm_corr > 0.1) %>%
-    mutate(normfm = normFm(fm_corr, fm_cons),
-           sigma = sigma(fm_corr, fm_cons, sig_fm_corr)) %>%
+    mutate(normfm = amsdata::normFm(fm_corr, fm_cons),
+           sigma = amsdata::sigma(fm_corr, fm_cons, sig_fm_corr)) %>%
     group_by(wheel) %>%
     dplyr::summarize(sigma.m = mean(sigma, na.rm = TRUE),
               sigma.sd = sd(sigma, na.rm = TRUE),
