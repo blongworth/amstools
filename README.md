@@ -6,17 +6,18 @@
 Amstools is a (mostly) NOSAMS specific package for working with AMS data
 and the NOSAMS database. The goal of amstools is to provide functions
 for common AMS data tasks, like getting data for a wheel, sample type,
-or any group of samples from the database. It provides functions for
-converting AMS data among common formats, and useful bits like how many
-samples and wheels were run in a given period.
+or any group of samples from the database, and useful bits like how many
+samples and wheels were run in a given period. Functions for converting
+AMS data among common formats and AMS data reduction are provided in a
+companion package, `amsdata`, also available from github.
 
 ## Installation
 
 You can install `amstools` from github with:
 
 ``` r
-install.packages("devtools")
-devtools::install_github("blongworth/amstools")
+install.packages("remotes")
+remotes::install_github("blongworth/amstools")
 ```
 
 Load the package with:

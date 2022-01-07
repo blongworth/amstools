@@ -7,12 +7,13 @@ Authors@R: person("Brett", "Longworth", email = "blongworth@whoi.edu",
                   role = c("aut", "cre"))
 Description: A very domain-specific set of tools for reading,
     and analysing AMS data. Functions are provided for reading from files
-    or the NOSAMS database, reducing data in various ways, and producing
+    or the NOSAMS database, combining results, and producing
     useful reports.
 Depends: R(>= 2.10)
 License: GPL-3 + file LICENSE
 LazyData: TRUE
 Imports:
+    amsdata,
     dplyr,
     purrr,
     ggplot2,
