@@ -79,6 +79,18 @@ readWheelfile <- function(wheel) {
 #   }
 # }
 
+#' Read BATS format MICADAS output from Excel files
+#'
+#' @param file Path to BATS file
+#'
+#' @return A parsed dataframe of MICADAS results
+#' @export
+#'
+read_bats <- function(file) {
+  readxl::read_xls(file, skip = 4,na = "null") |>
+    janitor::clean_names() |>
+    dplyr::mutate(timestamp = as.POSIXct(date_time, format='%d.%m.%Y %H:%M:%S'))
+}
 
 # pull data on a target by tp_num
 
