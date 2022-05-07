@@ -20,7 +20,7 @@ checkDB  <- function(data) {
 #'
 #' Stores database credentials in the secure system key store.
 #'
-#' @param username NOSAMS DB username
+#' @param username DB username
 #' @param database Database to connect to. Defaults to "nosams-prod".
 #'
 #' @return
@@ -66,6 +66,28 @@ conNOSAMS  <- function(database = "nosams-prod") {
                   PWD      = credentials$password)
 }
 
+#' Open MICADAS DB connection
+#'
+#' Uses credentials for database from system key store.
+#'
+#' @param database Database to connect to. Defaults to "db_ac14".
+#'
+#' @seealso \code{\link{store_credentials}} to store user credentials
+#' in the system key store.
+#'
+#' @return A MariaDB connection object
+#' @export
+#'
+conMICADAS  <- function(database = "db_ac14") {
+  username <- keyring::key_list(database)[1,2]
+  credentials <- list(username = username,
+                      password = keyring::key_get(database, username))
+  odbc::dbConnect(RMariaDB::MariaDB(),
+                  host = 'nosams-inst2.whoi.edu',
+                  dbname = database,
+                  username = credentials$username,
+                  password = credentials$password)
+}
 
 #' Get secondary data from qc table
 #'

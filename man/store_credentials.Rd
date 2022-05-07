@@ -7,7 +7,7 @@
 store_credentials(username, database = "nosams-prod")
 }
 \arguments{
-\item{username}{NOSAMS DB username}
+\item{username}{DB username}
 
 \item{database}{Database to connect to. Defaults to "nosams-prod".}
 }
