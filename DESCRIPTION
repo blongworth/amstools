@@ -19,6 +19,7 @@ Imports:
     ggplot2,
     odbc,
     DBI,
+    RMariaDB,
     glue,
     knitr,
     rmarkdown,
