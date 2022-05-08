@@ -16,5 +16,6 @@ write_snics_results <- function(snics_df, filename) {
   #readr::write_tsv(snics_df, filename, append = TRUE)
   write.table(snics_df, filename,
               append = TRUE, quote = FALSE,
-              sep = "\t", col.names = FALSE)
+              sep = "\t", col.names = FALSE,
+              row.names = FALSE)
 }
