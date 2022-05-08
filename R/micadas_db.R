@@ -14,6 +14,7 @@ get_magazine <- function(magazine) {
                           .con = db)
   query <- DBI::dbSendQuery(db, sql)
   data <- DBI::dbFetch(query)
+  DBI::dbClearResult(query)
   checkDB(data)
   DBI::dbDisconnect(db)
   data
@@ -39,34 +40,47 @@ convert_micadas_snics <- function(micadas_df) {
     dplyr::ungroup() %>%
     mutate(timestamp = t <- strptime(TIMEDAT, "%F %T"),
            RunCompletionTime = format(timestamp, "%a %b %d %H:%M:%S %Y"),
-           SampleName = "Unk",
-           Num = "U",
+           Num = dplyr::case_when(type == "bl" ~ "B",
+                           type == "oxa1" ~ "S",
+                           TRUE ~ "U"),
            Cycles = RUNTIME * 10,
            le12C = ANA * 1E-6,
            le13C = NA,
            he12C = A * 1E-6,
            he13C = B * 1E-6,
-           CntTotH = R,
-           CntTotS = R,
-           CntTotGT = R,
            he1312 = BA,
            he1412 = RA
     ) %>%
     select(`Run Completion Time` = RunCompletionTime,
            Pos = position,
            Meas,
-           `Sample Name` = SampleName,
+           `Sample Name` = user_label,
            Num,
            Cycles,
            le12C,
            le13C,
            he12C,
            he13C,
-           CntTotH,
-           CntTotS,
-           CntTotGT,
+           CntTotH = R,
+           CntTotS = R,
+           CntTotGT = R,
            `13/12he` = he1312,
            `14/12he` = he1412
     )
 }
 
+#' Get MICADAS results and write SNICS resultsfile
+#'
+#' @param magazine
+#' @param filename
+#'
+#' @return Silently returns a dataframe of MICADAS data
+#' @export
+#'
+make_micadas_resultsfile <- function(magazine, filename) {
+  df <- get_magazine(magazine) %>%
+    convert_micadas_snics()
+
+  write_snics_results(df, filename)
+  invisible(df)
+}
