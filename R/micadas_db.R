@@ -1,5 +1,16 @@
 # Functions for interacting with MICADAS DB
 
+#' Get a list of MICADAS magazines
+#'
+#' @return A character vector of magazine names
+#' @export
+list_magazines <- function() {
+  db <- conMICADAS()
+  mags <- DBI::dbGetQuery(db, "SELECT DISTINCT magazine FROM target_v")
+  DBI::dbDisconnect(db)
+  mags[[1]]
+}
+
 #' Get run data for a list of magazine names.
 #'
 #' @param magazine A vector of magazine names in character format
