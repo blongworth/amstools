@@ -14,16 +14,17 @@ License: GPL-3 + file LICENSE
 LazyData: TRUE
 Imports:
     amsdata,
-    dplyr,
-    purrr,
-    ggplot2,
-    odbc,
     DBI,
-    RMariaDB,
+    dplyr,
+    ggplot2,
     glue,
+    janitor,
+    keyring,
     knitr,
+    odbc,
+    purrr,
     rmarkdown,
-    keyring
+    RMariaDB
 RoxygenNote: 7.1.2
 Suggests: testthat
 VignetteBuilder: knitr
