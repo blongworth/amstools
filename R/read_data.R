@@ -87,7 +87,7 @@ readWheelfile <- function(wheel) {
 #' @export
 #'
 read_bats <- function(file) {
-  readxl::read_xls(file, skip = 4,na = "null") |>
+  readxl::read_excel(file, skip = 4,na = "null") |>
     janitor::clean_names() |>
     dplyr::mutate(timestamp = as.POSIXct(date_time, format='%d.%m.%Y %H:%M:%S'))
 }
