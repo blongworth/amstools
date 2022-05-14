@@ -7,7 +7,9 @@
 make_micadas_resultsfile(magazine, filename)
 }
 \arguments{
-\item{filename}{}
+\item{magazine}{Name of MICADAS magazine to convert.}
+
+\item{filename}{Path and name of SNICS-style results file to write.}
 }
 \value{
 Silently returns a dataframe of MICADAS data

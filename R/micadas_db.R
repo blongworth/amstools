@@ -42,7 +42,6 @@ get_magazine <- function(magazine) {
 #' @return A dataframe in SNICS Results format
 #' @export
 #'
-#' @examples
 convert_micadas_snics <- function(micadas_df) {
   # Convert to snics results format
   micadas_df %>%
@@ -82,8 +81,8 @@ convert_micadas_snics <- function(micadas_df) {
 
 #' Get MICADAS results and write SNICS resultsfile
 #'
-#' @param magazine
-#' @param filename
+#' @param magazine Name of MICADAS magazine to convert.
+#' @param filename Path and name of SNICS-style results file to write.
 #'
 #' @return Silently returns a dataframe of MICADAS data
 #' @export
