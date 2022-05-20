@@ -4,9 +4,11 @@
 \alias{conMICADAS}
 \title{Open MICADAS DB connection}
 \usage{
-conMICADAS(database = "db_ac14")
+conMICADAS(username = "nosams-ro", database = "db_ac14")
 }
 \arguments{
+\item{username}{Username to use for connection. Defaults to "nosams-ro".}
+
 \item{database}{Database to connect to. Defaults to "db_ac14".}
 }
 \value{

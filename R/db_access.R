@@ -69,6 +69,7 @@ conNOSAMS  <- function(database = "nosams-prod") {
 #'
 #' Uses credentials for database from system key store.
 #'
+#' @param username Username to use for connection. Defaults to "nosams-ro".
 #' @param database Database to connect to. Defaults to "db_ac14".
 #'
 #' @seealso \code{\link{store_credentials}} to store user credentials
@@ -77,8 +78,8 @@ conNOSAMS  <- function(database = "nosams-prod") {
 #' @return A MariaDB connection object
 #' @export
 #'
-conMICADAS  <- function(database = "db_ac14") {
-  username <- keyring::key_list(database)[1,2]
+conMICADAS  <- function(username = "nosams-ro", database = "db_ac14") {
+  # username <- keyring::key_list(database)[1,2]
   credentials <- list(username = username,
                       password = keyring::key_get(database, username))
   odbc::dbConnect(RMariaDB::MariaDB(),
