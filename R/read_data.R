@@ -51,33 +51,39 @@ readWheelfile <- function(wheel) {
 # check out https://nacnudus.github.io/spreadsheet-munging-strategies/
 # for hints on parsing odd shaped spreadsheet data programmatically.
 
-# #' Read SNICSer Output
-# #'
-# #' Reads normalized and blank corrected data from SNICSer blank correction
-# #' "print" output. Files should be in tsv format with standard SNICS
-# #' headers.
-# #'
-# #' @param file character. A SNICSer format file with path.
-# #'
-# #' @return A list of data tables for each chunk in file.
-# #' @export
-# #'
-# readSnicsfile <- function(wheel) {
-#
-#   # read the file by lines
-#   con <- file(wheel, open = "r")
-#   lines <- readLines(con)
-#   for (line in 15:length(lines)) {
-#     if (!('\t' %in% lines[line])) {
-#       name <- lines[line]
-#       namei <- 1
-#       line <- line + 1
-#       while (!(lines[line] == "")) {
-#         unlist(strsplit(lines[line], split = "\t"))
-#       }
-#     }
-#   }
-# }
+#' Read SNICSer Output
+#'
+#' Reads normalized and blank corrected data from SNICSer blank correction
+#' "print" output. Files should be in tsv format with standard SNICS
+#' headers.
+#'
+#' @param resfile character. A SNICSer format file with path.
+#'
+#' @return A list of data tables for each chunk in file.
+#' @export
+#'
+read_snics_file <- function(resfile) {
+
+  # read the file by lines
+  con <- file(resfile, open = "r")
+  lines <- readLines(con)
+
+  # get list of result blocks
+  stds <- match("Standards", lines)
+  rest <- lines[stds:length(lines)]
+  out <- split(rest[rest != ""], cumsum(rest == "")[rest != ""])
+
+  # Extract named tibble from block
+  sn_table <- function(x) {
+    out <- readr::read_tsv(I(x[2:length(x)]))
+    out <- list(out)
+    names(out) <- x[1]
+    out
+  }
+
+  # Extract all result blocks as list
+  purrr::map(out, sn_table)
+}
 
 #' Read BATS format MICADAS output from Excel files
 #'
