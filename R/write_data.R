@@ -5,7 +5,6 @@
 #' @param snics_df A dataframe in SNICS_results format
 #' @param filename Filename to write to.
 #'
-#' @return
 #' @export
 #'
 write_snics_results <- function(snics_df, filename) {
@@ -18,4 +17,5 @@ write_snics_results <- function(snics_df, filename) {
               append = TRUE, quote = FALSE,
               sep = "\t", na = "42",
               col.names = FALSE, row.names = FALSE)
+  invisible(snics_df)
 }

@@ -11,9 +11,6 @@ write_snics_results(snics_df, filename)
 
 \item{filename}{Filename to write to.}
 }
-\value{
-
-}
 \description{
 Write out tsv file in SNICS results format
 }

@@ -23,7 +23,6 @@ checkDB  <- function(data) {
 #' @param username DB username
 #' @param database Database to connect to. Defaults to "nosams-prod".
 #'
-#' @return
 #' @export
 #'
 store_credentials <- function(username, database = "nosams-prod") {

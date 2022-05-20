@@ -11,9 +11,6 @@ store_credentials(username, database = "nosams-prod")
 
 \item{database}{Database to connect to. Defaults to "nosams-prod".}
 }
-\value{
-
-}
 \description{
 Stores database credentials in the secure system key store.
 }
