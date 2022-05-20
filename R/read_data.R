@@ -47,13 +47,10 @@ readWheelfile <- function(wheel) {
 }
 
 
-# TODO: this needs work!
-# check out https://nacnudus.github.io/spreadsheet-munging-strategies/
-# for hints on parsing odd shaped spreadsheet data programmatically.
-
-#' Read SNICSer Output
+#' Read Fudger or SNICSer Output
 #'
-#' Reads normalized and blank corrected data from SNICSer blank correction
+#' Reads normalized and blank corrected data in Fudger format
+#' from Fudger or SNICSer blank correction
 #' "print" output. Files should be in tsv format with standard SNICS
 #' headers.
 #'
@@ -62,7 +59,7 @@ readWheelfile <- function(wheel) {
 #' @return A list of data tables for each chunk in file.
 #' @export
 #'
-read_snics_file <- function(resfile) {
+read_fudger <- function(resfile) {
 
   # read the file by lines
   con <- file(resfile, open = "r")
@@ -75,14 +72,15 @@ read_snics_file <- function(resfile) {
 
   # Extract named tibble from block
   sn_table <- function(x) {
-    out <- readr::read_tsv(I(x[2:length(x)]))
+    out <- readr::read_tsv(I(x[2:length(x)]), show_col_types = FALSE)
     out <- list(out)
     names(out) <- x[1]
     out
   }
 
   # Extract all result blocks as list
-  purrr::map(out, sn_table)
+  purrr::map(out, sn_table) |>
+    purrr::flatten()
 }
 
 #' Read BATS format MICADAS output from Excel files
