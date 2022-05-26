@@ -85,15 +85,26 @@ read_fudger <- function(resfile) {
 
 #' Read BATS format MICADAS output from Excel files
 #'
+#' BATS writes files in Excel 2003 xml format
+#' File must be converted to `xlsx` format by opening and
+#' saving in Excel
+#'
 #' @param file Path to BATS file
 #'
 #' @return A parsed dataframe of MICADAS results
 #' @export
 #'
 read_bats <- function(file) {
-  readxl::read_excel(file, skip = 4,na = "null") |>
-    janitor::clean_names() |>
-    dplyr::mutate(timestamp = as.POSIXct(date_time, format='%d.%m.%Y %H:%M:%S'))
+  col_names <- c('sample_nr',	'sample_label', 'sample_label_nr',
+  'measurement_comment', 'target_comment', 'counts',	'c12', 'c1412',
+  'int_err_c1412', 'c1312', 'sigma', 'f14c', 'int_err_f14c', 'ext_err_f14c',
+  'age', 'sig_age', 'd13c', 'mass', 'c13h', 'user', 'position', 'timestamp')
+  col_types <- c(rep('text', 5), rep('numeric', 14), 'text', 'numeric', 'text')
+  readxl::read_excel(file, skip = 5,na = "null",
+                    col_names = col_names,
+                    col_types = col_types) |>
+    dplyr::filter(!is.na(counts)) |>
+    dplyr::mutate(timestamp = as.POSIXct(timestamp, format='%d.%m.%Y %H:%M:%S'))
 }
 
 # pull data on a target by tp_num
