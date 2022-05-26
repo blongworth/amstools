@@ -23,6 +23,7 @@ Imports:
     knitr,
     odbc,
     purrr,
+    readr,
     rmarkdown,
     RMariaDB
 RoxygenNote: 7.2.0
