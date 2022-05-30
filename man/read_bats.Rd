@@ -13,5 +13,7 @@ read_bats(file)
 A parsed dataframe of MICADAS results
 }
 \description{
-Read BATS format MICADAS output from Excel files
+BATS writes files in Excel 2003 xml format
+File must be converted to `xlsx` format by opening and
+saving in Excel
 }

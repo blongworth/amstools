@@ -89,6 +89,16 @@ conMICADAS  <- function(username = "nosams-ro", database = "db_ac14") {
                   password = credentials$password)
 }
 
+#' Get a list of wheels
+#'
+#' @return A character vector of wheel/magazine names
+#' @export
+list_wheels <- function() {
+  db <- conNOSAMS()
+  wheels <- DBI::dbGetQuery(db, "SELECT DISTINCT wheel_id FROM wheel_pos")
+  DBI::dbDisconnect(db)
+  wheels[[1]]
+}
 #' Get secondary data from qc table
 #'
 #' @param from Character vector of date in form 'YYYY-MM-DD'.
