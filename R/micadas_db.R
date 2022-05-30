@@ -6,7 +6,9 @@
 #' @export
 list_magazines <- function() {
   db <- conMICADAS()
-  mags <- DBI::dbGetQuery(db, "SELECT DISTINCT magazine FROM target_v")
+  mags <- DBI::dbGetQuery(db, "SELECT DISTINCT MAGAZINE
+                               FROM workproto_v_nt
+                               ORDER BY TIMEDAT")
   DBI::dbDisconnect(db)
   mags[[1]]
 }
