@@ -80,8 +80,19 @@ conNOSAMS  <- function(database = "nosams-prod") {
 #'
 conMICADAS  <- function(username = "nosams-ro", database = "db_ac14") {
   # username <- keyring::key_list(database)[1,2]
-  credentials <- list(username = username,
-                      password = keyring::key_get(database, username))
+  credentials <- tryCatch(
+    error = function(cond) {
+      warning(paste(database, "not found in key store. Trying CONSTRING."))
+      constring <- Sys.getenv("MICAD_CONSTRING")
+      ptrn <- "^.*UID=(\\w+);PWD=(.+)$"
+      list(username = gsub(ptrn, "\\1", constring),
+           password = gsub(ptrn, "\\2", constring))
+    },
+    {
+      credentials <- list(username = username,
+                          password = keyring::key_get(database, username))
+    }
+  )
   odbc::dbConnect(RMariaDB::MariaDB(),
                   host = 'nosams-inst2.whoi.edu',
                   dbname = database,
