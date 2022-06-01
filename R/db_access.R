@@ -79,14 +79,11 @@ conNOSAMS  <- function(database = "nosams-prod") {
 #' @export
 #'
 conMICADAS  <- function(username = "nosams-ro", database = "db_ac14") {
-  # username <- keyring::key_list(database)[1,2]
   credentials <- tryCatch(
     error = function(cond) {
-      warning(paste(database, "not found in key store. Trying CONSTRING."))
-      constring <- Sys.getenv("MICAD_CONSTRING")
-      ptrn <- "^.*UID=(\\w+);PWD=(.+)$"
-      list(username = gsub(ptrn, "\\1", constring),
-           password = gsub(ptrn, "\\2", constring))
+      warning(paste(database, "not found in key store. Trying MICAD_PASS."))
+      list(username = username,
+           password = Sys.getenv("MICAD_PASS"))
     },
     {
       credentials <- list(username = username,
