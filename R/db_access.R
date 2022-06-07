@@ -259,7 +259,8 @@ getStandards <- function (from,
       no_os.dc13,
       no_os.q_flag,
       snics_results.sample_type,
-      snics_results.sample_type_1
+      snics_results.sample_type_1,
+      standards.Fm_cons
     FROM no_os
     INNER JOIN target
       ON no_os.tp_num = target.tp_num
