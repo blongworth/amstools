@@ -1,6 +1,6 @@
 ---
 params:
-  rec: 148044
+  rec: 177225
 title: "Data for rec_num `r sprintf('%i', params$rec)`"
 author: "BEL"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
@@ -10,6 +10,7 @@ output: html_document
 ```{r echo=FALSE, message=FALSE}
 #Load Libraries
 library(amstools)
+library(amsdata)
 library(ggplot2)
 library(dplyr)
 library(knitr)

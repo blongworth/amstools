@@ -10,6 +10,7 @@ output: html_document
 ```{r echo=FALSE, message=FALSE}
 #Load Libraries
 library(amstools)
+library(amsdata)
 library(ggplot2)
 library(dplyr)
 library(knitr)

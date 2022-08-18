@@ -585,7 +585,8 @@ getRecSR <- function(recnum) {
   db <- conNOSAMS()
   query <- glue::glue_sql("SELECT wheel, wheel_pos, sample_name,
                              tp_date_pressed, target.tp_num, target.rec_num,
-                             target.osg_num, gf_devel, gf_test, water_strip.ws_num, ws_r_d,
+                             target.osg_num, gf_devel, gf_test, gf_co2_qty,
+                             water_strip.ws_num, ws_r_d,
                              ws_method_num, ws_line_num, ws_strip_date,
                              ws_comments, ws_comment_code,
                              norm_ratio, fm_corr, sig_fm_corr, dc13

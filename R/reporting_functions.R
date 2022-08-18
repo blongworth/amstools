@@ -12,7 +12,7 @@
 #' @export
 #'
 recReport <- function(rec) {
-  rmarkdown::render(system.file("rmd/recReport.Rmd", package="amstools"),
+  rmarkdown::render(system.file("rmd/recReportSR.Rmd", package="amstools"),
                     output_file = paste0(rec, ".html"),
                     output_dir = getwd(),
                     params = list(

@@ -96,3 +96,30 @@ make_micadas_resultsfile <- function(magazine, filename) {
   write_snics_results(df, filename)
   invisible(df)
 }
+
+#' Get BATS results from MICADAS DB
+#'
+#' @param magazine Name of MICADAS magazine
+#'
+#' @return A dataframe of BATS results
+#' @export
+#'
+get_bats_results <- function(magazine) {
+  db <- conMICADAS(database = 'db_ams')
+  sql <- glue::glue_sql("SELECT *
+                  FROM target_t
+                  WHERE magazine IN ({magazines*})",
+                          magazines = magazine,
+                          .con = db)
+  query <- DBI::dbSendQuery(db, sql)
+  data <- DBI::dbFetch(query)
+  DBI::dbClearResult(query)
+  checkDB(data)
+  DBI::dbDisconnect(db)
+  data
+
+}
+
+add_micadas_sampletype <- function(variables) {
+
+}
