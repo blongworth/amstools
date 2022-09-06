@@ -535,10 +535,10 @@ getWheelStds <- function(wheel) {
                     ON target.rec_num = s.rec_num
                     WHERE wheel_id = ?"
 
-  wheels <- odbc::dbSendQuery(db, query)
-  dbBind(wheels, list(wheel))
-  data <- dbFetch(wheels)
-  dbClearResult(wheels)
+  wheels <- DBI::dbSendQuery(db, query)
+  DBI::dbBind(wheels, list(wheel))
+  data <- DBI::dbFetch(wheels)
+  DBI::dbClearResult(wheels)
   data
 }
 
@@ -566,10 +566,10 @@ getWheelStdsSR <- function(wheel) {
                       ON s.rec_num = target.rec_num
                     WHERE wheel = ?"
 
-  wheels <- odbc::dbSendQuery(db, query)
-  dbBind(wheels, list(wheel))
-  data <- dbFetch(wheels)
-  dbClearResult(wheels)
+  wheels <- DBI::dbSendQuery(db, query)
+  DBI::dbBind(wheels, list(wheel))
+  data <- DBI::dbFetch(wheels)
+  DBI::dbClearResult(wheels)
   data
 }
 
