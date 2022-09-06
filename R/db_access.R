@@ -554,17 +554,20 @@ getWheelStdsSR <- function(wheel) {
   # sd of sigma
   # mean NormFm
   db <- conNOSAMS()
-  query <- "SELECT wheel, wheel_pos, sample_name, target.rec_num, target.osg_num,
-                      fm_corr, sig_fm_corr, del_13c,
-                      s.fm_cons, s.d13_cons
-                    FROM snics_results
-                    JOIN target
-                      ON snics_results.tp_num = target.tp_num
-                    JOIN (SELECT rec_num, Fm_cons, d13_cons
-                          FROM standards WHERE Fm_cons IS NOT NULL)
-                        AS s
-                      ON s.rec_num = target.rec_num
-                    WHERE wheel = ?"
+  query <- "SELECT wheel, wheel_pos,
+              sample_name, sample_type,
+              target.rec_num, target.osg_num,
+              norm_ratio, int_err, ext_err,
+              fm_corr, sig_fm_corr, del_13c,
+              s.fm_cons, s.d13_cons, tot_mass
+            FROM snics_results
+            JOIN target
+            ON snics_results.tp_num = target.tp_num
+            JOIN (SELECT rec_num, Fm_cons, d13_cons
+                  FROM standards WHERE Fm_cons IS NOT NULL)
+                  AS s
+            ON s.rec_num = target.rec_num
+            WHERE wheel = ?"
 
   wheels <- DBI::dbSendQuery(db, query)
   DBI::dbBind(wheels, list(wheel))
