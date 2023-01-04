@@ -25,6 +25,7 @@ Imports:
     readr,
     rmarkdown,
     RMariaDB
+Remotes: blongworth/amsdata
 RoxygenNote: 7.2.1
 Suggests: testthat
 VignetteBuilder: knitr
