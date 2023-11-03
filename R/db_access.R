@@ -91,7 +91,7 @@ conMICADAS  <- function(username = "nosams-ro", database = "db_ac14") {
     }
   )
   odbc::dbConnect(RMariaDB::MariaDB(),
-                  host = 'nosams-inst2.whoi.edu',
+                  host = 'nosams-inst.whoi.edu',
                   dbname = database,
                   username = credentials$username,
                   password = credentials$password)
